@@ -27,11 +27,8 @@ class HomePage extends StatelessWidget {
 			appBar: AppBar (
 				title: Text ('Tiny Pocket'),
 			),
-			body: SingleChildScrollView (
-				child: Column (
-					mainAxisAlignment: MainAxisAlignment.start,
-					crossAxisAlignment: CrossAxisAlignment.center,
-					children: <Widget>[
+			body: ListView (
+				children: <Widget>[
 						Card (
 							color: Colors.blue, 
 							child: Text ('Chart!')
@@ -39,7 +36,6 @@ class HomePage extends StatelessWidget {
 
 						UserTransactions ()
 					]
-				) 
 			) 
 		)
 		);
