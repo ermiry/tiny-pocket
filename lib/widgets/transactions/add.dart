@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 
-class AddTransaction extends StatelessWidget {
-
-	// String titleInput;
-	// String amountInput;
-
-	final titleController = TextEditingController ();
-	final amountController = TextEditingController ();
+class AddTransaction extends StatefulWidget {
 
 	final Function addTransaction;
 
 	AddTransaction (this.addTransaction);
+
+  @override
+  _AddTransactionState createState() => _AddTransactionState ();
+
+}
+
+class _AddTransactionState extends State <AddTransaction> {
+
+	final titleController = TextEditingController ();
+	final amountController = TextEditingController ();
 
 	@override
 	Widget build (BuildContext context) {
@@ -33,16 +37,19 @@ class AddTransaction extends StatelessWidget {
 						),
 						FlatButton (
 							child: Text ('Add'),
-							textColor: Colors.purple,
-							onPressed: () => addTransaction (
-								titleController.text, 
-								double.parse(amountController.text)
-								),
-							)
+							textColor: Theme.of(context).primaryColor,
+							onPressed: () {
+                widget.addTransaction (
+                  titleController.text, 
+                  double.parse(amountController.text)
+								);
+
+                Navigator.of (context).pop();
+              } 
+              )
 					],),
 				),
 			);
 
 	}
-
 }

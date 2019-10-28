@@ -14,6 +14,23 @@ class TinyPocket extends StatelessWidget {
 
 		return MaterialApp (
 			title: 'Tiny Pocket',
+      theme: ThemeData (
+        primarySwatch: Colors.blue,
+        accentColor: Colors.redAccent,
+        fontFamily: 'Quicksand',
+        appBarTheme: AppBarTheme (
+          textTheme: ThemeData.light().textTheme.copyWith(
+            title: TextStyle (fontFamily: 'Open Sans', fontSize: 20, fontWeight: FontWeight.bold)
+            )
+        ),
+        textTheme: ThemeData.light().textTheme.copyWith(
+          title: TextStyle (
+            fontFamily: 'Quicksand',
+            fontSize: 18,
+            fontWeight: FontWeight.bold
+          )
+        )
+      ),
 			home: HomePage ()
 		);
 
@@ -53,7 +70,10 @@ class _HomePageState extends State <HomePage> {
 
 		return (Scaffold (
 			appBar: AppBar (
-				title: Text ('Tiny Pocket'),
+				title: Text (
+          'Tiny Pocket',
+          // style: TextStyle (fontFamily: 'Open Sans'),
+          ),
 				actions: <Widget>[
 					IconButton (
 						icon: Icon (Icons.add),
