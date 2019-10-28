@@ -29,12 +29,15 @@ class AddTransaction extends StatelessWidget {
 							decoration: InputDecoration (labelText: 'Amount'),
 							// onChanged: (val) => amountInput = val,
 							controller: amountController,
+							keyboardType: TextInputType.number,
 						),
 						FlatButton (
 							child: Text ('Add'),
 							textColor: Colors.purple,
-							onPressed: () => addTransaction (titleController.text, 
-								double.parse(amountController.text)),
+							onPressed: () => addTransaction (
+								titleController.text, 
+								double.parse(amountController.text)
+								),
 							)
 					],),
 				),
