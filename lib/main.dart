@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:pocket/widgets/transactions/user.dart';
+
 void main () => runApp (TinyPocket ());
 
 class TinyPocket extends StatelessWidget {
@@ -34,6 +36,7 @@ class HomePage extends StatelessWidget {
 						child: Text ('Chart!')
 						),
 
+					UserTransactions ()
 				]
 			)
 		)
