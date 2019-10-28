@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:pocket/widgets/transactions/add.dart';
-import 'package:pocket/widgets/transactions/list.dart';
-
 void main () => runApp (TinyPocket ());
 
 class TinyPocket extends StatelessWidget {
@@ -36,10 +33,6 @@ class HomePage extends StatelessWidget {
 						color: Colors.blue, 
 						child: Text ('Chart!')
 						),
-
-					AddTransaction (),
-
-					TransactionList ()
 
 				]
 			)
