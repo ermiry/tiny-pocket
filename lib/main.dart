@@ -26,6 +26,12 @@ class HomePage extends StatelessWidget {
 		Transaction (id: 't2', title: 'Weekly Groceries', amount: 20.99, date: DateTime.now ())
 	];
 
+	// String titleInput;
+	// String amountInput;
+
+	final titleController = TextEditingController ();
+	final amountController = TextEditingController ();
+
 	@override
 	Widget build (BuildContext context) {
 
@@ -34,13 +40,38 @@ class HomePage extends StatelessWidget {
 				title: Text ('Tiny Pocket'),
 			),
 			body: Column (
-				mainAxisAlignment: MainAxisAlignment.center,
+				mainAxisAlignment: MainAxisAlignment.start,
 				crossAxisAlignment: CrossAxisAlignment.center,
 				children: <Widget>[
 					Card (
 						color: Colors.blue, 
 						child: Text ('Chart!')
 						),
+
+					Card (
+						elevation: 5,
+						child: Container (
+							padding: EdgeInsets.all(10),
+							child: Column (children: <Widget>[
+								TextField (
+									decoration: InputDecoration (labelText: 'Title'),
+									// onChanged: (val) => titleInput = val,
+									controller: titleController,
+								),
+								TextField (
+									decoration: InputDecoration (labelText: 'Amount'),
+									// onChanged: (val) => amountInput = val,
+									controller: amountController,
+								),
+								FlatButton (
+									child: Text ('Add'),
+									textColor: Colors.purple,
+									onPressed: () {},
+									)
+							],),
+						),
+					),
+
 					Column (
 						children: transactions.map ((tx) {
 							return Card (
