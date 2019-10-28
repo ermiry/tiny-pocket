@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:pocket/widgets/transactions.dart';
+import 'package:pocket/widgets/transactions/add.dart';
+import 'package:pocket/widgets/transactions/list.dart';
 
 void main () => runApp (TinyPocket ());
 
@@ -20,12 +21,6 @@ class TinyPocket extends StatelessWidget {
 
 class HomePage extends StatelessWidget {
 
-	// String titleInput;
-	// String amountInput;
-
-	final titleController = TextEditingController ();
-	final amountController = TextEditingController ();
-
 	@override
 	Widget build (BuildContext context) {
 
@@ -42,29 +37,7 @@ class HomePage extends StatelessWidget {
 						child: Text ('Chart!')
 						),
 
-					Card (
-						elevation: 5,
-						child: Container (
-							padding: EdgeInsets.all(10),
-							child: Column (children: <Widget>[
-								TextField (
-									decoration: InputDecoration (labelText: 'Title'),
-									// onChanged: (val) => titleInput = val,
-									controller: titleController,
-								),
-								TextField (
-									decoration: InputDecoration (labelText: 'Amount'),
-									// onChanged: (val) => amountInput = val,
-									controller: amountController,
-								),
-								FlatButton (
-									child: Text ('Add'),
-									textColor: Colors.purple,
-									onPressed: () {},
-									)
-							],),
-						),
-					),
+					AddTransaction (),
 
 					TransactionList ()
 
