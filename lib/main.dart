@@ -67,13 +67,21 @@ class _HomePageState extends State <HomePage> {
 	void _addTransaction (String title, double amount, DateTime date) {
 
 		final newTx = Transaction (title: title, amount: amount, 
-			date: date, id: DateTime.now ().toString ());
+			date: date, id: DateTime.now().toString());
 
 		setState(() {
 			_transactions.add(newTx);
 		});
 
 	}
+
+  void _deleteTransaction (String id) {
+
+    setState(() {
+      _transactions.removeWhere((tx) => tx.id == id);
+    });
+
+  }
 
 	@override
 	Widget build (BuildContext context) {
@@ -100,7 +108,7 @@ class _HomePageState extends State <HomePage> {
 				children: <Widget>[
 						Chart (_recentTransactions),
 
-						TransactionList (_transactions)
+						TransactionList (_transactions, _deleteTransaction)
 					]
 			),
 
