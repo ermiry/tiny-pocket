@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AddTransaction extends StatefulWidget {
 
@@ -13,8 +14,10 @@ class AddTransaction extends StatefulWidget {
 
 class _AddTransactionState extends State <AddTransaction> {
 
-	final titleController = TextEditingController ();
-	final amountController = TextEditingController ();
+	final _titleController = TextEditingController ();
+	final _amountController = TextEditingController ();
+
+  DateTime _selectedDate;
 
 	@override
 	Widget build (BuildContext context) {
@@ -27,20 +30,23 @@ class _AddTransactionState extends State <AddTransaction> {
 						TextField (
 							decoration: InputDecoration (labelText: 'Title'),
 							// onChanged: (val) => titleInput = val,
-							controller: titleController,
+							controller: _titleController,
 						),
 						TextField (
 							decoration: InputDecoration (labelText: 'Amount'),
 							// onChanged: (val) => amountInput = val,
-							controller: amountController,
+							controller: _amountController,
 							keyboardType: TextInputType.number,
 						),
 
             Container (
               height: 70,
               child: Row (children: <Widget>[
-                Text (
-                  'No date chosen!'
+                Expanded (
+                  child: Text (
+                    _selectedDate == null ? 'No date chosen!'
+                    : 'Picked date: ${DateFormat.yMMMd().format(_selectedDate)}'
+                  ),
                 ),
                 FlatButton (
                   textColor: Theme.of(context).primaryColor,
@@ -48,7 +54,20 @@ class _AddTransactionState extends State <AddTransaction> {
                     'Choose date',
                     style: TextStyle (fontWeight: FontWeight.bold)
                     ),
-                  onPressed: () {},
+                  onPressed: () {
+                    showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime (2019),
+                      lastDate: DateTime.now()
+                    ).then((pickedDate) {
+                      if (pickedDate != null) {
+                        setState(() {
+                          _selectedDate = pickedDate;
+                        });
+                      } 
+                    });
+                  },
                 )
               ],),
             ),
@@ -60,8 +79,8 @@ class _AddTransactionState extends State <AddTransaction> {
 							textColor: Theme.of(context).textTheme.button.color,
 							onPressed: () {
                 widget.addTransaction (
-                  titleController.text, 
-                  double.parse(amountController.text)
+                  _titleController.text, 
+                  double.parse(_amountController.text)
 								);
 
                 Navigator.of (context).pop();
