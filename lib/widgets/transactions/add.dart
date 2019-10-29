@@ -78,9 +78,17 @@ class _AddTransactionState extends State <AddTransaction> {
 							child: Text ('Add'),
 							textColor: Theme.of(context).textTheme.button.color,
 							onPressed: () {
+                if (_amountController.text.isEmpty) return;
+
+                final title = _titleController.text;
+                final amount = double.parse(_amountController.text);
+
+                if (title.isEmpty || amount <= 0 || _selectedDate == null) return;
+
                 widget.addTransaction (
-                  _titleController.text, 
-                  double.parse(_amountController.text)
+                  title,
+                  amount,
+                  _selectedDate
 								);
 
                 Navigator.of (context).pop();
