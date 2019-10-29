@@ -35,9 +35,29 @@ class _AddTransactionState extends State <AddTransaction> {
 							controller: amountController,
 							keyboardType: TextInputType.number,
 						),
-						FlatButton (
+
+            Container (
+              height: 70,
+              child: Row (children: <Widget>[
+                Text (
+                  'No date chosen!'
+                ),
+                FlatButton (
+                  textColor: Theme.of(context).primaryColor,
+                  child: Text (
+                    'Choose date',
+                    style: TextStyle (fontWeight: FontWeight.bold)
+                    ),
+                  onPressed: () {},
+                )
+              ],),
+            ),
+            
+						RaisedButton (
+              color: Theme.of(context).primaryColor,
+              textTheme: ButtonTextTheme.accent,
 							child: Text ('Add'),
-							textColor: Theme.of(context).primaryColor,
+							textColor: Theme.of(context).textTheme.button.color,
 							onPressed: () {
                 widget.addTransaction (
                   titleController.text, 

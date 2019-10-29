@@ -29,6 +29,9 @@ class TinyPocket extends StatelessWidget {
             fontFamily: 'Quicksand',
             fontSize: 18,
             fontWeight: FontWeight.bold
+          ),
+          button: TextStyle (
+            color: Colors.white
           )
         )
       ),
