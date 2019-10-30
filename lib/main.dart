@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
 
 import 'package:pocket/widgets/transactions/list.dart';
 import 'package:pocket/widgets/transactions/add.dart';
@@ -6,7 +7,15 @@ import 'package:pocket/widgets/chart.dart';
 
 import 'package:pocket/models/transaction.dart';
 
-void main () => runApp (TinyPocket ());
+void main () {
+
+  // only allow portrait mode
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
+  runApp (TinyPocket ());
+
+} 
 
 class TinyPocket extends StatelessWidget {
 
@@ -58,6 +67,8 @@ class _HomePageState extends State <HomePage> {
 		// Transaction (id: 't2', title: 'Weekly Groceries', amount: 20.99, date: DateTime.now ())
 	];
 
+  bool _showChart = true;
+
   List <Transaction> get _recentTransactions {
     return _transactions.where((tx) {
       return tx.date.isAfter(DateTime.now().subtract(Duration (days: 7)));
@@ -108,20 +119,34 @@ class _HomePageState extends State <HomePage> {
 			appBar: appBar,
 			body: ListView (
 				children: <Widget>[
-            Container (
-              height: (MediaQuery.of(context).size.height - 
-                appBar.preferredSize.height -
-                MediaQuery.of(context).padding.top) * 0.3,
-              child: Chart (_recentTransactions),
-            ),
-            Container (
-              height: (MediaQuery.of(context).size.height -
-                appBar.preferredSize.height -
-                MediaQuery.of(context).padding.top) * 0.7,
-              child: TransactionList (_transactions, _deleteTransaction),
-              // Expanded (child: TransactionList (_transactions, _deleteTransaction))
-            )
-					]
+          Row (
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+            Text ('Show chart'),
+            Switch (
+              value: _showChart,
+              onChanged: (val) { 
+                setState(() {
+                  _showChart = val;
+                });
+              },)
+          ],),
+
+          _showChart ? Container (
+            height: (MediaQuery.of(context).size.height - 
+              appBar.preferredSize.height -
+              MediaQuery.of(context).padding.top) * 0.3,
+            child: Chart (_recentTransactions),
+          ) : Container (),
+
+          Container (
+            height: (MediaQuery.of(context).size.height -
+              appBar.preferredSize.height -
+              MediaQuery.of(context).padding.top) * 0.7,
+            child: TransactionList (_transactions, _deleteTransaction),
+            // Expanded (child: TransactionList (_transactions, _deleteTransaction))
+          )
+        ]
 			),
 
 			floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
