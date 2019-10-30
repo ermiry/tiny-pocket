@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
+import 'package:flutter/services.dart';
 
 import 'package:pocket/widgets/transactions/list.dart';
 import 'package:pocket/widgets/transactions/add.dart';
@@ -10,8 +10,8 @@ import 'package:pocket/models/transaction.dart';
 void main () {
 
   // only allow portrait mode
-  // SystemChrome.setPreferredOrientations([
-  //   DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   runApp (TinyPocket ());
 
