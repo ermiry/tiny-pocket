@@ -1,4 +1,7 @@
+// import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 class AddTransaction extends StatefulWidget {
@@ -33,17 +36,17 @@ class _AddTransactionState extends State <AddTransaction> {
             right: 10, 
             bottom: MediaQuery.of(context).viewInsets.bottom + 10),
 		  			child: Column (children: <Widget>[
-		  				TextField (
+            TextField (
 		  					decoration: InputDecoration (labelText: 'Title'),
 		  					// onChanged: (val) => titleInput = val,
 		  					controller: _titleController,
-		  				),
-		  				TextField (
+            ),
+            TextField (
 		  					decoration: InputDecoration (labelText: 'Amount'),
 		  					// onChanged: (val) => amountInput = val,
 		  					controller: _amountController,
 		  					keyboardType: TextInputType.number,
-		  				),
+            ),
 
             Container (
               height: 70,
@@ -78,7 +81,7 @@ class _AddTransactionState extends State <AddTransaction> {
               ],),
             ),
             
-		  				RaisedButton (
+            RaisedButton (
               color: Theme.of(context).primaryColor,
               textTheme: ButtonTextTheme.accent,
 		  					child: Text ('Add'),
@@ -99,7 +102,7 @@ class _AddTransactionState extends State <AddTransaction> {
 
                 Navigator.of (context).pop();
               } 
-              )
+            )
 		  			],),
 		  		),
 		  	),

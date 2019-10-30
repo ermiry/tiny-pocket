@@ -25,7 +25,7 @@ class TinyPocket extends StatelessWidget {
 	@override
 	Widget build (BuildContext context) {
 
-		return MaterialApp (
+		return Platform.isAndroid ? MaterialApp (
 			title: 'Tiny Pocket',
       theme: ThemeData (
         primarySwatch: Colors.blue,
@@ -48,7 +48,22 @@ class TinyPocket extends StatelessWidget {
         )
       ),
 			home: HomePage ()
-		);
+		) :
+    CupertinoApp (
+      title: 'Tiny Pocket',
+      theme: CupertinoThemeData (
+        primaryColor: Colors.blue,
+        primaryContrastingColor: Colors.redAccent,
+        textTheme: CupertinoTextThemeData (
+          textStyle: TextStyle (
+            fontFamily: 'Quicksand',
+            fontSize: 18,
+            fontWeight: FontWeight.bold
+          )
+        )
+      ),
+			home: HomePage ()
+    );
 
 	}
 
@@ -136,7 +151,8 @@ class _HomePageState extends State <HomePage> {
         ]),
       );
 
-    final appBody = ListView (
+    final appBody = SafeArea (
+      child: ListView (
 				children: <Widget>[
           Row (
             mainAxisAlignment: MainAxisAlignment.center,
@@ -167,7 +183,8 @@ class _HomePageState extends State <HomePage> {
             // Expanded (child: TransactionList (_transactions, _deleteTransaction))
           )
         ]
-			);
+			)
+    );
 
 		return (Platform.isAndroid ? Scaffold (
 			appBar: appBar,
