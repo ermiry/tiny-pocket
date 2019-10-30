@@ -108,7 +108,8 @@ class _HomePageState extends State <HomePage> {
 				children: <Widget>[
 						Chart (_recentTransactions),
 
-						TransactionList (_transactions, _deleteTransaction)
+            // Expanded (child: TransactionList (_transactions, _deleteTransaction))
+            TransactionList (_transactions, _deleteTransaction)
 					]
 			),
 
