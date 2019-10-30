@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
-import 'package:pocket/widgets/chartBar.dart';
+import 'package:pocket/widgets/chart/chartBar.dart';
 
 import 'package:pocket/models/transaction.dart';
 

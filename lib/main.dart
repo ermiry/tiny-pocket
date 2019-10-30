@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:pocket/widgets/transactions/list.dart';
 import 'package:pocket/widgets/transactions/add.dart';
-import 'package:pocket/widgets/chart.dart';
+import 'package:pocket/widgets/chart/chart.dart';
 
 import 'package:pocket/models/transaction.dart';
 

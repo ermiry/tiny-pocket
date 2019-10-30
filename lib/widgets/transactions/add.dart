@@ -1,8 +1,8 @@
-// import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+
+import 'package:pocket/widgets/adaptive/flatButton.dart';
 
 class AddTransaction extends StatefulWidget {
 
@@ -21,6 +21,21 @@ class _AddTransactionState extends State <AddTransaction> {
 	final _amountController = TextEditingController ();
 
   DateTime _selectedDate;
+
+  void _chooseDate () {
+    showDatePicker (
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: DateTime (2019),
+          lastDate: DateTime.now()
+        ).then((pickedDate) {
+          if (pickedDate != null) {
+            setState(() {
+              _selectedDate = pickedDate;
+            });
+          } 
+        });
+  }
 
 	@override
 	Widget build (BuildContext context) {
@@ -57,27 +72,7 @@ class _AddTransactionState extends State <AddTransaction> {
                     : 'Picked date: ${DateFormat.yMMMd().format(_selectedDate)}'
                   ),
                 ),
-                FlatButton (
-                  textColor: Theme.of(context).primaryColor,
-                  child: Text (
-                    'Choose date',
-                    style: TextStyle (fontWeight: FontWeight.bold)
-                    ),
-                  onPressed: () {
-                    showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime (2019),
-                      lastDate: DateTime.now()
-                    ).then((pickedDate) {
-                      if (pickedDate != null) {
-                        setState(() {
-                          _selectedDate = pickedDate;
-                        });
-                      } 
-                    });
-                  },
-                )
+                AdaptiveFlatButton ('Choose Date', _chooseDate)
               ],),
             ),
             
