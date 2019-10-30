@@ -97,6 +97,8 @@ class _HomePageState extends State <HomePage> {
 	@override
 	Widget build (BuildContext context) {
 
+    final mediaQuery = MediaQuery.of(context);
+
     final appBar = AppBar (
 				title: Text (
           'Tiny Pocket',
@@ -133,16 +135,16 @@ class _HomePageState extends State <HomePage> {
           ],),
 
           _showChart ? Container (
-            height: (MediaQuery.of(context).size.height - 
+            height: (mediaQuery.size.height - 
               appBar.preferredSize.height -
-              MediaQuery.of(context).padding.top) * 0.3,
+              mediaQuery.padding.top) * 0.3,
             child: Chart (_recentTransactions),
           ) : Container (),
 
           Container (
-            height: (MediaQuery.of(context).size.height -
+            height: (mediaQuery.size.height -
               appBar.preferredSize.height -
-              MediaQuery.of(context).padding.top) * 0.7,
+              mediaQuery.padding.top) * 0.7,
             child: TransactionList (_transactions, _deleteTransaction),
             // Expanded (child: TransactionList (_transactions, _deleteTransaction))
           )
