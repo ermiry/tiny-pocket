@@ -86,8 +86,7 @@ class _HomePageState extends State <HomePage> {
 	@override
 	Widget build (BuildContext context) {
 
-		return (Scaffold (
-			appBar: AppBar (
+    final appBar = AppBar (
 				title: Text (
           'Tiny Pocket',
           // style: TextStyle (fontFamily: 'Open Sans'),
@@ -103,13 +102,25 @@ class _HomePageState extends State <HomePage> {
 						},
 					)
 				],
-			),
+			);
+
+		return (Scaffold (
+			appBar: appBar,
 			body: ListView (
 				children: <Widget>[
-						Chart (_recentTransactions),
-
-            // Expanded (child: TransactionList (_transactions, _deleteTransaction))
-            TransactionList (_transactions, _deleteTransaction)
+            Container (
+              height: (MediaQuery.of(context).size.height - 
+                appBar.preferredSize.height -
+                MediaQuery.of(context).padding.top) * 0.4,
+              child: Chart (_recentTransactions),
+            ),
+            Container (
+              height: (MediaQuery.of(context).size.height -
+                appBar.preferredSize.height -
+                MediaQuery.of(context).padding.top) * 0.6,
+              child: TransactionList (_transactions, _deleteTransaction),
+              // Expanded (child: TransactionList (_transactions, _deleteTransaction))
+            )
 					]
 			),
 
