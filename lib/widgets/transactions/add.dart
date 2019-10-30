@@ -22,22 +22,28 @@ class _AddTransactionState extends State <AddTransaction> {
 	@override
 	Widget build (BuildContext context) {
 
-		return Card (
-				elevation: 5,
-				child: Container (
-					padding: EdgeInsets.all(10),
-					child: Column (children: <Widget>[
-						TextField (
-							decoration: InputDecoration (labelText: 'Title'),
-							// onChanged: (val) => titleInput = val,
-							controller: _titleController,
-						),
-						TextField (
-							decoration: InputDecoration (labelText: 'Amount'),
-							// onChanged: (val) => amountInput = val,
-							controller: _amountController,
-							keyboardType: TextInputType.number,
-						),
+    // TODO: maybe add an improved modal bottom sheet dialog, see custom widget snippet (125)
+		return SingleChildScrollView (
+		  child: Card (
+		  		elevation: 5,
+		  		child: Container (
+		  			padding: EdgeInsets.only(
+            top: 10, 
+            left: 10, 
+            right: 10, 
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10),
+		  			child: Column (children: <Widget>[
+		  				TextField (
+		  					decoration: InputDecoration (labelText: 'Title'),
+		  					// onChanged: (val) => titleInput = val,
+		  					controller: _titleController,
+		  				),
+		  				TextField (
+		  					decoration: InputDecoration (labelText: 'Amount'),
+		  					// onChanged: (val) => amountInput = val,
+		  					controller: _amountController,
+		  					keyboardType: TextInputType.number,
+		  				),
 
             Container (
               height: 70,
@@ -72,12 +78,12 @@ class _AddTransactionState extends State <AddTransaction> {
               ],),
             ),
             
-						RaisedButton (
+		  				RaisedButton (
               color: Theme.of(context).primaryColor,
               textTheme: ButtonTextTheme.accent,
-							child: Text ('Add'),
-							textColor: Theme.of(context).textTheme.button.color,
-							onPressed: () {
+		  					child: Text ('Add'),
+		  					textColor: Theme.of(context).textTheme.button.color,
+		  					onPressed: () {
                 if (_amountController.text.isEmpty) return;
 
                 final title = _titleController.text;
@@ -89,14 +95,15 @@ class _AddTransactionState extends State <AddTransaction> {
                   title,
                   amount,
                   _selectedDate
-								);
+		  						);
 
                 Navigator.of (context).pop();
               } 
               )
-					],),
-				),
-			);
+		  			],),
+		  		),
+		  	),
+		);
 
 	}
 }
