@@ -1,5 +1,8 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
+
 import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:pocket/widgets/transactions/list.dart';
 import 'package:pocket/widgets/transactions/add.dart';
@@ -99,7 +102,7 @@ class _HomePageState extends State <HomePage> {
 
     final mediaQuery = MediaQuery.of(context);
 
-    final appBar = AppBar (
+    final PreferredSizeWidget appBar = Platform.isAndroid ? AppBar (
 				title: Text (
           'Tiny Pocket',
           // style: TextStyle (fontFamily: 'Open Sans'),
@@ -115,17 +118,32 @@ class _HomePageState extends State <HomePage> {
 						},
 					)
 				],
-			);
+			)
+      : CupertinoNavigationBar (
+        middle: Text ('Tiny Pocket'),
+        trailing: Row (
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+          GestureDetector (
+            child: Icon (CupertinoIcons.add),
+            onTap: () {
+              showModalBottomSheet (
+								context: context, 
+								builder: (bCtx) { return AddTransaction (_addTransaction); }
+							);
+            },
+          )
+        ]),
+      );
 
-		return (Scaffold (
-			appBar: appBar,
-			body: ListView (
+    final appBody = ListView (
 				children: <Widget>[
           Row (
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
             Text ('Show chart'),
-            Switch (
+            Switch.adaptive (
+              activeColor: Theme.of(context).accentColor,
               value: _showChart,
               onChanged: (val) { 
                 setState(() {
@@ -149,10 +167,14 @@ class _HomePageState extends State <HomePage> {
             // Expanded (child: TransactionList (_transactions, _deleteTransaction))
           )
         ]
-			),
+			);
+
+		return (Platform.isAndroid ? Scaffold (
+			appBar: appBar,
+			body: appBody,
 
 			floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-			floatingActionButton: FloatingActionButton (
+			floatingActionButton: Platform.isIOS ? Container () : FloatingActionButton (
 				child: Icon (Icons.add),
 				onPressed: () {
 					showModalBottomSheet (
@@ -161,7 +183,11 @@ class _HomePageState extends State <HomePage> {
 					);
 				},
 			),
-		)
+		) :
+    CupertinoPageScaffold (
+      navigationBar: appBar,
+      child: appBody,
+    )
 		);
 
 	}
