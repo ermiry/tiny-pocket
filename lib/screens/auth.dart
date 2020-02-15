@@ -47,11 +47,11 @@ class _AuthScreenState extends State <AuthScreen> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0))
         ),
-        title: Text ('An error ocurred!', style: const TextStyle(color: mainLightPurple, fontSize: 28)),
+        title: Text ('An error ocurred!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
         content: Text (message),
         actions: <Widget>[
           FlatButton(
-            child: Text ('Okay', style: const TextStyle(color: mainPurple, fontSize: 18)),
+            child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
             onPressed: () {
               Navigator.of(ctx).pop();
             },
@@ -101,7 +101,7 @@ class _AuthScreenState extends State <AuthScreen> {
     // print(maxHeight);
 
     return new Scaffold(
-      backgroundColor: mainPurple,
+      backgroundColor: mainBlue,
       body: new Container(
         child: new SingleChildScrollView(
           child: new Column(
@@ -163,8 +163,7 @@ class _AuthScreenState extends State <AuthScreen> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
                                 boxShadow: [BoxShadow(
-                                  // color: Color.fromRGBO(225, 95, 27, .3),
-                                  color: const Color.fromRGBO(49, 39, 79, 0.5),
+                                  color: const Color.fromRGBO(25, 42, 86, 0.5),
                                   blurRadius: 20,
                                   offset: Offset(0, 10)
                                 )]
@@ -244,7 +243,8 @@ class _AuthScreenState extends State <AuthScreen> {
                               margin: EdgeInsets.symmetric(horizontal: 50),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
-                                color: mainLightPurple
+                                // color: mainDarkBlue
+                                color: mainBlue
                               ),
                               child: Center(
                                 child: RawMaterialButton(
@@ -341,11 +341,11 @@ class _CreateAccountState extends State <_CreateAccount> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0))
         ),
-        title: Text ('An error ocurred!', style: const TextStyle(color: mainLightPurple, fontSize: 28)),
+        title: Text ('An error ocurred!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
         content: Text (message),
         actions: <Widget>[
           FlatButton(
-            child: Text ('Okay', style: const TextStyle(color: mainPurple, fontSize: 18)),
+            child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
             onPressed: () {
               Navigator.of(ctx).pop();
             },
@@ -362,11 +362,11 @@ class _CreateAccountState extends State <_CreateAccount> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0))
         ),
-        title: Text ('Success!', style: const TextStyle(color: mainLightPurple, fontSize: 28)),
+        title: Text ('Success!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
         content: Text (message),
         actions: <Widget>[
           FlatButton(
-            child: Text ('Okay', style: const TextStyle(color: mainPurple, fontSize: 18)),
+            child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
             onPressed: () {
               Navigator.of(ctx).pop();
             },
@@ -450,7 +450,7 @@ class _CreateAccountState extends State <_CreateAccount> {
               Text(
                 "Create your free account!", 
                 style: TextStyle(
-                  color: Color.fromRGBO(49, 39, 79, 1), 
+                  color: mainBlue, 
                   fontWeight: FontWeight.bold, fontSize: 20
                 )
               ),
@@ -473,7 +473,7 @@ class _CreateAccountState extends State <_CreateAccount> {
                               color: Colors.white,
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color.fromRGBO(49, 39, 79, 0.5),
+                                  color: const Color.fromRGBO(25, 42, 86, 0.5),
                                   blurRadius: 20,
                                   offset: Offset(0, 10),
                                 )
@@ -659,7 +659,7 @@ class _CreateAccountState extends State <_CreateAccount> {
                         margin: EdgeInsets.symmetric(horizontal: 60),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
-                          color: Color.fromRGBO(49, 39, 79, 1)
+                          color: mainBlue
                         ),
                         child: Center(
                           child: RawMaterialButton(
@@ -698,7 +698,8 @@ class _CreateAccountState extends State <_CreateAccount> {
       margin: EdgeInsets.symmetric(horizontal: 50),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
-        color: mainPurple
+        // color: mainBlue
+        color: mainDarkBlue
       ),
       child: Center(
         child: RawMaterialButton(
@@ -741,11 +742,11 @@ class _ForgotPasswordState extends State <_ForgotPassword> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0))
         ),
-        title: Text ('An error ocurred!', style: const TextStyle(color: mainLightPurple, fontSize: 28)),
+        title: Text ('An error ocurred!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
         content: Text (message),
         actions: <Widget>[
           FlatButton(
-            child: Text ('Okay', style: const TextStyle(color: mainPurple, fontSize: 18)),
+            child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
             onPressed: () {
               Navigator.of(ctx).pop();
             },
@@ -762,11 +763,11 @@ class _ForgotPasswordState extends State <_ForgotPassword> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0))
         ),
-        title: Text ('Success!', style: const TextStyle(color: mainLightPurple, fontSize: 28)),
+        title: Text ('Success!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
         content: Text (message),
         actions: <Widget>[
           FlatButton(
-            child: Text ('Okay', style: const TextStyle(color: mainPurple, fontSize: 18)),
+            child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
             onPressed: () {
               Navigator.of(ctx).pop();
             },
@@ -787,7 +788,7 @@ class _ForgotPasswordState extends State <_ForgotPassword> {
       }
 
       catch (error) {
-        _showErrorDialog('Failed to manage account recovry!');
+        _showErrorDialog('Failed to manage account recovery!');
         fail = true;
       }
 
@@ -819,7 +820,7 @@ class _ForgotPasswordState extends State <_ForgotPassword> {
                   child: Text(
                     "Enter the email address associated with your account", 
                     style: TextStyle(
-                      color: Color.fromRGBO(49, 39, 79, 1), 
+                      color: mainBlue, 
                       fontWeight: FontWeight.bold, fontSize: 20
                     )
                   ),
@@ -835,7 +836,7 @@ class _ForgotPasswordState extends State <_ForgotPassword> {
                       color: Colors.white,
                       boxShadow: [
                         BoxShadow(
-                          color: const Color.fromRGBO(49, 39, 79, 0.5),
+                          color: const Color.fromRGBO(25, 42, 86, 0.5),
                           blurRadius: 20,
                           offset: Offset(0, 10),
                         )
@@ -882,7 +883,7 @@ class _ForgotPasswordState extends State <_ForgotPassword> {
                   margin: EdgeInsets.symmetric(horizontal: 60),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
-                    color: Color.fromRGBO(49, 39, 79, 1)
+                    color: mainBlue
                   ),
                   child: Center(
                     child: RawMaterialButton(
@@ -918,8 +919,7 @@ class _ForgotPasswordState extends State <_ForgotPassword> {
         },
         elevation: 0,
         textStyle: TextStyle(
-          // color: Color.fromRGBO(196, 135, 198, 1),
-          color: Color.fromRGBO(49, 39, 79, .6),
+          color: Color.fromRGBO(25, 42, 86, 0.6),
           fontSize: 16
         ),
         child: Text(
