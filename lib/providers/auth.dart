@@ -8,8 +8,8 @@ import 'package:crypto/crypto.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:pixan/models/http_exception.dart';
-import 'package:pixan/values.dart';
+import 'package:pocket/models/http_exception.dart';
+import 'package:pocket/values.dart';
 
 class Auth with ChangeNotifier {
 
@@ -114,7 +114,7 @@ class Auth with ChangeNotifier {
 
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('user_token')) {
-      print('No token!');
+      // print('No token!');
       return false;
     }
 
