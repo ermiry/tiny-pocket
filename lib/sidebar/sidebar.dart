@@ -8,8 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:pocket/providers/auth.dart';
 
 import 'package:pocket/sidebar/navigation_bloc.dart';
+import 'package:pocket/sidebar/sidebar_item.dart';
 
-import 'sidebar_item.dart';
+import 'package:pocket/style/colors.dart';
 
 class SideBar extends StatefulWidget {
 
@@ -75,7 +76,7 @@ class _SideBarState extends State <SideBar> with SingleTickerProviderStateMixin 
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  color: const Color.fromRGBO(49, 39, 79, 1),
+                  color: mainBlue,
                   child: Column(
                     children: <Widget>[
                       SizedBox(height: 50),
@@ -83,18 +84,20 @@ class _SideBarState extends State <SideBar> with SingleTickerProviderStateMixin 
                       // account info
                       ListTile(
                         title: Text(
-                          "${Provider.of<Auth>(context, listen: false).userValues['name']}",
+                          // "${Provider.of<Auth>(context, listen: false).userValues['name']}",
+                          "Erick Salas",
                           style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800),
                         ),
                         subtitle: Text(
-                          "${Provider.of<Auth>(context, listen: false).userValues['email']}",
+                          // "${Provider.of<Auth>(context, listen: false).userValues['email']}",
+                          "erick@test.com",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 14,
                           ),
                         ),
                         leading: CircleAvatar(
-                          backgroundColor: Colors.pink,
+                          backgroundColor: mainDarkBlue,
                           child: Icon(
                             Icons.perm_identity,
                             color: Colors.white,
@@ -193,7 +196,7 @@ class _SideBarState extends State <SideBar> with SingleTickerProviderStateMixin 
                     child: new Container(
                       width: 35,
                       height: 110,
-                      color: const Color.fromRGBO(49, 39, 79, 1),
+                      color: mainBlue,
                       alignment: Alignment.centerLeft,
                       child: new AnimatedIcon(
                         progress: _animationController.view,

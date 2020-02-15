@@ -10,20 +10,20 @@ const TextStyle hoursPlayedLabelTextStyle = const TextStyle(
 
 const TextStyle hoursPlayedTextStyle = const TextStyle(
   fontSize: 28,
-  color: mainPurple,
+  color: mainBlue,
   fontWeight: FontWeight.w800,
 );
 
 const TextStyle infoTitleTextStyle = const TextStyle(
   fontSize: 20,
   fontWeight: FontWeight.bold,
-  color: mainPurple
+  color: mainBlue
 );
 
 const TextStyle infoLabelTextStyle = const TextStyle(
   fontSize: 16,
   fontWeight: FontWeight.bold,
-  color: mainPurple
+  color: mainBlue
 );
 
 const TextStyle infoTextStyle = const TextStyle(

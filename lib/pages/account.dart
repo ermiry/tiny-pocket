@@ -27,7 +27,7 @@ class AccountPage extends StatelessWidget with NavigationStates {
                     "Hello ${Provider.of<Auth>(context, listen: false).userValues['username']}!",
                     style: const TextStyle(
                       fontSize: 32,
-                      color: mainPurple,
+                      color: mainBlue,
                       fontWeight: FontWeight.w800
                     ),
                   ),
