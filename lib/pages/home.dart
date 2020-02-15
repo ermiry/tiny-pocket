@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:pocket/sidebar/navigation_bloc.dart';
+import 'package:pocket/style/colors.dart';
 
 import 'package:pocket/widgets/transactions/list.dart';
 import 'package:pocket/widgets/transactions/add.dart';
@@ -53,71 +54,73 @@ class _HomePageState extends State <HomePage> {
   }
 
 	@override
-	Widget build (BuildContext context) {
+	Widget build(BuildContext context) {
 
     final mediaQuery = MediaQuery.of(context);
 
-    final PreferredSizeWidget appBar = Platform.isAndroid ? AppBar (
-				title: Text (
-          'Tiny Pocket',
-          // style: TextStyle (fontFamily: 'Open Sans'),
-          ),
-				actions: <Widget>[
-					IconButton (
-						icon: Icon (Icons.add),
-						onPressed: () {
-							showModalBottomSheet (
-								context: context, 
-								builder: (bCtx) { return AddTransaction (_addTransaction); }
-							);
-						},
-					)
-				],
-			)
-      : CupertinoNavigationBar (
-        middle: Text ('Tiny Pocket'),
-        trailing: Row (
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-          GestureDetector (
-            child: Icon (CupertinoIcons.add),
-            onTap: () {
-              showModalBottomSheet (
-								context: context, 
-								builder: (bCtx) { return AddTransaction (_addTransaction); }
-							);
-            },
-          )
-        ]),
-      );
+    // final PreferredSizeWidget appBar = Platform.isAndroid ? AppBar (
+		// 		title: Text (
+    //       'Tiny Pocket',
+    //       // style: TextStyle (fontFamily: 'Open Sans'),
+    //       ),
+		// 		actions: <Widget>[
+		// 			IconButton (
+		// 				icon: Icon (Icons.add),
+		// 				onPressed: () {
+		// 					showModalBottomSheet (
+		// 						context: context, 
+		// 						builder: (bCtx) { return AddTransaction (_addTransaction); }
+		// 					);
+		// 				},
+		// 			)
+		// 		],
+		// 	)
+    //   : CupertinoNavigationBar (
+    //     middle: Text ('Tiny Pocket'),
+    //     trailing: Row (
+    //       mainAxisSize: MainAxisSize.min,
+    //       children: <Widget>[
+    //       GestureDetector (
+    //         child: Icon (CupertinoIcons.add),
+    //         onTap: () {
+    //           showModalBottomSheet (
+		// 						context: context, 
+		// 						builder: (bCtx) { return AddTransaction (_addTransaction); }
+		// 					);
+    //         },
+    //       )
+    //     ]),
+    //   );
 
-    final appBody = SafeArea (
+    final appBody = Container (
+      color: Colors.white,
       child: ListView (
 				children: <Widget>[
-          Row (
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-            Text ('Show chart'),
-            Switch.adaptive (
-              // activeColor: Theme.of(context).accentColor,
-              value: _showChart,
-              onChanged: (val) { 
-                setState(() {
-                  _showChart = val;
-                });
-              },)
-          ],),
+          // Row (
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: <Widget>[
+          //   Text ('Show chart'),
+          //   Switch.adaptive (
+          //     // activeColor: Theme.of(context).accentColor,
+          //     value: _showChart,
+          //     onChanged: (val) { 
+          //       setState(() {
+          //         _showChart = val;
+          //       });
+          //     },)
+          // ],),
 
-          _showChart ? Container (
-            height: (mediaQuery.size.height - 
-              appBar.preferredSize.height -
-              mediaQuery.padding.top) * 0.3,
-            child: Chart (_recentTransactions),
-          ) : Container (),
+          // day chart
+          // _showChart ? Container (
+          //   height: (mediaQuery.size.height - 
+          //     // appBar.preferredSize.height -
+          //     mediaQuery.padding.top) * 0.3,
+          //   child: Chart (_recentTransactions),
+          // ) : Container (),
 
           Container (
             height: (mediaQuery.size.height -
-              appBar.preferredSize.height -
+              // appBar.preferredSize.height -
               mediaQuery.padding.top) * 0.7,
             child: TransactionList (_transactions, _deleteTransaction),
             // Expanded (child: TransactionList (_transactions, _deleteTransaction))
@@ -127,11 +130,13 @@ class _HomePageState extends State <HomePage> {
     );
 
 		return (Platform.isAndroid ? Scaffold (
-			appBar: appBar,
+      backgroundColor: mainBlue,
+			// appBar: appBar,
 			body: appBody,
 
 			floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
 			floatingActionButton: Platform.isIOS ? Container () : FloatingActionButton (
+        backgroundColor: mainBlue,
 				child: Icon (Icons.add),
 				onPressed: () {
 					showModalBottomSheet (
@@ -142,7 +147,7 @@ class _HomePageState extends State <HomePage> {
 			),
 		) :
     CupertinoPageScaffold (
-      navigationBar: appBar,
+      // navigationBar: appBar,
       child: appBody,
     )
 		);
