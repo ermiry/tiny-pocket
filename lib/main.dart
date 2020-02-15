@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:pocket/providers/auth.dart';
 
 import 'package:pocket/screens/auth.dart';
+import 'package:pocket/screens/loading.dart';
+import 'package:pocket/sidebar/sidebar_layout.dart';
 
 void main() => runApp(new TinyPocket ());
 
@@ -44,7 +46,13 @@ class TinyPocket extends StatelessWidget {
               )
             )
           ),
-          home: new AuthScreen (),
+          home: auth.isAuth ? new SideBarLayout () :
+            FutureBuilder(
+              future: auth.tryAutoLogin(),
+              builder: (ctx, authResultSnapshot) =>
+                authResultSnapshot.connectionState == ConnectionState.waiting ?
+                  new LoadingScreen () : new AuthScreen (),
+            ),
           debugShowCheckedModeBanner: true,
         )
 
