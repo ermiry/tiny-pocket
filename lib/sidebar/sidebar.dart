@@ -170,16 +170,16 @@ class _SideBarState extends State <SideBar> with SingleTickerProviderStateMixin 
                       ),
 
                       SizedBox(height: 20),
-                      // Center(
-                      //   child: new Text(
-                      //     // "Copyright \u00a9 2020 Ermiry",
-                      //     "Created by Ermiry",
-                      //     style: const TextStyle(
-                      //       color: Colors.white,
-                      //       fontSize: 12
-                      //     ),
-                      //   )
-                      // ),
+                      Center(
+                        child: new Text(
+                          // "Copyright \u00a9 2020 Ermiry",
+                          "Created by Ermiry",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12
+                          ),
+                        )
+                      ),
                       SizedBox(height: 15),
                     ],
                   ),
