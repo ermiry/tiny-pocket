@@ -8,6 +8,7 @@ import 'package:pocket/style/colors.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pocket/providers/transactions.dart';
+import 'package:pocket/providers/settings.dart';
 
 import 'package:pocket/pages/home/charts/bars.dart';
 import 'package:pocket/pages/home/charts/expenses.dart';
@@ -25,10 +26,6 @@ class HomePage extends StatefulWidget with NavigationStates {
 
 class _HomePageState extends State <HomePage> {
 
-  bool _showBarsChart = true;
-  bool _showHistoryChart = true;
-  bool _showExpensesChart = true;
-
   // List <Transaction> get _recentTransactions {
   //   return _transactions.where((tx) {
   //     return tx.date.isAfter(DateTime.now().subtract(Duration (days: 7)));
@@ -40,34 +37,40 @@ class _HomePageState extends State <HomePage> {
 
     final mediaQuery = MediaQuery.of(context);
 
-    final body = Container (
-      color: Colors.white,
-      child: ListView (
-				children: <Widget>[
+    final body = Consumer <Settings> (
+      builder: (ctx, settings, _) {
+        return Container (
+          color: Colors.white,
+          child: ListView (
+            children: <Widget>[
+              // FIXME: bars chart
+              // _showBarsChart ? Container (
+              //   height: (mediaQuery.size.height - 
+              //     // appBar.preferredSize.height -
+              //     mediaQuery.padding.top) * 0.3,
+              //   child: BarsChart (_recentTransactions),
+              // ) : Container (),
 
-          // bars chart
-          // _showBarsChart ? Container (
-          //   height: (mediaQuery.size.height - 
-          //     // appBar.preferredSize.height -
-          //     mediaQuery.padding.top) * 0.3,
-          //   child: BarsChart (_recentTransactions),
-          // ) : Container (),
+              // settings.showBarsChart ? new BarsChart (_recentTransactions) : new Container(),
 
-          this._showExpensesChart ? new ExpensesChart () : new Container(),
+              settings.showExpensesChart ? new ExpensesChart () : new Container(),
 
-          this._showHistoryChart ? new HistoryChart () : new Container(),
+              settings.showHistoryChart ? new HistoryChart () : new Container(),
 
-          SizedBox(height: mediaQuery.size.height * 0.05),
+              SizedBox(height: mediaQuery.size.height * 0.05),
 
-          Container (
-            height: (mediaQuery.size.height -
-              // appBar.preferredSize.height -
-              mediaQuery.padding.top) * 0.5,
-            child: TransactionList (),
-            // Expanded (child: TransactionList (_transactions, _deleteTransaction))
+              // FIXME: set size based on the charts we are showing
+              Container (
+                height: (mediaQuery.size.height -
+                  // appBar.preferredSize.height -
+                  mediaQuery.padding.top) * 0.5,
+                child: TransactionList (),
+                // Expanded (child: TransactionList (_transactions, _deleteTransaction))
+              )
+            ]
           )
-        ]
-			)
+        );
+      }
     );
 
 		return (Platform.isAndroid ? Scaffold (
