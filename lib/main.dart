@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pocket/providers/auth.dart';
+import 'package:pocket/providers/transactions.dart';
 
 import 'package:pocket/screens/auth.dart';
 import 'package:pocket/screens/loading.dart';
@@ -21,6 +22,9 @@ class TinyPocket extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(
           value: new Auth(),
+        ),
+        ChangeNotifierProvider.value(
+          value: new Transactions(),
         )
       ],
       child: Consumer <Auth> (

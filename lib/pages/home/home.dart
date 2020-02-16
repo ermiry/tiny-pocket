@@ -29,7 +29,9 @@ class _HomePageState extends State <HomePage> {
 		// Transaction (id: 't2', title: 'Weekly Groceries', amount: 20.99, date: DateTime.now ())
 	];
 
-  bool _showChart = true;
+  bool _showBarsChart = true;
+  bool _showHistoryChart = true;
+  bool _showExpensesChart = true;
 
   List <Transaction> get _recentTransactions {
     return _transactions.where((tx) {
@@ -113,17 +115,17 @@ class _HomePageState extends State <HomePage> {
           //     },)
           // ],),
 
-          // day chart
-          _showChart ? Container (
+          // bars chart
+          _showBarsChart ? Container (
             height: (mediaQuery.size.height - 
               // appBar.preferredSize.height -
               mediaQuery.padding.top) * 0.3,
             child: BarsChart (_recentTransactions),
           ) : Container (),
 
-          new ExpensesChart (),
+          this._showExpensesChart ? new ExpensesChart () : new Container(),
 
-          // new HistoryChart (),
+          this._showHistoryChart ? new HistoryChart () : new Container(),
 
           Container (
             height: (mediaQuery.size.height -
