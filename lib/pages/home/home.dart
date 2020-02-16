@@ -122,6 +122,8 @@ class _HomePageState extends State <HomePage> {
 
           new ExpensesChart (),
 
+          // new HistoryChart (),
+
           Container (
             height: (mediaQuery.size.height -
               // appBar.preferredSize.height -

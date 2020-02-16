@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 
 import 'package:pocket/pages/account.dart';
-import 'package:pocket/pages/home.dart';
+import 'package:pocket/pages/home/home.dart';
 // import 'package:magic/pages/about.dart';
 import 'package:pocket/pages/settings.dart';
 
