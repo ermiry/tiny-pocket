@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:pocket/sidebar/navigation_bloc.dart';
-import 'package:pocket/style/colors.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pocket/providers/transactions.dart';
@@ -16,6 +15,9 @@ import 'package:pocket/pages/home/charts/history.dart';
 
 import 'package:pocket/widgets/transactions/list.dart';
 import 'package:pocket/widgets/transactions/add.dart';
+
+import 'package:pocket/style/colors.dart';
+import 'package:pocket/style/style.dart';
 
 class HomePage extends StatefulWidget with NavigationStates {
 
@@ -57,14 +59,29 @@ class _HomePageState extends State <HomePage> {
 
               settings.showHistoryChart ? new HistoryChart () : new Container(),
 
-              SizedBox(height: mediaQuery.size.height * 0.05),
+              settings.displayedCharts > 0 ? new SizedBox(height: mediaQuery.size.height * 0.05) : new Container(),
 
-              // FIXME: set size based on the charts we are showing
+              Container(
+                height: mediaQuery.size.height * 0.1,
+                // padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Text(
+                      "Total Transactions",
+                      style: hoursPlayedLabelTextStyle,
+                    ),
+                    Text(
+                      "${Provider.of<Transactions>(context, listen: false).transactions.length}",
+                      style: hoursPlayedTextStyle,
+                    )
+                  ],
+                ),
+              ),
+
               Container (
-                height: (mediaQuery.size.height -
-                  // appBar.preferredSize.height -
-                  mediaQuery.padding.top) * 0.5,
-                child: TransactionList (),
+                height: mediaQuery.size.height * 0.9,
+                child: new TransactionList (),
                 // Expanded (child: TransactionList (_transactions, _deleteTransaction))
               )
             ]

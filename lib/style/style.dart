@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:pocket/style/colors.dart';
 
 const TextStyle hoursPlayedLabelTextStyle = const TextStyle(
-  fontSize: 16,
+  fontSize: 18,
   color: accountFirstColor,
   fontWeight: FontWeight.bold,
 );
 
 const TextStyle hoursPlayedTextStyle = const TextStyle(
-  fontSize: 28,
+  fontSize: 24,
   color: mainBlue,
   fontWeight: FontWeight.w800,
 );
