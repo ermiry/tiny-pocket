@@ -55,9 +55,6 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  assets:
-   - assets/img/waiting.png
-
   fonts:
     - family: OpenSans
       fonts:

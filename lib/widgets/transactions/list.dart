@@ -12,27 +12,19 @@ class TransactionList extends StatelessWidget {
 		return Container(
       child: Consumer <Transactions> (
         builder: (ctx, trans, _) {
-          return trans.transactions.isEmpty ? LayoutBuilder (builder: (ctx, constraints) {
-            return Column (children: <Widget>[
-              Text (
-                'No transactions yet added!',
-                style: Theme.of(context).textTheme.title,
-              ),
-
-              SizedBox (height: 10),
-
-              Container (
-                height: constraints.maxHeight * 0.6,
-                child: Image.asset (
-                  'assets/img/waiting.png', 
-                  fit: BoxFit.cover)
-              )
-            ],);
-          }) 
+          return trans.transactions.isEmpty ? Container(
+            padding: EdgeInsets.all(20),
+            child: Text (
+              'No transactions yet added!',
+              style: Theme.of(context).textTheme.title,
+              textAlign: TextAlign.center,
+            ),
+          )
 
           :
 
           ListView.builder (
+            itemCount: trans.transactions.length,
             itemBuilder: (ctx, idx) {
               return Card (
                 elevation: 5,
@@ -77,7 +69,6 @@ class TransactionList extends StatelessWidget {
                 )
               );
             },
-            itemCount: trans.transactions.length,
           );
         },
       )
