@@ -24,7 +24,7 @@ class TransactionList extends StatelessWidget {
           :
 
           ListView.builder (
-            itemCount: trans.transactions.length,
+            itemCount: trans.sortedTrans.length,
             itemBuilder: (ctx, idx) {
               return Card (
                 elevation: 5,
@@ -34,7 +34,7 @@ class TransactionList extends StatelessWidget {
                 ),
                 child: ListTile (
                   leading: Text (
-                    '\$${trans.transactions[idx].amount.toStringAsFixed (2)}', 
+                    '\$${trans.sortedTrans[idx].amount.toStringAsFixed (2)}', 
                     style: TextStyle (
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -42,7 +42,7 @@ class TransactionList extends StatelessWidget {
                     )
                   ),
                   title: Text (
-                    trans.transactions[idx].title,
+                    trans.sortedTrans[idx].title,
                     // style: TextStyle (
                     // 	fontSize: 18,
                     // 	fontWeight: FontWeight.bold
@@ -50,7 +50,7 @@ class TransactionList extends StatelessWidget {
                     style: Theme.of(context).textTheme.title,
                   ),
                   subtitle: Text (
-                    DateFormat ().format (trans.transactions[idx].date),
+                    DateFormat ().format (trans.sortedTrans[idx].date),
                     style: TextStyle (
                       color: Colors.grey
                     ),

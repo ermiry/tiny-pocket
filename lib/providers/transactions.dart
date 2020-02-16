@@ -23,6 +23,12 @@ class Transactions with ChangeNotifier {
 
   List <Transaction> get transactions { return [...this._transactions]; }
 
+  List <Transaction> get sortedTrans { 
+    List <Transaction> trans = [...this._transactions]; 
+    trans.sort((a, b) => b.date.compareTo(a.date));
+    return trans;
+  }
+
   void addTransaction(String title, double amount, DateTime date) {
 
     this._transactions.add(

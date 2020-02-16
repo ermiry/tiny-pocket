@@ -6,12 +6,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:pocket/sidebar/navigation_bloc.dart';
 import 'package:pocket/style/colors.dart';
 
-import 'package:pocket/widgets/transactions/list.dart';
-import 'package:pocket/widgets/transactions/add.dart';
+import 'package:provider/provider.dart';
+import 'package:pocket/providers/transactions.dart';
 
 import 'package:pocket/pages/home/charts/bars.dart';
 import 'package:pocket/pages/home/charts/expenses.dart';
 import 'package:pocket/pages/home/charts/history.dart';
+
+import 'package:pocket/widgets/transactions/list.dart';
+import 'package:pocket/widgets/transactions/add.dart';
 
 class HomePage extends StatefulWidget with NavigationStates {
 
@@ -76,13 +79,12 @@ class _HomePageState extends State <HomePage> {
 			floatingActionButton: Platform.isIOS ? Container () : FloatingActionButton (
         backgroundColor: mainBlue,
 				child: Icon (Icons.add),
-        // FIXME:
-				// onPressed: () {
-				// 	showModalBottomSheet (
-				// 		context: context, 
-				// 		builder: (bCtx) { return AddTransaction (_addTransaction); }
-				// 	);
-				// },
+				onPressed: () {
+					showModalBottomSheet (
+						context: context, 
+						builder: (bCtx) { return AddTransaction (Provider.of<Transactions>(context, listen: false).addTransaction); }
+					);
+				},
 			),
 		) :
     CupertinoPageScaffold (
