@@ -13,8 +13,6 @@ import 'package:pocket/pages/home/charts/bars.dart';
 import 'package:pocket/pages/home/charts/expenses.dart';
 import 'package:pocket/pages/home/charts/history.dart';
 
-import 'package:pocket/models/transaction.dart';
-
 class HomePage extends StatefulWidget with NavigationStates {
 
 	@override
@@ -24,114 +22,45 @@ class HomePage extends StatefulWidget with NavigationStates {
 
 class _HomePageState extends State <HomePage> {
 
-	final List <Transaction> _transactions = [
-		// Transaction (id: 't1', title: 'New Shoes', amount: 69.99, date: DateTime.now ()),
-		// Transaction (id: 't2', title: 'Weekly Groceries', amount: 20.99, date: DateTime.now ())
-	];
-
   bool _showBarsChart = true;
   bool _showHistoryChart = true;
   bool _showExpensesChart = true;
 
-  List <Transaction> get _recentTransactions {
-    return _transactions.where((tx) {
-      return tx.date.isAfter(DateTime.now().subtract(Duration (days: 7)));
-    }).toList();
-  }
-
-	void _addTransaction (String title, double amount, DateTime date) {
-
-		final newTx = Transaction (title: title, amount: amount, 
-			date: date, id: DateTime.now().toString());
-
-		setState(() {
-			_transactions.add(newTx);
-		});
-
-	}
-
-  void _deleteTransaction (String id) {
-
-    setState(() {
-      _transactions.removeWhere((tx) => tx.id == id);
-    });
-
-  }
+  // List <Transaction> get _recentTransactions {
+  //   return _transactions.where((tx) {
+  //     return tx.date.isAfter(DateTime.now().subtract(Duration (days: 7)));
+  //   }).toList();
+  // }
 
 	@override
 	Widget build(BuildContext context) {
 
     final mediaQuery = MediaQuery.of(context);
 
-    // final PreferredSizeWidget appBar = Platform.isAndroid ? AppBar (
-		// 		title: Text (
-    //       'Tiny Pocket',
-    //       // style: TextStyle (fontFamily: 'Open Sans'),
-    //       ),
-		// 		actions: <Widget>[
-		// 			IconButton (
-		// 				icon: Icon (Icons.add),
-		// 				onPressed: () {
-		// 					showModalBottomSheet (
-		// 						context: context, 
-		// 						builder: (bCtx) { return AddTransaction (_addTransaction); }
-		// 					);
-		// 				},
-		// 			)
-		// 		],
-		// 	)
-    //   : CupertinoNavigationBar (
-    //     middle: Text ('Tiny Pocket'),
-    //     trailing: Row (
-    //       mainAxisSize: MainAxisSize.min,
-    //       children: <Widget>[
-    //       GestureDetector (
-    //         child: Icon (CupertinoIcons.add),
-    //         onTap: () {
-    //           showModalBottomSheet (
-		// 						context: context, 
-		// 						builder: (bCtx) { return AddTransaction (_addTransaction); }
-		// 					);
-    //         },
-    //       )
-    //     ]),
-    //   );
-
-    final appBody = Container (
+    final body = Container (
       color: Colors.white,
       child: ListView (
 				children: <Widget>[
-          // Row (
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: <Widget>[
-          //   Text ('Show chart'),
-          //   Switch.adaptive (
-          //     // activeColor: Theme.of(context).accentColor,
-          //     value: _showChart,
-          //     onChanged: (val) { 
-          //       setState(() {
-          //         _showChart = val;
-          //       });
-          //     },)
-          // ],),
 
           // bars chart
-          _showBarsChart ? Container (
-            height: (mediaQuery.size.height - 
-              // appBar.preferredSize.height -
-              mediaQuery.padding.top) * 0.3,
-            child: BarsChart (_recentTransactions),
-          ) : Container (),
+          // _showBarsChart ? Container (
+          //   height: (mediaQuery.size.height - 
+          //     // appBar.preferredSize.height -
+          //     mediaQuery.padding.top) * 0.3,
+          //   child: BarsChart (_recentTransactions),
+          // ) : Container (),
 
           this._showExpensesChart ? new ExpensesChart () : new Container(),
 
           this._showHistoryChart ? new HistoryChart () : new Container(),
 
+          SizedBox(height: mediaQuery.size.height * 0.05),
+
           Container (
             height: (mediaQuery.size.height -
               // appBar.preferredSize.height -
-              mediaQuery.padding.top) * 0.7,
-            child: TransactionList (_transactions, _deleteTransaction),
+              mediaQuery.padding.top) * 0.5,
+            child: TransactionList (),
             // Expanded (child: TransactionList (_transactions, _deleteTransaction))
           )
         ]
@@ -140,24 +69,24 @@ class _HomePageState extends State <HomePage> {
 
 		return (Platform.isAndroid ? Scaffold (
       backgroundColor: mainBlue,
-			// appBar: appBar,
-			body: appBody,
+			body: body,
 
-			floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // TODO: set as an option
+			floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
 			floatingActionButton: Platform.isIOS ? Container () : FloatingActionButton (
         backgroundColor: mainBlue,
 				child: Icon (Icons.add),
-				onPressed: () {
-					showModalBottomSheet (
-						context: context, 
-						builder: (bCtx) { return AddTransaction (_addTransaction); }
-					);
-				},
+        // FIXME:
+				// onPressed: () {
+				// 	showModalBottomSheet (
+				// 		context: context, 
+				// 		builder: (bCtx) { return AddTransaction (_addTransaction); }
+				// 	);
+				// },
 			),
 		) :
     CupertinoPageScaffold (
-      // navigationBar: appBar,
-      child: appBody,
+      child: body,
     )
 		);
 
