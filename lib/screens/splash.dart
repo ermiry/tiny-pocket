@@ -3,48 +3,125 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-class SplashScreen extends StatefulWidget {
+import 'package:provider/provider.dart';
+import 'package:pocket/providers/transactions.dart';
+
+// class SplashScreen extends StatefulWidget {
   
+//   static const routeName = '/splash';
+
+//   @override
+//   _SplashScreenState createState() => _SplashScreenState();
+
+// }
+
+// class _SplashScreenState extends State <SplashScreen> {
+
+//   bool loading = false;
+
+//   @override
+//   void initState() {
+//     super.initState();
+
+//     new Timer (
+//       new Duration(seconds: 3),
+//       () {
+//         // go the home route
+//         Navigator.of(context).pop();
+//       }
+//     );
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+
+//     return Scaffold(
+//       backgroundColor: const Color.fromRGBO(245, 248, 253, 1),
+//       // backgroundColor: const Color.fromRGBO(47, 54, 64, 1),
+//       body: new Stack(
+//         fit: StackFit.expand,
+//         children: <Widget>[
+//           new Center(
+//             child: new Container(
+//               padding: const EdgeInsets.all(32),
+//               child: new Image.asset('assets/img/ermiry-512.png')
+//             )
+//           )
+//         ],
+//       )
+//     );
+//   }
+
+// }
+
+class SplashApp extends StatefulWidget {
+
   static const routeName = '/splash';
 
+  final VoidCallback onInitializationComplete;
+
+  const SplashApp({
+    Key key,
+    @required this.onInitializationComplete,
+  }) : super(key: key);
+
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  _SplashAppState createState() => _SplashAppState();
 
 }
 
-class _SplashScreenState extends State <SplashScreen> {
+class _SplashAppState extends State<SplashApp> {
+
+  bool _hasError = false;
 
   @override
   void initState() {
     super.initState();
+    _initializeAsyncDependencies();
+  }
 
-    new Timer (
-      new Duration(seconds: 3),
-      () {
-        // go the home route
-        Navigator.of(context).pop();
-      }
+  Future<void> _initializeAsyncDependencies() async {
+    // >>> initialize async dependencies <<<
+    // >>> register favorite dependency manager <<<
+    // >>> reap benefits <<<
+
+    // try {
+      await Provider.of<Transactions>(context, listen: false).loadTransactions();
+    // }
+
+    // catch (error) {
+    //   print('Error!');
+    // }
+
+    Future.delayed(
+      Duration(milliseconds: 500),
+      // () => widget.onInitializationComplete(),
+      () => Navigator.of(context).pop()
     );
   }
 
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(245, 248, 253, 1),
-      // backgroundColor: const Color.fromRGBO(47, 54, 64, 1),
-      body: new Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          new Center(
-            child: new Container(
-              padding: const EdgeInsets.all(32),
-              child: new Image.asset('assets/img/ermiry-512.png')
-            )
-          )
-        ],
-      )
+    return MaterialApp(
+      title: 'Splash Screen',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: _buildBody(),
     );
   }
 
+  Widget _buildBody() {
+    if (_hasError) {
+      return Center(
+        child: RaisedButton(
+          child: Text('retry'),
+          // onPressed: () => main(),
+        ),
+      );
+    }
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
 }
