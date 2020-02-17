@@ -29,9 +29,6 @@ class _AddTransactionState extends State <AddTransaction> {
     'amount': '',
   };
 
-	final _descriptionController = TextEditingController ();
-	final _amountController = TextEditingController ();
-
   DateTime _selectedDate;
 
   TransactionType _selectedType;
@@ -57,20 +54,50 @@ class _AddTransactionState extends State <AddTransaction> {
     });
   }
 
-  void _add() {
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context, 
+      builder: (ctx) => AlertDialog (
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))
+        ),
+        title: Text ('An error ocurred!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
+        content: Text (message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      )
+    );
+  }
+
+  bool _add() {
     if (this._formKey.currentState.validate()) {
       this._formKey.currentState.save();
       
-      // TODO: display error message
-      if (_selectedDate == null) return;
+      if (_selectedDate != null) {
+        if (this._selectedType != null) {
+          Provider.of<Transactions>(context, listen: false).addTransaction(
+            this._data['description'],
+            double.parse(this._data['amount']),
+            this._selectedDate,
+            this._selectedType
+          );
 
-      Provider.of<Transactions>(context, listen: false).addTransaction(
-        this._data['description'],
-        double.parse(this._data['amount']),
-        this._selectedDate,
-        this._selectedType
-      );
+          return true;  // success
+        }
+
+        else this._showErrorDialog('Transaction type is required!');
+      }
+
+      else this._showErrorDialog('Date is required!');
     }
+
+    return false;   // error
   }
 
 	@override
@@ -98,6 +125,8 @@ class _AddTransactionState extends State <AddTransaction> {
                   ),
 
                   child: new TextFormField(
+                    autofocus: false,
+                    maxLength: 64,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: "Description",
@@ -109,7 +138,7 @@ class _AddTransactionState extends State <AddTransaction> {
                       if (value.isEmpty) return 'A description is required!';
                       return null;
                     },
-                    textInputAction: TextInputAction.next,
+                    textInputAction: TextInputAction.done,
                     onFieldSubmitted: (value) {
                       FocusScope.of(context).requestFocus(
                         this._amountFocusNode
@@ -131,6 +160,7 @@ class _AddTransactionState extends State <AddTransaction> {
                   ),
 
                   child: new TextFormField(
+                    autofocus: false,
                     focusNode: this._amountFocusNode,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
@@ -192,8 +222,7 @@ class _AddTransactionState extends State <AddTransaction> {
                   child: Text ('Add', style: TextStyle (color: Colors.white),),
                   textColor: mainBlue,
                   onPressed: () {
-                    this._add();
-                    // Navigator.of (context).pop();
+                    if (this._add()) Navigator.of (context).pop();
                   } 
                 )
               ],),
