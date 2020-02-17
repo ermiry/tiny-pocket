@@ -129,7 +129,7 @@ class Transactions with ChangeNotifier {
 
   }
 
-  void addTransaction(String title, double amount, DateTime date, TransactionType type) {
+  Future <void> addTransaction(String title, double amount, DateTime date, TransactionType type) async {
 
     Transaction trans = Transaction (
       id: DateTime.now().toString(), 
@@ -149,7 +149,7 @@ class Transactions with ChangeNotifier {
 
     // save to local storage
     var repo = new FuturePreferencesRepository <Transaction> (new TransactionDesSer());
-    repo.save(trans);
+    await repo.save(trans);
 
     notifyListeners();
 
@@ -157,11 +157,11 @@ class Transactions with ChangeNotifier {
 
   void removeTransaction(String id) {
 
-    this._transactions.removeWhere((t) => t.id == id);
-
     // remove from local storage
     var repo = new FuturePreferencesRepository <Transaction> (new TransactionDesSer());
     repo.removeWhere((t) => t.id == id);
+
+    this._transactions.removeWhere((t) => t.id == id);
 
     notifyListeners();
 

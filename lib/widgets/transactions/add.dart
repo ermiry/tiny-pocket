@@ -75,20 +75,22 @@ class _AddTransactionState extends State <AddTransaction> {
     );
   }
 
-  bool _add() {
+  Future <void> _add() async {
     if (this._formKey.currentState.validate()) {
       this._formKey.currentState.save();
       
       if (_selectedDate != null) {
         if (this._selectedType != null) {
-          Provider.of<Transactions>(context, listen: false).addTransaction(
+          await Provider.of<Transactions>(context, listen: false).addTransaction(
             this._data['description'],
             double.parse(this._data['amount']),
             this._selectedDate,
             this._selectedType
           );
 
-          return true;  // success
+          // return true;  // success
+
+          Navigator.of(context).pop();
         }
 
         else this._showErrorDialog('Transaction type is required!');
@@ -97,7 +99,7 @@ class _AddTransactionState extends State <AddTransaction> {
       else this._showErrorDialog('Date is required!');
     }
 
-    return false;   // error
+    // return false;   // error
   }
 
 	@override
@@ -234,7 +236,7 @@ class _AddTransactionState extends State <AddTransaction> {
                     // enableFeedback: false,
                     // splashColor: Color.fromARGB(0, 0, 0, 0),
                     onPressed: () {
-                      if (this._add()) Navigator.of (context).pop();
+                      this._add();
                     },
                     elevation: 0,
                     textStyle: TextStyle(
