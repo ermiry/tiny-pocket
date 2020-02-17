@@ -105,153 +105,150 @@ class _AddTransactionState extends State <AddTransaction> {
 
 		return Consumer <Transactions> (
       builder: (ctx, trans, _) => SingleChildScrollView (
-        child: Card (
-          elevation: 5,
-          child: Container (
-            padding: EdgeInsets.only(
-              top: 10, 
-              left: 10, 
-              right: 10, 
-              bottom: MediaQuery.of(context).viewInsets.bottom + 10
-            ),
-            child: new Form(
-              key: this._formKey,
-              child: Column (children: <Widget>[
-                // description input
-                Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(
-                      color: Colors.grey
-                    ))
-                  ),
+        child: new Container (
+          padding: EdgeInsets.only(
+            top: 10, 
+            left: 10, 
+            right: 10, 
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10
+          ),
+          child: new Form(
+            key: this._formKey,
+            child: Column (children: <Widget>[
+              // description input
+              Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(
+                    color: Colors.grey
+                  ))
+                ),
 
-                  child: new TextFormField(
-                    autofocus: false,
-                    maxLength: 64,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "Description",
-                      // hintStyle: const TextStyle(color: Colors.grey)
-                      hintStyle: hoursPlayedLabelTextStyle
+                child: new TextFormField(
+                  autofocus: false,
+                  maxLength: 64,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Description",
+                    // hintStyle: const TextStyle(color: Colors.grey)
+                    hintStyle: hoursPlayedLabelTextStyle
+                  ),
+                  keyboardType: TextInputType.text,
+                  validator: (value) {
+                    if (value.isEmpty) return 'A description is required!';
+                    return null;
+                  },
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (value) {
+                    FocusScope.of(context).requestFocus(
+                      this._amountFocusNode
+                    );
+                  },
+                  onSaved: (value) {
+                    this._data['description'] = value;
+                  },
+                ),
+              ),
+
+              // amount input
+              Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(
+                    color: Colors.grey
+                  ))
+                ),
+
+                child: new TextFormField(
+                  autofocus: false,
+                  focusNode: this._amountFocusNode,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Amount",
+                    // hintStyle: const TextStyle(color: Colors.grey)
+                    hintStyle: hoursPlayedLabelTextStyle
+                  ),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value.isEmpty) return 'An amount is required!';
+                    if (double.parse(value) <= 0) return 'An amount is required!';
+                    return null;
+                  },
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (value) {
+                    // done
+                  },
+                  onSaved: (value) {
+                    this._data['amount'] = value;
+                  },
+                ),
+              ),
+
+              Container (
+                child: Row (
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text (
+                        _selectedDate == null ? 'No date chosen!'
+                        : '${DateFormat.yMMMd().format(_selectedDate)}',
+                        style: _selectedDate == null ? hoursPlayedLabelTextStyle : hoursPlayedTextStyle
+                      ),
                     ),
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-                      if (value.isEmpty) return 'A description is required!';
-                      return null;
-                    },
-                    textInputAction: TextInputAction.done,
-                    onFieldSubmitted: (value) {
-                      FocusScope.of(context).requestFocus(
-                        this._amountFocusNode
-                      );
-                    },
-                    onSaved: (value) {
-                      this._data['description'] = value;
-                    },
-                  ),
+                    AdaptiveFlatButton ('Choose Date', _chooseDate)
+                  ],
                 ),
+              ),
 
-                // amount input
-                Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(
-                      color: Colors.grey
-                    ))
-                  ),
-
-                  child: new TextFormField(
-                    autofocus: false,
-                    focusNode: this._amountFocusNode,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "Amount",
-                      // hintStyle: const TextStyle(color: Colors.grey)
-                      hintStyle: hoursPlayedLabelTextStyle
+              Container (
+                child: Row (
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container (
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text ('Choose a type:', style: hoursPlayedLabelTextStyle),
                     ),
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value.isEmpty) return 'An amount is required!';
-                      if (double.parse(value) <= 0) return 'An amount is required!';
-                      return null;
-                    },
-                    textInputAction: TextInputAction.done,
-                    onFieldSubmitted: (value) {
-                      // done
-                    },
-                    onSaved: (value) {
-                      this._data['amount'] = value;
-                    },
-                  ),
-                ),
-
-                Container (
-                  child: Row (
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text (
-                          _selectedDate == null ? 'No date chosen!'
-                          : '${DateFormat.yMMMd().format(_selectedDate)}',
-                          style: _selectedDate == null ? hoursPlayedLabelTextStyle : hoursPlayedTextStyle
-                        ),
-                      ),
-                      AdaptiveFlatButton ('Choose Date', _chooseDate)
-                    ],
-                  ),
-                ),
-
-                Container (
-                  child: Row (
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container (
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text ('Choose a type:', style: hoursPlayedLabelTextStyle),
-                      ),
-                      // AdaptiveFlatButton ('Choose Date', _chooseDate)
-                      new DropdownButton(
-                        value: this._selectedType,
-                        items: trans.buildDropdownMenuItems(),
-                        onChanged: this._onChangeDropdownItem,
-                      ),
-                    ],
-                  ),
-                ),
-                
-                const SizedBox(height: 20),
-
-                new Container(
-                  height: 50,
-                  margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.3),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    // color: mainDarkBlue
-                    color: mainBlue
-                  ),
-                  child: Center(
-                    child: RawMaterialButton(
-                      // enableFeedback: false,
-                      // splashColor: Color.fromARGB(0, 0, 0, 0),
-                      onPressed: () {
-                        if (this._add()) Navigator.of (context).pop();
-                      },
-                      elevation: 0,
-                      textStyle: TextStyle(
-                        color: Colors.white,
-                        // fontSize: 18,
-                        fontWeight: FontWeight.w800
-                      ),
-                      child: Text("Add!"),
+                    // AdaptiveFlatButton ('Choose Date', _chooseDate)
+                    new DropdownButton(
+                      value: this._selectedType,
+                      items: trans.buildDropdownMenuItems(),
+                      onChanged: this._onChangeDropdownItem,
                     ),
+                  ],
+                ),
+              ),
+              
+              const SizedBox(height: 20),
+
+              new Container(
+                height: 50,
+                margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.3),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  // color: mainDarkBlue
+                  color: mainBlue
+                ),
+                child: Center(
+                  child: RawMaterialButton(
+                    // enableFeedback: false,
+                    // splashColor: Color.fromARGB(0, 0, 0, 0),
+                    onPressed: () {
+                      if (this._add()) Navigator.of (context).pop();
+                    },
+                    elevation: 0,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                      // fontSize: 18,
+                      fontWeight: FontWeight.w800
+                    ),
+                    child: Text("Add!"),
                   ),
                 ),
+              ),
 
-                const SizedBox(height: 10),
-              ],),
-            ),
+              const SizedBox(height: 10),
+            ],),
           ),
         ),
       )
