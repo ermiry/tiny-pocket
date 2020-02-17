@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'package:pocket/style/colors.dart';
+import 'package:pocket/style/style.dart';
+
 class AdaptiveFlatButton extends StatelessWidget {
 
   final String text;
@@ -14,10 +17,13 @@ class AdaptiveFlatButton extends StatelessWidget {
   Widget build (BuildContext context) {
 
     return Platform.isAndroid ? FlatButton (
-      textColor: Theme.of(context).primaryColor,
       child: Text (
         this.text,
-        style: TextStyle (fontWeight: FontWeight.bold)
+        style: const TextStyle(
+          fontSize: 18,
+          color: mainBlue,
+          fontWeight: FontWeight.bold,
+        )
         ),
       onPressed: this.handler
     ) :
