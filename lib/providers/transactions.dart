@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 
 import 'package:pocket/models/transaction.dart';
 
+import 'package:pref_dessert/pref_dessert.dart';
+
 class TransactionType {
 
 	String id;
@@ -78,13 +80,13 @@ class Transactions with ChangeNotifier {
     return items;
   }
 
-  final List <Transaction> _transactions = [
-		Transaction (id: 't1', title: 'New Shoes', amount: 69.99, date: DateTime.now (), type: 3),
-		Transaction (id: 't2', title: 'Weekly Groceries', amount: 20.99, date: DateTime.now (), type: 0),
-    Transaction (id: 't3', title: 'Dinner', amount: 69.99, date: DateTime.now (), type: 0),
-		Transaction (id: 't4', title: 'Metro', amount: 20.99, date: DateTime.now (), type: 1),
-    Transaction (id: 't5', title: 'New work book', amount: 69.99, date: DateTime.now (), type: 2),
-		Transaction (id: 't6', title: 'Icecream', amount: 20.99, date: DateTime.now (), type: 0)
+  List <Transaction> _transactions = [
+		// Transaction (id: 't1', title: 'New Shoes', amount: 69.99, date: DateTime.now (), type: 3),
+		// Transaction (id: 't2', title: 'Weekly Groceries', amount: 20.99, date: DateTime.now (), type: 0),
+    // Transaction (id: 't3', title: 'Dinner', amount: 69.99, date: DateTime.now (), type: 0),
+		// Transaction (id: 't4', title: 'Metro', amount: 20.99, date: DateTime.now (), type: 1),
+    // Transaction (id: 't5', title: 'New work book', amount: 69.99, date: DateTime.now (), type: 2),
+		// Transaction (id: 't6', title: 'Icecream', amount: 20.99, date: DateTime.now (), type: 0)
 	];
 
   List <Transaction> get transactions { return [...this._transactions]; }
@@ -110,6 +112,23 @@ class Transactions with ChangeNotifier {
     return total;
   }
 
+  Future <void> loadTransactions() async {
+
+    // load from local storage
+    try {
+      var repo = new FuturePreferencesRepository <Transaction> (new TransactionDesSer());
+      var list = await repo.findAll();
+      this._transactions = list;
+    }
+
+    catch (error) {
+      print('Failed to load transactions from local storage!');
+    }
+
+    notifyListeners();
+
+  }
+
   void addTransaction(String title, double amount, DateTime date, TransactionType type) {
 
     Transaction trans = Transaction (
@@ -125,8 +144,12 @@ class Transactions with ChangeNotifier {
       trans
     );
 
-    String json = jsonEncode(trans);
-    print(json);
+    // String json = jsonEncode(trans);
+    // print(json);
+
+    // save to local storage
+    var repo = new FuturePreferencesRepository <Transaction> (new TransactionDesSer());
+    repo.save(trans);
 
     notifyListeners();
 
@@ -135,6 +158,11 @@ class Transactions with ChangeNotifier {
   void removeTransaction(String id) {
 
     this._transactions.removeWhere((t) => t.id == id);
+
+    // remove from local storage
+    var repo = new FuturePreferencesRepository <Transaction> (new TransactionDesSer());
+    repo.removeWhere((t) => t.id == id);
+
     notifyListeners();
 
   }

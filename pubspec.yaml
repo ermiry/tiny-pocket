@@ -32,6 +32,7 @@ dependencies:
   page_transition: ^1.1.4
   flutter_bloc: ^2.1.1
   fl_chart: ^0.6.3
+  pref_dessert: ^0.5.1
 
 dev_dependencies:
   flutter_test:

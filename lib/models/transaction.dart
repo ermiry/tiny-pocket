@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+
+import 'package:pref_dessert/pref_dessert.dart';
 
 class Transaction {
 
@@ -34,5 +38,30 @@ class Transaction {
 
     'type': this.type
   };
+
+}
+
+class TransactionDesSer extends DesSer <Transaction> {
+
+  @override
+  String get key => "PREF_TRANS";
+
+  @override
+  Transaction deserialize(String s) {
+    var map = json.decode(s);
+    return new Transaction(
+      id: map['id'] as String,
+      title: map['title'] as String, 
+      amount: map['amount'] as double,
+      date: DateTime.parse(map['date'] as String),
+
+      type: map['type'] as int
+    );
+  }
+
+  @override
+  String serialize(Transaction t) {
+    return json.encode(t);
+  }
 
 }
