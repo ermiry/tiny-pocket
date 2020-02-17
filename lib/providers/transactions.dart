@@ -95,14 +95,16 @@ class Transactions with ChangeNotifier {
     return ((value * 100) / total);
   }
 
-  void addTransaction(String title, double amount, DateTime date) {
+  void addTransaction(String title, double amount, DateTime date, TransactionType type) {
 
     this._transactions.add(
       new Transaction (
         id: DateTime.now().toString(), 
         title:  title, 
         amount: amount, 
-        date: date
+        date: date,
+
+        type: type.type
       )
     );
 

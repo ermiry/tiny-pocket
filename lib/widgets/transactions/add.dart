@@ -10,10 +10,6 @@ import 'package:pocket/widgets/adaptive/flatButton.dart';
 
 class AddTransaction extends StatefulWidget {
 
-	final Function addTransaction;
-
-	AddTransaction (this.addTransaction);
-
   @override
   _AddTransactionState createState() => _AddTransactionState ();
 
@@ -106,6 +102,7 @@ class _AddTransactionState extends State <AddTransaction> {
               ),
             ),
             
+            // FIXME: add input validation
             RaisedButton (
               color: Theme.of(context).primaryColor,
               textTheme: ButtonTextTheme.accent,
@@ -119,10 +116,11 @@ class _AddTransactionState extends State <AddTransaction> {
 
                 if (title.isEmpty || amount <= 0 || _selectedDate == null) return;
 
-                widget.addTransaction(
+                trans.addTransaction(
                   title,
                   amount,
-                  _selectedDate
+                  this._selectedDate,
+                  this._selectedType
                 );
 
                 Navigator.of (context).pop();

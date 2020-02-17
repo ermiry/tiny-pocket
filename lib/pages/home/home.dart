@@ -100,7 +100,7 @@ class _HomePageState extends State <HomePage> {
 				onPressed: () {
 					showModalBottomSheet (
 						context: context, 
-						builder: (bCtx) { return AddTransaction (Provider.of<Transactions>(context, listen: false).addTransaction); }
+						builder: (bCtx) => AddTransaction ()
 					);
 				},
 			),
