@@ -109,13 +109,15 @@ class _AddTransactionState extends State <AddTransaction> {
           elevation: 5,
           child: Container (
             padding: EdgeInsets.only(
-            top: 10, 
-            left: 10, 
-            right: 10, 
-            bottom: MediaQuery.of(context).viewInsets.bottom + 10),
+              top: 10, 
+              left: 10, 
+              right: 10, 
+              bottom: MediaQuery.of(context).viewInsets.bottom + 10
+            ),
             child: new Form(
               key: this._formKey,
               child: Column (children: <Widget>[
+                // description input
                 Container(
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
@@ -185,25 +187,28 @@ class _AddTransactionState extends State <AddTransaction> {
                 ),
 
                 Container (
-                  // height: 70,
-                  child: Row (children: <Widget>[
-                    Expanded (
-                      child: Text (
-                        _selectedDate == null ? 'No date chosen!'
-                        : '${DateFormat.yMMMd().format(_selectedDate)}',
-                        style: _selectedDate == null ? hoursPlayedLabelTextStyle : hoursPlayedTextStyle
+                  child: Row (
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Text (
+                          _selectedDate == null ? 'No date chosen!'
+                          : '${DateFormat.yMMMd().format(_selectedDate)}',
+                          style: _selectedDate == null ? hoursPlayedLabelTextStyle : hoursPlayedTextStyle
+                        ),
                       ),
-                    ),
-                    AdaptiveFlatButton ('Choose Date', _chooseDate)
-                  ],),
+                      AdaptiveFlatButton ('Choose Date', _chooseDate)
+                    ],
+                  ),
                 ),
 
                 Container (
-                  // height: 70,
                   child: Row (
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Expanded (
+                      Container (
+                        padding: EdgeInsets.only(left: 10),
                         child: Text ('Choose a type:', style: hoursPlayedLabelTextStyle),
                       ),
                       // AdaptiveFlatButton ('Choose Date', _chooseDate)
@@ -216,15 +221,35 @@ class _AddTransactionState extends State <AddTransaction> {
                   ),
                 ),
                 
-                RaisedButton (
-                  color: mainBlue,
-                  // textTheme: ButtonTextTheme.accent,
-                  child: Text ('Add', style: TextStyle (color: Colors.white),),
-                  textColor: mainBlue,
-                  onPressed: () {
-                    if (this._add()) Navigator.of (context).pop();
-                  } 
-                )
+                const SizedBox(height: 20),
+
+                new Container(
+                  height: 50,
+                  margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.3),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    // color: mainDarkBlue
+                    color: mainBlue
+                  ),
+                  child: Center(
+                    child: RawMaterialButton(
+                      // enableFeedback: false,
+                      // splashColor: Color.fromARGB(0, 0, 0, 0),
+                      onPressed: () {
+                        if (this._add()) Navigator.of (context).pop();
+                      },
+                      elevation: 0,
+                      textStyle: TextStyle(
+                        color: Colors.white,
+                        // fontSize: 18,
+                        fontWeight: FontWeight.w800
+                      ),
+                      child: Text("Add!"),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 10),
               ],),
             ),
           ),
