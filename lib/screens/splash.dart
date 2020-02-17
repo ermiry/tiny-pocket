@@ -6,23 +6,23 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pocket/providers/transactions.dart';
 
-class SplashApp extends StatefulWidget {
+class SplashScreen extends StatefulWidget {
 
   static const routeName = '/splash';
 
-  final VoidCallback onInitializationComplete;
+  // final VoidCallback onInitializationComplete;
 
-  const SplashApp({
+  const SplashScreen({
     Key key,
-    @required this.onInitializationComplete,
+    // @required this.onInitializationComplete,
   }) : super(key: key);
 
   @override
-  _SplashAppState createState() => _SplashAppState();
+  _SplashScreenState createState() => _SplashScreenState();
 
 }
 
-class _SplashAppState extends State<SplashApp> {
+class _SplashScreenState extends State<SplashScreen> {
 
   // bool _hasError = false;
 
