@@ -65,10 +65,6 @@ class _ExpensesChartState extends State <ExpensesChart> {
 
   List <PieChartSectionData> showingSections() {
     return List.generate(Provider.of<Transactions>(context, listen: true).transTypes.length, (i) {
-      final isTouched = i == touchedIndex;
-      final double fontSize = isTouched ? 25 : 16;
-      final double radius = isTouched ? 60 : 50;
-      
       TransactionType transType = Provider.of<Transactions>(context, listen: true).transTypes.elementAt(i);
       double value = Provider.of<Transactions>(context, listen: true).getTransTypePercentage(transType.type);
 
@@ -76,8 +72,8 @@ class _ExpensesChartState extends State <ExpensesChart> {
         color: transType.color,
         value: value,
         title: '${value.toStringAsFixed (2)}%',
-        radius: radius,
-        titleStyle: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
+        radius: 50,
+        titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
       );
     });
   }
@@ -102,16 +98,6 @@ class _ExpensesChartState extends State <ExpensesChart> {
                     aspectRatio: 1,
                     child: PieChart(
                       PieChartData(
-                        pieTouchData: PieTouchData(touchCallback: (pieTouchResponse) {
-                          setState(() {
-                            if (pieTouchResponse.touchInput is FlLongPressEnd ||
-                                pieTouchResponse.touchInput is FlPanEnd) {
-                              touchedIndex = -1;
-                            } else {
-                              touchedIndex = pieTouchResponse.touchedSectionIndex;
-                            }
-                          });
-                        }),
                         borderData: FlBorderData(
                           show: false,
                         ),
