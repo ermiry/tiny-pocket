@@ -1,6 +1,10 @@
+import 'package:intl/intl.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
+
+import 'package:provider/provider.dart';
+import 'package:pocket/providers/transactions.dart';
 
 import 'package:pocket/widgets/adaptive/flatButton.dart';
 
@@ -22,45 +26,53 @@ class _AddTransactionState extends State <AddTransaction> {
 
   DateTime _selectedDate;
 
-  void _chooseDate () {
+  TransactionType _selectedType;
+
+  void _chooseDate() {
     showDatePicker (
-          context: context,
-          initialDate: DateTime.now(),
-          firstDate: DateTime (2019),
-          lastDate: DateTime.now()
-        ).then((pickedDate) {
-          if (pickedDate != null) {
-            setState(() {
-              _selectedDate = pickedDate;
-            });
-          } 
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime (2019),
+      lastDate: DateTime.now()
+    ).then((pickedDate) {
+      if (pickedDate != null) {
+        setState(() {
+          _selectedDate = pickedDate;
         });
+      } 
+    });
+  }
+
+  void _onChangeDropdownItem(TransactionType type) {
+    setState(() {
+      this._selectedType = type;
+    });
   }
 
 	@override
-	Widget build (BuildContext context) {
+	Widget build(BuildContext context) {
 
-    // TODO: maybe add an improved modal bottom sheet dialog, see custom widget snippet (125)
-		return SingleChildScrollView (
-		  child: Card (
-		  		elevation: 5,
-		  		child: Container (
-		  			padding: EdgeInsets.only(
+		return Consumer <Transactions> (
+      builder: (ctx, trans, _) => SingleChildScrollView (
+        child: Card (
+          elevation: 5,
+          child: Container (
+            padding: EdgeInsets.only(
             top: 10, 
             left: 10, 
             right: 10, 
             bottom: MediaQuery.of(context).viewInsets.bottom + 10),
-		  			child: Column (children: <Widget>[
+            child: Column (children: <Widget>[
             TextField (
-		  					decoration: InputDecoration (labelText: 'Title'),
-		  					// onChanged: (val) => titleInput = val,
-		  					controller: _titleController,
+                decoration: InputDecoration (labelText: 'Title'),
+                // onChanged: (val) => titleInput = val,
+                controller: _titleController,
             ),
             TextField (
-		  					decoration: InputDecoration (labelText: 'Amount'),
-		  					// onChanged: (val) => amountInput = val,
-		  					controller: _amountController,
-		  					keyboardType: TextInputType.number,
+                decoration: InputDecoration (labelText: 'Amount'),
+                // onChanged: (val) => amountInput = val,
+                controller: _amountController,
+                keyboardType: TextInputType.number,
             ),
 
             Container (
@@ -75,13 +87,31 @@ class _AddTransactionState extends State <AddTransaction> {
                 AdaptiveFlatButton ('Choose Date', _chooseDate)
               ],),
             ),
+
+            Container (
+              height: 70,
+              child: Row (
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Expanded (
+                    child: Text ('Choose a type:'),
+                  ),
+                  // AdaptiveFlatButton ('Choose Date', _chooseDate)
+                  new DropdownButton(
+                    value: this._selectedType,
+                    items: trans.buildDropdownMenuItems(),
+                    onChanged: this._onChangeDropdownItem,
+                  ),
+                ],
+              ),
+            ),
             
             RaisedButton (
               color: Theme.of(context).primaryColor,
               textTheme: ButtonTextTheme.accent,
-		  					child: Text ('Add'),
-		  					textColor: Theme.of(context).textTheme.button.color,
-		  					onPressed: () {
+                child: Text ('Add'),
+                textColor: Theme.of(context).textTheme.button.color,
+                onPressed: () {
                 if (_amountController.text.isEmpty) return;
 
                 final title = _titleController.text;
@@ -89,19 +119,20 @@ class _AddTransactionState extends State <AddTransaction> {
 
                 if (title.isEmpty || amount <= 0 || _selectedDate == null) return;
 
-                widget.addTransaction (
+                widget.addTransaction(
                   title,
                   amount,
                   _selectedDate
-		  						);
+                );
 
                 Navigator.of (context).pop();
               } 
             )
-		  			],),
-		  		),
-		  	),
-		);
+            ],),
+          ),
+        ),
+      )
+    );
 
 	}
 }
