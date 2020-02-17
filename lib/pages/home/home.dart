@@ -70,7 +70,7 @@ class _HomePageState extends State <HomePage> {
                       style: hoursPlayedLabelTextStyle,
                     ),
                     Text(
-                      "${Provider.of<Transactions>(context, listen: false).transactions.length}",
+                      "${Provider.of<Transactions>(context, listen: true).transactions.length}",
                       style: hoursPlayedTextStyle,
                     )
                   ],
