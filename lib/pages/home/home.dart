@@ -59,8 +59,6 @@ class _HomePageState extends State <HomePage> {
 
               settings.showHistoryChart ? new HistoryChart () : new Container(),
 
-              settings.displayedCharts > 0 ? new SizedBox(height: mediaQuery.size.height * 0.05) : new Container(),
-
               Container(
                 height: mediaQuery.size.height * 0.1,
                 // padding: const EdgeInsets.symmetric(horizontal: 20),
