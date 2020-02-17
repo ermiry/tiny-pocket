@@ -8,6 +8,7 @@ import 'package:pocket/providers/auth.dart';
 import 'package:pocket/providers/transactions.dart';
 import 'package:pocket/providers/settings.dart';
 
+import 'package:pocket/screens/splash.dart';
 import 'package:pocket/screens/auth.dart';
 import 'package:pocket/screens/loading.dart';
 import 'package:pocket/sidebar/sidebar_layout.dart';
@@ -54,6 +55,7 @@ class TinyPocket extends StatelessWidget {
               )
             )
           ),
+          initialRoute: '/splash',
           home: auth.isAuth ? new SideBarLayout () :
             FutureBuilder(
               future: auth.tryAutoLogin(),
@@ -61,6 +63,10 @@ class TinyPocket extends StatelessWidget {
                 authResultSnapshot.connectionState == ConnectionState.waiting ?
                   new LoadingScreen () : new AuthScreen (),
             ),
+          routes: {
+            '/splash': (ctx) => new SplashScreen (),
+          },
+
           debugShowCheckedModeBanner: true,
         )
 
