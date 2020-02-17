@@ -64,13 +64,13 @@ class _ExpensesChartState extends State <ExpensesChart> {
   int touchedIndex;
 
   List <PieChartSectionData> showingSections() {
-    return List.generate(Provider.of<Transactions>(context, listen: false).transTypes.length, (i) {
+    return List.generate(Provider.of<Transactions>(context, listen: true).transTypes.length, (i) {
       final isTouched = i == touchedIndex;
       final double fontSize = isTouched ? 25 : 16;
       final double radius = isTouched ? 60 : 50;
       
-      TransactionType transType = Provider.of<Transactions>(context, listen: false).transTypes.elementAt(i);
-      double value = Provider.of<Transactions>(context, listen: false).getTransTypePercentage(transType.type);
+      TransactionType transType = Provider.of<Transactions>(context, listen: true).transTypes.elementAt(i);
+      double value = Provider.of<Transactions>(context, listen: true).getTransTypePercentage(transType.type);
 
       return PieChartSectionData(
         color: transType.color,
@@ -97,7 +97,6 @@ class _ExpensesChartState extends State <ExpensesChart> {
               // mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 // const SizedBox(height: 10),
-
                 Expanded(
                   child: AspectRatio(
                     aspectRatio: 1,
