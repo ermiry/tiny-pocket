@@ -57,6 +57,22 @@ class _AddTransactionState extends State <AddTransaction> {
     });
   }
 
+  void _add() {
+    if (this._formKey.currentState.validate()) {
+      this._formKey.currentState.save();
+      
+      // TODO: display error message
+      if (_selectedDate == null) return;
+
+      Provider.of<Transactions>(context, listen: false).addTransaction(
+        this._data['description'],
+        double.parse(this._data['amount']),
+        this._selectedDate,
+        this._selectedType
+      );
+    }
+  }
+
 	@override
 	Widget build(BuildContext context) {
 
@@ -71,6 +87,7 @@ class _AddTransactionState extends State <AddTransaction> {
             right: 10, 
             bottom: MediaQuery.of(context).viewInsets.bottom + 10),
             child: new Form(
+              key: this._formKey,
               child: Column (children: <Widget>[
                 Container(
                   padding: EdgeInsets.all(10),
@@ -123,8 +140,8 @@ class _AddTransactionState extends State <AddTransaction> {
                     ),
                     keyboardType: TextInputType.number,
                     validator: (value) {
-                      final amount = double.parse(value);
-                      if (value.isEmpty || amount <= 0) return 'An amount is required!';
+                      if (value.isEmpty) return 'An amount is required!';
+                      if (double.parse(value) <= 0) return 'An amount is required!';
                       return null;
                     },
                     textInputAction: TextInputAction.done,
@@ -175,21 +192,8 @@ class _AddTransactionState extends State <AddTransaction> {
                   child: Text ('Add', style: TextStyle (color: Colors.white),),
                   textColor: mainBlue,
                   onPressed: () {
-                    if (_amountController.text.isEmpty) return;
-
-                    final title = _descriptionController.text;
-                    final amount = double.parse(_amountController.text);
-
-                    if (title.isEmpty || amount <= 0 || _selectedDate == null) return;
-
-                    trans.addTransaction(
-                      title,
-                      amount,
-                      this._selectedDate,
-                      this._selectedType
-                    );
-
-                    Navigator.of (context).pop();
+                    this._add();
+                    // Navigator.of (context).pop();
                   } 
                 )
               ],),
