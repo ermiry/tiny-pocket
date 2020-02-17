@@ -60,25 +60,37 @@ class _HomePageState extends State <HomePage> {
               settings.showHistoryChart ? new HistoryChart () : new Container(),
 
               Container(
-                height: mediaQuery.size.height * 0.1,
-                // padding: const EdgeInsets.symmetric(horizontal: 20),
+                height: mediaQuery.size.height * 0.12,
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Text(
-                      "Total Transactions",
+                      "Total: ",
+                      style: hoursPlayedLabelTextStyle,
+                    ),
+                    Text(
+                      "\$${Provider.of<Transactions>(context, listen: true).getTotal}",
+                      style: hoursPlayedTextStyle,
+                    ),
+                    Text(
+                      "from",
                       style: hoursPlayedLabelTextStyle,
                     ),
                     Text(
                       "${Provider.of<Transactions>(context, listen: true).transactions.length}",
                       style: hoursPlayedTextStyle,
-                    )
+                    ),
+                    Text(
+                      "transactions",
+                      style: hoursPlayedLabelTextStyle,
+                    ),
                   ],
                 ),
               ),
 
               Container (
-                height: mediaQuery.size.height * 0.9,
+                height: mediaQuery.size.height * 0.88,
                 child: new TransactionList (),
                 // Expanded (child: TransactionList (_transactions, _deleteTransaction))
               )

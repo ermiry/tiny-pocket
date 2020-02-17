@@ -52,6 +52,17 @@ class Transactions with ChangeNotifier {
     return this._transTypes.firstWhere((t) => t.type == type);
   }
 
+  double getTransTypePercentage(int type) {
+    double total = 0;
+    double value = 0;
+    this._transactions.forEach((trans) {
+      total += trans.amount;
+      if (trans.type == type) value += trans.amount;
+    });
+
+    return (total == 0 ? 1 : (value * 100) / total);
+  }
+
   List <DropdownMenuItem <TransactionType>> buildDropdownMenuItems() {
     List <DropdownMenuItem <TransactionType>> items = List();
     for (TransactionType trans in this._transTypes) {
@@ -88,15 +99,13 @@ class Transactions with ChangeNotifier {
     }).toList();
   }
 
-  double getTransTypePercentage(int type) {
+  double get getTotal {
     double total = 0;
-    double value = 0;
     this._transactions.forEach((trans) {
       total += trans.amount;
-      if (trans.type == type) value += trans.amount;
     });
 
-    return (total == 0 ? 1 : (value * 100) / total);
+    return total;
   }
 
   void addTransaction(String title, double amount, DateTime date, TransactionType type) {
