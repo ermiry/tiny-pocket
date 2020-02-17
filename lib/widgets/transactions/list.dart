@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pocket/style/colors.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pocket/providers/transactions.dart';
@@ -66,10 +67,11 @@ class TransactionList extends StatelessWidget {
                   padding: EdgeInsets.only(right: 20),
                 ),
                 child: Card (
+                  color: trans.getTransType(sortedTrans[idx].type).color,
                   elevation: 5,
                   margin: EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 5
+                    vertical: 4,
+                    horizontal: 4
                   ),
                   child: ListTile (
                     leading: Text (
@@ -77,21 +79,26 @@ class TransactionList extends StatelessWidget {
                       style: TextStyle (
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        color: Theme.of(context).primaryColor
+                        // color: trans.getTransType(sortedTrans[idx].type).color
+                        color: Colors.white
                       )
                     ),
                     title: Text (
                       sortedTrans[idx].title,
-                      // style: TextStyle (
-                      // 	fontSize: 18,
-                      // 	fontWeight: FontWeight.bold
-                      // ),
-                      style: Theme.of(context).textTheme.title,
+                      style: TextStyle (
+                      	fontSize: 18,
+                      	fontWeight: FontWeight.bold,
+                        // color: trans.getTransType(sortedTrans[idx].type).color
+                        color: Colors.white
+                      ),
+                      // style: Theme.of(context).textTheme.title,
                     ),
                     subtitle: Text (
                       DateFormat ().format (sortedTrans[idx].date),
                       style: TextStyle (
-                        color: Colors.grey
+                        color: Colors.white70,
+                        fontSize: 14
+                        // color: Colors.white
                       ),
                     ),
                   )
