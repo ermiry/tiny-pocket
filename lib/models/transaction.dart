@@ -7,11 +7,15 @@ class Transaction {
 	double amount;
 	DateTime date;
 
+  int type;
+
 	Transaction ({
 		@required this.id, 
 		@required this.title, 
 		@required this.amount, 
-		@required this.date
+		@required this.date,
+
+    @required this.type
 	});
 
 }
