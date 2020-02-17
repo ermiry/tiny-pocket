@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -110,16 +112,21 @@ class Transactions with ChangeNotifier {
 
   void addTransaction(String title, double amount, DateTime date, TransactionType type) {
 
-    this._transactions.add(
-      new Transaction (
-        id: DateTime.now().toString(), 
-        title:  title, 
-        amount: amount, 
-        date: date,
+    Transaction trans = Transaction (
+      id: DateTime.now().toString(), 
+      title:  title, 
+      amount: amount, 
+      date: date,
 
-        type: type.type
-      )
+      type: type.type
     );
+
+    this._transactions.add(
+      trans
+    );
+
+    String json = jsonEncode(trans);
+    print(json);
 
     notifyListeners();
 
