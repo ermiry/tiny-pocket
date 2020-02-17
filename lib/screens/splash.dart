@@ -7,31 +7,6 @@ class SplashScreen extends StatefulWidget {
   
   static const routeName = '/splash';
 
-  final int seconds = 3;
-  final Color backgroundColor = Colors.white;
-  // final Gradient gradientBackground;
-
-  final Image image = new Image.asset('assets/img/ermiry-512.png');
-  final double imageSize = 512;
-
-  // final Text title;
-  // final Text loadingText;
-
-  // final dynamic navigateAfterSeconds;
-
-  // SplashScreen (
-  //   {
-  //     @required this.seconds,
-  //     this.backgroundColor = Colors.white,
-  //     this.gradientBackground,
-  //     this.image,
-  //     this.imageSize,
-  //     this.title = const Text(''),
-  //     this.loadingText  = const Text(""),
-  //     this.navigateAfterSeconds,
-  //   }
-  // );
-
   @override
   _SplashScreenState createState() => _SplashScreenState();
 
@@ -44,7 +19,7 @@ class _SplashScreenState extends State <SplashScreen> {
     super.initState();
 
     new Timer (
-      new Duration(seconds: widget.seconds),
+      new Duration(seconds: 3),
       () {
         // go the home route
         Navigator.of(context).pop();
@@ -56,46 +31,17 @@ class _SplashScreenState extends State <SplashScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(245, 248, 253, 1),
+      // backgroundColor: const Color.fromRGBO(47, 54, 64, 1),
       body: new Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          new Container(
-            decoration: new BoxDecoration(
-              // gradient: widget.gradientBackground,
-              color: widget.backgroundColor,
-            ),
-          ),
-
           new Center(
-            child: widget.image
+            child: new Container(
+              padding: const EdgeInsets.all(32),
+              child: new Image.asset('assets/img/ermiry-512.png')
+            )
           )
-
-          // new Column(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   children: <Widget>[
-          //     new Expanded(
-          //       flex: 2,
-          //       child: new Container(
-          //         child: new Column(
-          //           mainAxisAlignment: MainAxisAlignment.center,
-          //           children: <Widget>[
-          //             new CircleAvatar(
-          //               backgroundColor: Colors.transparent,
-          //               child: new Container(
-          //                 child: widget.image
-          //               ),
-          //               // radius: widget.imageSize,
-          //             ),
-          //             new Padding(
-          //               padding: const EdgeInsets.only(top: 35.0),
-          //             ),
-          //             // widget.title
-          //           ],
-          //         )
-          //       ),
-          //     ),
-          //   ],
-          // ),
         ],
       )
     );
