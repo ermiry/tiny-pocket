@@ -69,6 +69,7 @@ class _AuthScreenState extends State <AuthScreen> {
       this._formKey.currentState.save();
       
       try {
+        this.setState(() => this._signinLoading = true);
         await Provider.of<Auth>(context, listen: false).login(
           _authData['email'],
           _authData['password'],
@@ -188,6 +189,7 @@ class _AuthScreenState extends State <AuthScreen> {
                                       ),
 
                                       child: new TextFormField(
+                                        enabled: this._signinLoading ? false : true,
                                         autofocus: false,
                                         decoration: const InputDecoration(
                                           border: InputBorder.none,
@@ -215,6 +217,7 @@ class _AuthScreenState extends State <AuthScreen> {
                                     Container(
                                       padding: EdgeInsets.all(10),
                                       child: new TextFormField(
+                                        enabled: this._signinLoading ? false : true,
                                         autofocus: false,
                                         focusNode: this._passwordFocusNode,
                                         decoration: const InputDecoration(
@@ -745,6 +748,8 @@ class _ForgotPasswordState extends State <_ForgotPassword> {
     'email': '',
   };
 
+  final TextEditingController _emailController = new TextEditingController ();
+
   void _showErrorDialog(String message) {
     showDialog(
       context: context, 
@@ -802,7 +807,10 @@ class _ForgotPasswordState extends State <_ForgotPassword> {
         fail = true;
       }
 
-      if (!fail) _showSuccessDialog('Check your mailbox for recovery instructions');
+      if (!fail) {
+        this._emailController.clear();
+        _showSuccessDialog('Check your mailbox for recovery instructions');
+      }
     }
   }
 
@@ -859,6 +867,8 @@ class _ForgotPasswordState extends State <_ForgotPassword> {
                           child: Container(
                             padding: const EdgeInsets.all(10),
                             child: new TextFormField(
+                              autofocus: false,
+                              controller: this._emailController,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Email",
