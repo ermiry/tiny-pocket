@@ -750,69 +750,7 @@ class _ForgotPasswordState extends State <_ForgotPassword> {
 
   final TextEditingController _emailController = new TextEditingController ();
 
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context, 
-      builder: (ctx) => AlertDialog (
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.0))
-        ),
-        title: Text ('An error ocurred!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
-        content: Text (message),
-        actions: <Widget>[
-          FlatButton(
-            child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-          )
-        ],
-      )
-    );
-  }
-
-  void _showSuccessDialog(String message) {
-    showDialog(
-      context: context, 
-      builder: (ctx) => AlertDialog (
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.0))
-        ),
-        title: Text ('Success!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
-        content: Text (message),
-        actions: <Widget>[
-          FlatButton(
-            child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-          )
-        ],
-      )
-    );
-  }
-
-  Future <void> _submitRecover() async {
-    bool fail = false;
-    
-    if (this._formKey.currentState.validate()) {
-      this._formKey.currentState.save();
-      
-      try {
-        await Provider.of<Auth>(context, listen: false).recover(this._authData['email']);
-      }
-
-      catch (error) {
-        _showErrorDialog('Failed to manage account recovery!');
-        fail = true;
-      }
-
-      if (!fail) {
-        this._emailController.clear();
-        _showSuccessDialog('Check your mailbox for recovery instructions');
-      }
-    }
-  }
+  bool _recoverLoading = false;
 
   _showModalBottomSheet(context) {
     var maxHeight = MediaQuery.of(context).size.height;
@@ -820,111 +758,185 @@ class _ForgotPasswordState extends State <_ForgotPassword> {
     showModalBottomSheetApp(
       context: context,
       builder: (BuildContext context) {
-        return Container(
-          height: maxHeight * 0.4,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          child: new Container (
-            child: Column (
-              children: <Widget>[
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    "Enter the email address associated with your account", 
-                    style: TextStyle(
-                      color: mainBlue, 
-                      fontWeight: FontWeight.bold, fontSize: 20
-                    )
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            void _showErrorDialog(String message) {
+              showDialog(
+                context: context, 
+                builder: (ctx) => AlertDialog (
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20.0))
                   ),
-                ),
-
-                SizedBox(height: 40),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color.fromRGBO(25, 42, 86, 0.5),
-                          blurRadius: 20,
-                          offset: Offset(0, 10),
-                        )
-                      ]
-                    ),
-                    child: Column(
-                      children: <Widget>[
-                        new Form(
-                          key: this._formKey,
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            child: new TextFormField(
-                              autofocus: false,
-                              controller: this._emailController,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Email",
-                                hintStyle: const TextStyle(color: Colors.grey)
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (value) {
-                                if (value.isEmpty) return 'Email field is required!';
-                                else if (!value.contains('@')) return 'Invalid email!';
-                                return null;
-                              },
-                              textInputAction: TextInputAction.done,
-                              onFieldSubmitted: (value) {
-                                // nothing here
-                              },
-                              onSaved: (value) {
-                                this._authData['email'] = value;
-                              },
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: maxHeight >= 900 ? 60 : 30),
-
-                // recover button
-                new Container(
-                  height: 50,
-                  margin: EdgeInsets.symmetric(horizontal: 60),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: mainBlue
-                  ),
-                  child: Center(
-                    child: RawMaterialButton(
-                      // enableFeedback: false,
-                      // splashColor: Color.fromARGB(0, 0, 0, 0),
+                  title: Text ('An error ocurred!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
+                  content: Text (message),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
                       onPressed: () {
-                        this._submitRecover();
+                        Navigator.of(ctx).pop();
                       },
-                      elevation: 0,
-                      textStyle: TextStyle(
-                        color: Colors.white,
-                        // fontSize: 18,
-                        fontWeight: FontWeight.w800
-                      ),
-                      child: Text("Recover account!"),
-                    ),
-                  ),
+                    )
+                  ],
                 )
-              ],
-            ),
-          ),
+              );
+            }
+
+            void _showSuccessDialog(String message) {
+              showDialog(
+                context: context, 
+                builder: (ctx) => AlertDialog (
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20.0))
+                  ),
+                  title: Text ('Success!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
+                  content: Text (message),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                      },
+                    )
+                  ],
+                )
+              );
+            }
+
+            Future <void> _submitRecover() async {
+              bool fail = false;
+              
+              if (this._formKey.currentState.validate()) {
+                this._formKey.currentState.save();
+                
+                try {
+                  setModalState(() => this._recoverLoading = true);
+                  await Provider.of<Auth>(context, listen: false).recover(this._authData['email']);
+                }
+
+                catch (error) {
+                  _showErrorDialog('Failed to manage account recovery!');
+                  fail = true;
+                }
+
+                finally {
+                  setModalState(() => this._recoverLoading = false);
+                }
+
+                if (!fail) {
+                  this._emailController.clear();
+                  _showSuccessDialog('Check your mailbox for recovery instructions');
+                }
+              }
+            }
+
+            return Container(
+              height: maxHeight * 0.4,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: new Container (
+                child: Column (
+                  children: <Widget>[
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        "Enter the email address associated with your account", 
+                        style: TextStyle(
+                          color: mainBlue, 
+                          fontWeight: FontWeight.bold, fontSize: 20
+                        )
+                      ),
+                    ),
+
+                    SizedBox(height: 40),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color.fromRGBO(25, 42, 86, 0.5),
+                              blurRadius: 20,
+                              offset: Offset(0, 10),
+                            )
+                          ]
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            new Form(
+                              key: this._formKey,
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                child: new TextFormField(
+                                  enabled: this._recoverLoading ? false : true,
+                                  autofocus: false,
+                                  controller: this._emailController,
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "Email",
+                                    hintStyle: const TextStyle(color: Colors.grey)
+                                  ),
+                                  keyboardType: TextInputType.emailAddress,
+                                  validator: (value) {
+                                    if (value.isEmpty) return 'Email field is required!';
+                                    else if (!value.contains('@')) return 'Invalid email!';
+                                    return null;
+                                  },
+                                  textInputAction: TextInputAction.done,
+                                  onFieldSubmitted: (value) {
+                                    // nothing here
+                                  },
+                                  onSaved: (value) {
+                                    this._authData['email'] = value;
+                                  },
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: maxHeight >= 900 ? 60 : 30),
+
+                    // recover button
+                    new Container(
+                      height: 50,
+                      margin: EdgeInsets.symmetric(horizontal: 60),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: mainBlue
+                      ),
+                      child: Center(
+                        child: RawMaterialButton(
+                          onPressed: this._recoverLoading ? null : () => _submitRecover(),
+                          elevation: 0,
+                          textStyle: TextStyle(
+                            color: Colors.white,
+                            // fontSize: 18,
+                            fontWeight: FontWeight.w800
+                          ),
+                          child: this._recoverLoading ? new CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                            valueColor: new AlwaysStoppedAnimation<Color>(mainDarkBlue),
+                          ) :
+                          Text("Recover Account!")
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            );
+          }
         );
       },
     );
