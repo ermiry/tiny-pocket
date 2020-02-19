@@ -33,6 +33,8 @@ class _AuthScreenState extends State <AuthScreen> {
 
   final FocusNode _passwordFocusNode = new FocusNode ();
 
+  bool _signinLoading = false;
+
   @override
   void dispose()  {
     this._passwordFocusNode.dispose();
@@ -86,6 +88,10 @@ class _AuthScreenState extends State <AuthScreen> {
 
       catch (error) {
         _showErrorDialog('Failed to authenticate!');
+      }
+
+      finally {
+        this.setState(() => this._signinLoading = false);
       }
     }
   }
@@ -182,6 +188,7 @@ class _AuthScreenState extends State <AuthScreen> {
                                       ),
 
                                       child: new TextFormField(
+                                        autofocus: false,
                                         decoration: const InputDecoration(
                                           border: InputBorder.none,
                                           hintText: "Email",
@@ -208,6 +215,7 @@ class _AuthScreenState extends State <AuthScreen> {
                                     Container(
                                       padding: EdgeInsets.all(10),
                                       child: new TextFormField(
+                                        autofocus: false,
                                         focusNode: this._passwordFocusNode,
                                         decoration: const InputDecoration(
                                           border: InputBorder.none,
@@ -250,16 +258,18 @@ class _AuthScreenState extends State <AuthScreen> {
                                 child: RawMaterialButton(
                                   // enableFeedback: false,
                                   // splashColor: Color.fromARGB(0, 0, 0, 0),
-                                  onPressed: () {
-                                    this._submitLogin();
-                                  },
+                                  onPressed: this._signinLoading ? null : () => this._submitLogin(),
                                   elevation: 0,
                                   textStyle: TextStyle(
                                     color: Colors.white,
                                     // fontSize: 18,
                                     fontWeight: FontWeight.w800
                                   ),
-                                  child: Text("Login!"),
+                                  child: this._signinLoading ? new CircularProgressIndicator(
+                                    backgroundColor: Colors.white,
+                                    valueColor: new AlwaysStoppedAnimation<Color>(mainDarkBlue),
+                                  ) :
+                                  Text("Login!")
                                 ),
                               ),
                             )),
