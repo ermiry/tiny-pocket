@@ -60,8 +60,8 @@ class _HomePageState extends State <HomePage> {
               settings.showHistoryChart ? new HistoryChart () : new Container(),
 
               Container(
-                height: mediaQuery.size.height * 0.12,
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.12,
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
@@ -90,9 +90,8 @@ class _HomePageState extends State <HomePage> {
               ),
 
               Container (
-                height: mediaQuery.size.height * 0.88,
+                height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.88,
                 child: new TransactionList (),
-                // Expanded (child: TransactionList (_transactions, _deleteTransaction))
               )
             ]
           )
