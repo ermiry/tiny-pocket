@@ -28,12 +28,6 @@ class HomePage extends StatefulWidget with NavigationStates {
 
 class _HomePageState extends State <HomePage> {
 
-  // List <Transaction> get _recentTransactions {
-  //   return _transactions.where((tx) {
-  //     return tx.date.isAfter(DateTime.now().subtract(Duration (days: 7)));
-  //   }).toList();
-  // }
-
 	@override
 	Widget build(BuildContext context) {
 
@@ -45,15 +39,11 @@ class _HomePageState extends State <HomePage> {
           color: Colors.white,
           child: ListView (
             children: <Widget>[
-              // FIXME: bars chart
-              // _showBarsChart ? Container (
-              //   height: (mediaQuery.size.height - 
-              //     // appBar.preferredSize.height -
-              //     mediaQuery.padding.top) * 0.3,
-              //   child: BarsChart (_recentTransactions),
-              // ) : Container (),
-
-              // settings.showBarsChart ? new BarsChart (_recentTransactions) : new Container(),
+              settings.showBarsChart ? 
+                new Container (
+                  height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.2,
+                  child: BarsChart (Provider.of<Transactions>(context, listen: true).recentTransactions)) :
+                new Container(),
 
               settings.showExpensesChart ? new ExpensesChart () : new Container(),
 
