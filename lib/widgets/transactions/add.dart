@@ -83,15 +83,21 @@ class _AddTransactionState extends State <AddTransaction> {
       
       if (_selectedDate != null) {
         if (this._selectedType != null) {
-          setState(() => this._loading = true);
-          await Provider.of<Transactions>(context, listen: false).addTransaction(
-            this._data['description'],
-            double.parse(this._data['amount']),
-            this._selectedDate,
-            this._selectedType
-          );
+          try {
+            setState(() => this._loading = true);
+            await Provider.of<Transactions>(context, listen: false).addTransaction(
+              this._data['description'],
+              double.parse(this._data['amount']),
+              this._selectedDate,
+              this._selectedType
+            );
 
-          Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          }
+
+          catch (error) {
+            this._showErrorDialog('Failed to add new transaction!');
+          }
         }
 
         else this._showErrorDialog('Transaction type is required!');

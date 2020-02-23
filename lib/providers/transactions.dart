@@ -131,27 +131,31 @@ class Transactions with ChangeNotifier {
 
   Future <void> addTransaction(String title, double amount, DateTime date, TransactionType type) async {
 
-    Transaction trans = Transaction (
-      id: DateTime.now().toString(), 
-      title:  title, 
-      amount: amount, 
-      date: date,
+    try {
+      Transaction trans = Transaction (
+        id: DateTime.now().toString(), 
+        title:  title, 
+        amount: amount, 
+        date: date,
 
-      type: type.type
-    );
+        type: type.type
+      );
 
-    this._transactions.add(
-      trans
-    );
+      this._transactions.add(
+        trans
+      );
 
-    // String json = jsonEncode(trans);
-    // print(json);
+      // String json = jsonEncode(trans);
+      // print(json);
 
-    // save to local storage
-    var repo = new FuturePreferencesRepository <Transaction> (new TransactionDesSer());
-    await repo.save(trans);
+      // save to local storage
+      var repo = new FuturePreferencesRepository <Transaction> (new TransactionDesSer());
+      await repo.save(trans);
 
-    notifyListeners();
+      notifyListeners();
+    } catch (error) {
+      throw new Exception (error.toString());
+    }
 
   }
 
