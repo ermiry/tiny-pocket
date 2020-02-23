@@ -41,15 +41,15 @@ class Settings with ChangeNotifier {
 
     final prefs = await SharedPreferences.getInstance();
 
-    if (!prefs.containsKey('show_bars_chart')) {
+    if (prefs.containsKey('show_bars_chart')) {
       this.showBarsChart = prefs.getBool('show_bars_chart');
     }
 
-    if (!prefs.containsKey('show_expenses_chart')) {
+    if (prefs.containsKey('show_expenses_chart')) {
       this.showExpensesChart = prefs.getBool('show_expenses_chart');
     }
 
-    if (!prefs.containsKey('show_history_chart')) {
+    if (prefs.containsKey('show_history_chart')) {
       this.showHistoryChart = prefs.getBool('show_history_chart');
     }
 

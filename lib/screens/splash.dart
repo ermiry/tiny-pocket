@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pocket/providers/transactions.dart';
+import 'package:pocket/providers/settings.dart';
 
 class SplashScreen extends StatefulWidget {
 
@@ -39,6 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     // try {
       await Provider.of<Transactions>(context, listen: false).loadTransactions();
+      await Provider.of<Settings>(context, listen: false).loadSettings();
     // }
 
     // catch (error) {
