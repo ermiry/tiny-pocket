@@ -33,6 +33,8 @@ class _AddTransactionState extends State <AddTransaction> {
 
   TransactionType _selectedType;
 
+  bool _loading = false;
+
   void _chooseDate() {
     showDatePicker (
       context: context,
@@ -81,14 +83,13 @@ class _AddTransactionState extends State <AddTransaction> {
       
       if (_selectedDate != null) {
         if (this._selectedType != null) {
+          setState(() => this._loading = true);
           await Provider.of<Transactions>(context, listen: false).addTransaction(
             this._data['description'],
             double.parse(this._data['amount']),
             this._selectedDate,
             this._selectedType
           );
-
-          // return true;  // success
 
           Navigator.of(context).pop();
         }
@@ -98,8 +99,6 @@ class _AddTransactionState extends State <AddTransaction> {
 
       else this._showErrorDialog('Date is required!');
     }
-
-    // return false;   // error
   }
 
 	@override
@@ -127,6 +126,7 @@ class _AddTransactionState extends State <AddTransaction> {
                 ),
 
                 child: new TextFormField(
+                  enabled: this._loading ? false : true,
                   autofocus: false,
                   maxLength: 64,
                   decoration: const InputDecoration(
@@ -162,6 +162,7 @@ class _AddTransactionState extends State <AddTransaction> {
                 ),
 
                 child: new TextFormField(
+                  enabled: this._loading ? false : true,
                   autofocus: false,
                   focusNode: this._amountFocusNode,
                   decoration: const InputDecoration(
@@ -198,7 +199,10 @@ class _AddTransactionState extends State <AddTransaction> {
                         style: _selectedDate == null ? hoursPlayedLabelTextStyle : hoursPlayedTextStyle
                       ),
                     ),
-                    AdaptiveFlatButton ('Choose Date', _chooseDate)
+                    AdaptiveFlatButton (
+                      'Choose Date', 
+                      this._loading ? null : _chooseDate
+                    )
                   ],
                 ),
               ),
@@ -212,11 +216,12 @@ class _AddTransactionState extends State <AddTransaction> {
                       child: Text ('Choose a type:', style: hoursPlayedLabelTextStyle),
                     ),
                     // AdaptiveFlatButton ('Choose Date', _chooseDate)
-                    new DropdownButton(
-                      value: this._selectedType,
-                      items: trans.buildDropdownMenuItems(),
-                      onChanged: this._onChangeDropdownItem,
-                    ),
+                    this._loading ? Text (this._selectedType.title) :
+                      new DropdownButton(
+                        value: this._selectedType,
+                        items: trans.buildDropdownMenuItems(),
+                        onChanged: this._onChangeDropdownItem,
+                      ),
                   ],
                 ),
               ),
@@ -233,18 +238,18 @@ class _AddTransactionState extends State <AddTransaction> {
                 ),
                 child: Center(
                   child: RawMaterialButton(
-                    // enableFeedback: false,
-                    // splashColor: Color.fromARGB(0, 0, 0, 0),
-                    onPressed: () {
-                      this._add();
-                    },
+                    onPressed: this._loading ? null : () => _add(),
                     elevation: 0,
                     textStyle: TextStyle(
                       color: Colors.white,
                       // fontSize: 18,
                       fontWeight: FontWeight.w800
                     ),
-                    child: Text("Add!"),
+                    child: this._loading ? new CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                        valueColor: new AlwaysStoppedAnimation<Color>(mainDarkBlue),
+                      ) :
+                      Text("Add!")
                   ),
                 ),
               ),
