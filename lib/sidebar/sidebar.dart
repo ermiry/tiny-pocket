@@ -128,24 +128,8 @@ class _SideBarState extends State <SideBar> with SingleTickerProviderStateMixin 
                         },
                       ),
 
-                      // SidebarItem(
-                      //   icon: Icons.info,
-                      //   title: "About",
-                      //   onTap: () {
-                      //     onIconPressed();
-                      //     BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.AboutPageClickedEvent);
-                      //   },
-                      // ),
-
-                      
-                      // Divider(
-                      //   height: 64,
-                      //   thickness: 0.5,
-                      //   color: Colors.white.withOpacity(0.3),
-                      //   indent: 32,
-                      //   endIndent: 32,
-                      // ),
                       Spacer(),
+
                       Divider(
                         height: 64,
                         thickness: 0.5,
@@ -156,6 +140,15 @@ class _SideBarState extends State <SideBar> with SingleTickerProviderStateMixin 
 
                       // suport routes
                       SidebarItem(
+                        icon: Icons.info,
+                        title: "Contact",
+                        onTap: () {
+                          onIconPressed();
+                          BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.ContactPageClickedEvent);
+                        },
+                      ),
+
+                      SidebarItem(
                         icon: Icons.settings,
                         title: "Settings",
                         onTap: () {
@@ -163,6 +156,7 @@ class _SideBarState extends State <SideBar> with SingleTickerProviderStateMixin 
                           BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.SettingsPageClickedEvent);
                         },
                       ),
+
                       SidebarItem(
                         icon: Icons.exit_to_app,
                         title: "Logout",
