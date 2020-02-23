@@ -8,6 +8,8 @@ class Settings with ChangeNotifier {
   bool showExpensesChart = true;
   bool showHistoryChart = false;
 
+  bool enableCloud = true;
+
   Future <void> toggleBarsChart() async { 
     this.showBarsChart = !this.showBarsChart;
 
