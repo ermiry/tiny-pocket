@@ -171,4 +171,20 @@ class Transactions with ChangeNotifier {
 
   }
 
+  Future <void> clearTransactions() async {
+
+    try {
+      var repo = new FuturePreferencesRepository <Transaction> (new TransactionDesSer());
+      repo.removeAll();
+      this._transactions = [];
+    }
+
+    catch (error) {
+      print('Failed to clear transactions from local storage!');
+    }
+
+    notifyListeners();
+
+  }
+
 }
