@@ -14,7 +14,7 @@ class SettingsPage extends StatelessWidget with NavigationStates {
     return Consumer <Settings> (
       builder: (ctx, settings, _) {
         return Container(
-          // padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: <Widget>[
               new Column(
@@ -35,41 +35,56 @@ class SettingsPage extends StatelessWidget with NavigationStates {
 
                   const SizedBox(height: 20),
 
-                  Row (
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                    Text ('Show bars chart'),
-                    Switch.adaptive (
-                      // activeColor: Theme.of(context).accentColor,
-                      value: settings.showBarsChart,
-                      onChanged: (val) { 
-                        settings.toggleBarsChart();
-                      },)
-                  ],),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(bottom: BorderSide(
+                        color: mainDarkBlue
+                      ))
+                    ),
+                    child: ListTile(
+                      title: const Text ('Show bars chart'),
+                      trailing: Switch.adaptive (
+                        activeColor: mainBlue,
+                        value: settings.showBarsChart,
+                        onChanged: (val) { 
+                          settings.toggleBarsChart();
+                        },)
+                    ),
+                  ),
 
-                  Row (
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                    Text ('Show expenses chart'),
-                    Switch.adaptive (
-                      // activeColor: Theme.of(context).accentColor,
-                      value: settings.showExpensesChart,
-                      onChanged: (val) { 
-                        settings.toggleExpensesChart();
-                      },)
-                  ],),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(bottom: BorderSide(
+                        color: mainDarkBlue
+                      ))
+                    ),
+                    child: ListTile(
+                      title: const Text ('Show expenses chart'),
+                      trailing: Switch.adaptive (
+                        activeColor: mainBlue,
+                        value: settings.showExpensesChart,
+                        onChanged: (val) { 
+                          settings.toggleExpensesChart();
+                        },)
+                    ),
+                  ),
 
-                  Row (
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                    Text ('Show history chart'),
-                    Switch.adaptive (
-                      // activeColor: Theme.of(context).accentColor,
-                      value: settings.showHistoryChart,
-                      onChanged: (val) { 
-                        settings.toggleHistoryChart();
-                      },)
-                  ],),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(bottom: BorderSide(
+                        color: mainDarkBlue
+                      ))
+                    ),
+                    child: ListTile(
+                      title: const Text ('Show history chart'),
+                      trailing: Switch.adaptive (
+                        activeColor: mainBlue,
+                        value: settings.showHistoryChart,
+                        onChanged: (val) { 
+                          settings.toggleHistoryChart();
+                        },)
+                    ),
+                  ),
                 ],
               ),
 
