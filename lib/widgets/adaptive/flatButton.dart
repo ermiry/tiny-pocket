@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:pocket/style/colors.dart';
-import 'package:pocket/style/style.dart';
 
 class AdaptiveFlatButton extends StatelessWidget {
 

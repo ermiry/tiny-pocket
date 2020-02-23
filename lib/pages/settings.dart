@@ -160,24 +160,25 @@ class SettingsPage extends StatelessWidget with NavigationStates {
                   ),
                 ),
 
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(
-                      color: mainDarkBlue
-                    ))
-                  ),
-                  child: ListTile(
-                    title: const Text ('Show history chart'),
-                    subtitle: const Text('Display your last week\'s activity using a line chart'),
-                    trailing: Switch.adaptive (
-                      activeColor: mainBlue,
-                      value: settings.showHistoryChart,
-                      onChanged: (val) { 
-                        settings.toggleHistoryChart();
-                      },)
-                  ),
-                ),
+                // TODO:
+                // Container(
+                //   padding: const EdgeInsets.symmetric(vertical: 5),
+                //   decoration: BoxDecoration(
+                //     border: Border(bottom: BorderSide(
+                //       color: mainDarkBlue
+                //     ))
+                //   ),
+                //   child: ListTile(
+                //     title: const Text ('Show history chart'),
+                //     subtitle: const Text('Display your last week\'s activity using a line chart'),
+                //     trailing: Switch.adaptive (
+                //       activeColor: mainBlue,
+                //       value: settings.showHistoryChart,
+                //       onChanged: (val) { 
+                //         settings.toggleHistoryChart();
+                //       },)
+                //   ),
+                // ),
 
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 5),

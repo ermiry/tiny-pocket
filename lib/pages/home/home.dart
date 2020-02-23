@@ -47,7 +47,7 @@ class _HomePageState extends State <HomePage> {
 
               settings.showExpensesChart ? new ExpensesChart () : new Container(),
 
-              settings.showHistoryChart ? new HistoryChart () : new Container(),
+              // settings.showHistoryChart ? new HistoryChart () : new Container(),
 
               Container(
                 height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.12,
