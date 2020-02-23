@@ -180,7 +180,26 @@ class SettingsPage extends StatelessWidget with NavigationStates {
                     ),
                   ),
 
-                  new SizedBox(height: MediaQuery.of(context).size.height * 0.16),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    decoration: BoxDecoration(
+                      border: Border(bottom: BorderSide(
+                        color: mainDarkBlue
+                      ))
+                    ),
+                    child: ListTile(
+                      title: const Text ('Center add button'),
+                      subtitle: const Text('Display the add transaction button in the center'),
+                      trailing: Switch.adaptive (
+                        activeColor: mainBlue,
+                        value: settings.centerAddButton,
+                        onChanged: (val) { 
+                          settings.toggleCenterAddButton();
+                        },)
+                    ),
+                  ),
+
+                  new SizedBox(height: MediaQuery.of(context).size.height * 0.1),
 
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16),

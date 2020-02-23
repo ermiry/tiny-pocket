@@ -103,8 +103,8 @@ class _HomePageState extends State <HomePage> {
       backgroundColor: mainBlue,
 			body: body,
 
-      // TODO: set as an option
-			floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+			floatingActionButtonLocation: Provider.of<Settings>(context, listen: false).centerAddButton ? 
+        FloatingActionButtonLocation.centerFloat : FloatingActionButtonLocation.endFloat,
 			floatingActionButton: Platform.isIOS ? Container () : FloatingActionButton (
         backgroundColor: mainBlue,
 				child: Icon (Icons.add),
