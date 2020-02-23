@@ -19,7 +19,7 @@ class TransactionType {
 
 	String id;
 	String title;
-	double amount;
+	double amount = 0;
 	Color color;
 
   int type;
@@ -51,6 +51,12 @@ class Transactions with ChangeNotifier {
   ];
 
   List <TransactionType> get transTypes { return [...this._transTypes]; }
+
+  List <TransactionType> get usedTransTypes {
+    return this._transTypes.where((tx) {
+      return tx.amount > 0;
+    }).toList();
+  }
 
   TransactionType getTransType(int type) {
     return this._transTypes.firstWhere((t) => t.type == type);
@@ -144,6 +150,8 @@ class Transactions with ChangeNotifier {
       this._transactions.add(
         trans
       );
+
+      type.amount += amount;
 
       // String json = jsonEncode(trans);
       // print(json);

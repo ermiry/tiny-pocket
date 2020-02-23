@@ -45,7 +45,10 @@ class _HomePageState extends State <HomePage> {
                   child: BarsChart (Provider.of<Transactions>(context, listen: true).recentTransactions)) :
                 new Container(),
 
-              settings.showExpensesChart ? new ExpensesChart () : new Container(),
+              Provider.of<Transactions>(context, listen: true).usedTransTypes.length > 0 ? 
+                settings.showExpensesChart ? 
+                new ExpensesChart () : new Container() : 
+                new Container(),
 
               // settings.showHistoryChart ? new HistoryChart () : new Container(),
 

@@ -64,9 +64,11 @@ class _ExpensesChartState extends State <ExpensesChart> {
   int touchedIndex;
 
   List <PieChartSectionData> showingSections() {
-    return List.generate(Provider.of<Transactions>(context, listen: true).transTypes.length, (i) {
-      TransactionType transType = Provider.of<Transactions>(context, listen: true).transTypes.elementAt(i);
+    return List.generate(Provider.of<Transactions>(context, listen: true).usedTransTypes.length, (i) {
+      TransactionType transType = Provider.of<Transactions>(context, listen: true).usedTransTypes.elementAt(i);
       double value = Provider.of<Transactions>(context, listen: true).getTransTypePercentage(transType.type);
+
+      print(value);
 
       return PieChartSectionData(
         color: transType.color,
@@ -103,7 +105,8 @@ class _ExpensesChartState extends State <ExpensesChart> {
                         ),
                         sectionsSpace: 0,
                         centerSpaceRadius: 40,
-                        sections: showingSections())
+                        sections: showingSections()
+                      )
                     ),
                   ),
                 ),
