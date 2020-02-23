@@ -176,10 +176,10 @@ class _SideBarState extends State <SideBar> with SingleTickerProviderStateMixin 
                       // suport routes
                       SidebarItem(
                         icon: Icons.info,
-                        title: "Contact",
+                        title: "About",
                         onTap: () {
                           onIconPressed();
-                          BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.ContactPageClickedEvent);
+                          BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.AboutPageClickedEvent);
                         },
                       ),
 

@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 
 import 'package:pocket/pages/account.dart';
 import 'package:pocket/pages/home/home.dart';
-import 'package:pocket/pages/contact.dart';
+import 'package:pocket/pages/about.dart';
 import 'package:pocket/pages/settings.dart';
 
 enum NavigationEvents {
@@ -10,7 +10,7 @@ enum NavigationEvents {
 
   HomePageClickedEvent,
 
-  ContactPageClickedEvent,
+  AboutPageClickedEvent,
   SettingsPageClickedEvent,
 }
 
@@ -32,8 +32,8 @@ class NavigationBloc extends Bloc <NavigationEvents, NavigationStates> {
         yield HomePage();
         break;
       
-      case NavigationEvents.ContactPageClickedEvent:
-        yield ContactPage();
+      case NavigationEvents.AboutPageClickedEvent:
+        yield AboutPage();
         break;
       case NavigationEvents.SettingsPageClickedEvent:
         yield SettingsPage();

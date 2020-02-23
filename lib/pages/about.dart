@@ -4,7 +4,7 @@ import 'package:pocket/sidebar/navigation_bloc.dart';
 
 import 'package:pocket/style/colors.dart';
 
-class ContactPage extends StatelessWidget with NavigationStates {
+class AboutPage extends StatelessWidget with NavigationStates {
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +17,9 @@ class ContactPage extends StatelessWidget with NavigationStates {
             children: <Widget>[
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
 
-              Center(
+              const Center(
                 child: Text(
-                  "Contact",
+                  "About",
                   style: const TextStyle(
                     fontSize: 32,
                     color: mainBlue,
@@ -34,30 +34,36 @@ class ContactPage extends StatelessWidget with NavigationStates {
                 child: Center(
                   child: Column(
                     children: <Widget>[
-                      Text(
+                      const Text(
+                        'Contact',
+                        style: TextStyle(color: mainDarkBlue, fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+
+                      const SizedBox(height: 10),
+                      const Text(
                         'For any questions about our service,'
                       ),
-                      Text(
+                      const Text(
                         'request information, or any other inquiry,'
                       ),
-                      Text(
+                      const Text(
                         'please visit:'
                       ),
-                      SizedBox(height: 8),
-                      Text(
+                      const SizedBox(height: 8),
+                      const Text(
                         'ermiry.com/contact',
                         style: TextStyle(color: mainDarkBlue),
                       ),
-                      SizedBox(height: 8),
-                      Text(
+                      const SizedBox(height: 8),
+                      const Text(
                         'or'
                       ),
-                      SizedBox(height: 8),
-                      Text(
+                      const SizedBox(height: 8),
+                      const Text(
                         'You can reach us directly here:'
                       ),
-                      SizedBox(height: 8),
-                      Text(
+                      const SizedBox(height: 8),
+                      const Text(
                         'contact@ermiry.com',
                         style: TextStyle(color: mainDarkBlue),
                       ),
@@ -75,7 +81,7 @@ class ContactPage extends StatelessWidget with NavigationStates {
             child: Center(
               child: Column(
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Credits',
                     style: TextStyle(color: mainDarkBlue, fontWeight: FontWeight.bold, fontSize: 18),
                   ),
@@ -88,7 +94,7 @@ class ContactPage extends StatelessWidget with NavigationStates {
 
                   const SizedBox(height: 10),
 
-                  Text(
+                  const Text(
                     'Copyright \u00a9 2020 Ermiry',
                     style: TextStyle(color: mainBlue),
                   ),
