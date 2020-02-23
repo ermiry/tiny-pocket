@@ -52,8 +52,9 @@ class ContactPage extends StatelessWidget with NavigationStates {
                       Text(
                         'or'
                       ),
+                      SizedBox(height: 8),
                       Text(
-                        'you can reach us directly here:'
+                        'You can reach us directly here:'
                       ),
                       SizedBox(height: 8),
                       Text(
@@ -69,6 +70,34 @@ class ContactPage extends StatelessWidget with NavigationStates {
 
           // 12/02/2020 -- added to fill remaining screen and to avoid bug with sidebar
           new Expanded (child: Container (),),
+
+          Container(
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    'Credits',
+                    style: TextStyle(color: mainDarkBlue, fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  const Text(
+                    'Icon made by Freepik from www.flaticon.com'
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  Text(
+                    'Copyright \u00a9 2020 Ermiry',
+                    style: TextStyle(color: mainBlue),
+                  ),
+
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                ],
+              )
+            ),
+          )
         ],
       ),
     );
