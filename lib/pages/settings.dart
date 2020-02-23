@@ -2,12 +2,54 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pocket/providers/settings.dart';
+import 'package:pocket/providers/transactions.dart';
 
 import 'package:pocket/sidebar/navigation_bloc.dart';
 
 import 'package:pocket/style/colors.dart';
 
 class SettingsPage extends StatelessWidget with NavigationStates {
+
+  Future <void> _clearLocalData(BuildContext context) async {
+    try {
+      await Provider.of<Transactions>(context, listen: false).clearTransactions();
+    }
+
+    catch (error) {
+      // _showErrorDialog('Failed to delete data!');
+    }
+
+    finally {
+      Navigator.of(context).pop();
+    }
+  }
+
+  void _showConfirmDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog (
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))
+        ),
+        title: Text ('Are you sure?', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
+        content: Text (message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text ('No', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          FlatButton(
+            child: Text ('Okay', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
+            onPressed: () {
+              this._clearLocalData(context);
+            },
+          )
+        ],
+      )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,6 +188,7 @@ class SettingsPage extends StatelessWidget with NavigationStates {
                     child: ListTile(
                       title: Text ('Clear local data', style: new TextStyle(color: Colors.red, fontWeight: FontWeight.bold),),
                       subtitle: const Text('Clear all the transactions and data saved in this device'),
+                      onTap: () => this._showConfirmDialog(context, "Delete all transactions and data saved on this device?"),
                     ),
                   ),
                 ],
