@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:pocket/providers/transactions.dart';
 import 'package:pocket/models/transaction.dart';
 
+import 'package:pocket/style/style.dart';
 import 'package:pocket/style/colors.dart';
 
 class TransactionList extends StatelessWidget {
@@ -22,7 +23,7 @@ class TransactionList extends StatelessWidget {
             padding: EdgeInsets.all(20),
             child: Text (
               'No transactions yet added!',
-              style: Theme.of(context).textTheme.title,
+              style: hoursPlayedLabelTextStyle,
               textAlign: TextAlign.center,
             ),
           )
