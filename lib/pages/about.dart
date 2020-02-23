@@ -35,10 +35,21 @@ class AboutPage extends StatelessWidget with NavigationStates {
                   child: Column(
                     children: <Widget>[
                       const Text(
+                        'To learn more about Tiny Pocket,'
+                      ),
+                      const Text('check out the official website:'),
+                      const SizedBox(height: 10),
+                      const Text(
+                        'pocket.ermiry.com',
+                        style: TextStyle(color: mainDarkBlue),
+                      ),
+
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+
+                      const Text(
                         'Contact',
                         style: TextStyle(color: mainDarkBlue, fontWeight: FontWeight.bold, fontSize: 18),
                       ),
-
                       const SizedBox(height: 10),
                       const Text(
                         'For any questions about our service,'
@@ -65,6 +76,22 @@ class AboutPage extends StatelessWidget with NavigationStates {
                       const SizedBox(height: 8),
                       const Text(
                         'contact@ermiry.com',
+                        style: TextStyle(color: mainDarkBlue),
+                      ),
+
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+
+                      const Text(
+                        'Legal',
+                        style: TextStyle(color: mainDarkBlue, fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        'Privacy Policy'
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'ermiry.com/privacy-policy',
                         style: TextStyle(color: mainDarkBlue),
                       ),
                     ],
