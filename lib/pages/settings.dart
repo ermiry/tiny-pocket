@@ -10,17 +10,58 @@ import 'package:pocket/style/colors.dart';
 
 class SettingsPage extends StatelessWidget with NavigationStates {
 
+  void _showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context, 
+      builder: (ctx) => AlertDialog (
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))
+        ),
+        title: Text ('An error ocurred!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
+        content: Text (message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      )
+    );
+  }
+
+  void _showSuccessDialog(BuildContext context, String message) {
+    showDialog(
+      context: context, 
+      builder: (ctx) => AlertDialog (
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))
+        ),
+        title: Text ('Success!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
+        content: Text (message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      )
+    );
+  }
+
   Future <void> _clearLocalData(BuildContext context) async {
     try {
       await Provider.of<Transactions>(context, listen: false).clearTransactions();
+      Navigator.of(context).pop();
+      this._showSuccessDialog(context, 'Local data has been deleted!');
     }
 
     catch (error) {
-      // _showErrorDialog('Failed to delete data!');
-    }
-
-    finally {
       Navigator.of(context).pop();
+      this._showErrorDialog(context, 'Failed to delete local data!');
     }
   }
 
