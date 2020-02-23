@@ -68,12 +68,10 @@ class _ExpensesChartState extends State <ExpensesChart> {
       TransactionType transType = Provider.of<Transactions>(context, listen: true).usedTransTypes.elementAt(i);
       double value = Provider.of<Transactions>(context, listen: true).getTransTypePercentage(transType.type);
 
-      print(value);
-
       return PieChartSectionData(
         color: transType.color,
         value: value,
-        title: '${value.toStringAsFixed (2)}%',
+        title: value >= 100 ? '100%' : '${value.toStringAsFixed (2)}%',
         radius: 50,
         titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
       );
