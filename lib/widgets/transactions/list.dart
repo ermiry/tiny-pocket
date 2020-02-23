@@ -1,9 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pocket/providers/transactions.dart';
 import 'package:pocket/models/transaction.dart';
+
+import 'package:pocket/style/colors.dart';
 
 class TransactionList extends StatelessWidget {
 
@@ -40,15 +43,15 @@ class TransactionList extends StatelessWidget {
                   return showDialog(
                     context: context,
                     builder: (ctx) => AlertDialog (
-                      title: Text ('Are you sure?'),
+                      title: Text ('Are you sure?', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
                       content: Text ('Do you want to delete this transaction?'),
                       actions: <Widget>[
                         FlatButton (
-                          child: Text ('No'),
+                          child: Text ('No', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
                           onPressed: () => Navigator.of(ctx).pop(false),
                         ),
                         FlatButton (
-                          child: Text ('Yes'),
+                          child: Text ('Yes', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
                           onPressed: () => Navigator.of(ctx).pop(true),
                         ),
                       ],

@@ -36,7 +36,7 @@ class _AddTransactionState extends State <AddTransaction> {
   bool _loading = false;
 
   void _chooseDate() {
-    showDatePicker (
+    showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime (2019),
