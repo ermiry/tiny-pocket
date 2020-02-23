@@ -125,6 +125,11 @@ class Transactions with ChangeNotifier {
       var repo = new FuturePreferencesRepository <Transaction> (new TransactionDesSer());
       var list = await repo.findAll();
       this._transactions = list;
+
+      this._transactions.forEach((trans) {
+        TransactionType type = getTransType(trans.type);
+        type.amount += trans.amount;
+      });
     }
 
     catch (error) {
@@ -168,6 +173,11 @@ class Transactions with ChangeNotifier {
   }
 
   void removeTransaction(String id) {
+
+    Transaction tx = this._transactions.firstWhere((t) => t.id == id);
+
+    TransactionType type = getTransType(tx.type);
+    type.amount -= tx.amount;
 
     // remove from local storage
     var repo = new FuturePreferencesRepository <Transaction> (new TransactionDesSer());
