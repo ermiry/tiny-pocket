@@ -1,15 +1,42 @@
+import 'package:intl/intl.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:pocket/sidebar/navigation_bloc.dart';
 
-import 'package:provider/provider.dart';
-import 'package:pocket/providers/auth.dart';
+// import 'package:provider/provider.dart';
+// import 'package:pocket/providers/auth.dart';
+
+import 'package:pocket/widgets/custom/textfield.dart';
+import 'package:pocket/widgets/custom/modal_action_button.dart';
 
 import 'package:pocket/style/colors.dart';
-import 'package:pocket/style/style.dart';
+// import 'package:pocket/style/style.dart';
 
-class AccountPage extends StatelessWidget with NavigationStates {
+class AccountPage extends StatefulWidget with NavigationStates {
+
+  @override
+  AccountPageState createState() => AccountPageState();
+
+}
+
+class AccountPageState extends State <AccountPage> {
+
+  void _showChangeDialog(String title, String placeholder, String secondPlaceholder) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: _ChangeValue(title: title, placeholder: placeholder, secondPlaceholder: secondPlaceholder,),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12))
+          )
+        );
+      }
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,161 +45,246 @@ class AccountPage extends StatelessWidget with NavigationStates {
       // DeviceOrientation.portraitDown,
     ]);
 
-    return Container(
-      // padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Column(
-        children: <Widget>[
-          SingleChildScrollView(
+    return ListView(
+      children: <Widget>[
+        SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+
+        Center(
+          child: Text(
+            "Your Account",
+            style: const TextStyle(
+              fontSize: 24,
+              color: mainBlue,
+              fontWeight: FontWeight.w800
+            ),
+          ),
+        ),
+
+        SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+
+        SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const SizedBox(height: 50),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Text ('General', style: new TextStyle(fontSize: 18, color: mainBlue, fontWeight: FontWeight.bold)),
+                ),
 
-                Center(
-                  child: Text(
-                    "Hello ${Provider.of<Auth>(context, listen: false).userValues['username']}!",
-                    style: const TextStyle(
-                      fontSize: 32,
-                      color: mainBlue,
-                      fontWeight: FontWeight.w800
-                    ),
+                const SizedBox(height: 10),
+
+                Container(
+                  // padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(
+                      width: 0.7,
+                      color: mainDarkBlue.withAlpha(204)
+                    ))
+                  ),
+                  child: ListTile(
+                    dense: true,
+                    title: Text ('Avatar', style: new TextStyle(fontSize: 16)),
+                    subtitle: Text('Change your avatar', style: new TextStyle(fontSize: 14),),
                   ),
                 ),
 
-                const SizedBox(height: 20),
-
-                // hours played
-                // Container(
-                //   padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
-                //   child: Material(
-                //     elevation: 4,
-                //     borderRadius: const BorderRadius.all(Radius.circular(12)),
-                //     child: Padding(
-                //       padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 32.0),
-                //       child: Column(
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         children: <Widget>[
-                //           Row(
-                //             children: <Widget>[
-                //               Text(
-                //                 "HOURS PLAYED",
-                //                 style: hoursPlayedLabelTextStyle,
-                //               ),
-                //             ],
-                //           ),
-                //           SizedBox(
-                //             height: 4,
-                //           ),
-                //           Text(
-                //             "18 Hours",
-                //             style: hoursPlayedTextStyle,
-                //           )
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
-
-                const SizedBox(height: 20),
-
-                // info
                 Container(
-                  padding: const EdgeInsets.all(20),
-                  child: new Material (
-                    elevation: 4,
-                    borderRadius: const BorderRadius.all(Radius.circular(12)),
-                    child: Padding (
-                      padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "YOUR INFO",
-                            style: infoTitleTextStyle,
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          //   children: <Widget>[
-                          //     Column(
-                          //       mainAxisAlignment: MainAxisAlignment.start,
-                          //       children: <Widget>[
-                          //         Text("Name", style: infoTextStyle),
-                          //         SizedBox(height: 4),
-                          //         Text("Erick", style: infoLabelTextStyle),
-                                  
-                          //       ],
-                          //     ),
-
-                          //     Column(
-                          //       mainAxisAlignment: MainAxisAlignment.end,
-                          //       children: <Widget>[
-                          //         Text("Last Name", style: infoTextStyle),
-                          //         SizedBox(height: 4),
-                          //         Text("Salas", style: infoLabelTextStyle),
-                                  
-                          //       ],
-                          //     ),
-                          //   ]
-                          // ),
-
-                          Center(
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: <Widget>[
-                                  Text("Name", style: infoLabelTextStyle),
-                                  SizedBox(height: 4),
-                                  Text("${Provider.of<Auth>(context, listen: false).userValues['name']}", style: infoTextStyle),
-                                ],
-                              ),
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          Center(
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: <Widget>[
-                                  Text("Email", style: infoLabelTextStyle),
-                                  SizedBox(height: 4),
-                                  Text("${Provider.of<Auth>(context, listen: false).userValues['email']}", style: infoTextStyle),
-                                ],
-                              ),
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          // Center(
-                          //   child: Column(children: <Widget>[
-                          //     Text("Location", style: infoLabelTextStyle),
-                          //     const SizedBox(height: 4,),
-                          //     Text("Mexico City, Mexico", style: infoTextStyle),
-                          //     const SizedBox(height: 16),
-
-                          //     Text("Occupation", style: infoLabelTextStyle),
-                          //     const SizedBox(height: 4,),
-                          //     Text("Student", style: infoTextStyle),
-                          //     const SizedBox(height: 16),
-                          //   ])
-                          // ),
-
-                          // Divider(color: Colors.grey,)
-                        ],
-                      ),
-                    ),
-                  )
+                  // padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(
+                      width: 0.7,
+                      color: mainDarkBlue.withAlpha(204)
+                    ))
+                  ),
+                  child: ListTile(
+                    dense: true,
+                    title: Text ('Name', style: new TextStyle(fontSize: 16)),
+                    subtitle: Text('Erick Salas', style: new TextStyle(fontSize: 14),),
+                    onTap: () => this._showChangeDialog("Change name", "Enter your name", null),
+                  ),
                 ),
+
+                Container(
+                  // padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(
+                      width: 0.7,
+                      color: mainDarkBlue.withAlpha(204)
+                    ))
+                  ),
+                  child: ListTile(
+                    dense: true,
+                    title: Text ('Username', style: new TextStyle(fontSize: 16)),
+                    subtitle: Text('erick', style: new TextStyle(fontSize: 14),),
+                  ),
+                ),
+
+                Container(
+                  // padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(
+                      width: 0.7,
+                      color: mainDarkBlue.withAlpha(204)
+                    ))
+                  ),
+                  child: ListTile(
+                    dense: true,
+                    title: Text ('Email', style: new TextStyle(fontSize: 16)),
+                    subtitle: Text('erick@test.com', style: new TextStyle(fontSize: 14),),
+                    onTap: () => this._showChangeDialog("Change email", "Enter your email", null),
+                  ),
+                ),
+
+                Container(
+                  // padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(
+                      width: 0.7,
+                      color: mainDarkBlue.withAlpha(204)
+                    ))
+                  ),
+                  child: ListTile(
+                    dense: true,
+                    title: Text ('Password', style: new TextStyle(fontSize: 16)),
+                    subtitle: Text('Change your password', style: new TextStyle(fontSize: 14),),
+                    onTap: () => this._showChangeDialog("Change password", "Enter new password", "Confirm password"),
+                  ),
+                ),
+
+                Container(
+                  // padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(
+                      width: 0.7,
+                      color: mainDarkBlue.withAlpha(204)
+                    ))
+                  ),
+                  child: ListTile(
+                    dense: true,
+                    title: Text ('Member Since', style: new TextStyle(fontSize: 16)),
+                    subtitle: Text(DateFormat ().format(DateTime.now()), style: new TextStyle(fontSize: 14),),
+                  ),
+                ),
+
+                new SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Text ('Danger Zone', style: new TextStyle(fontSize: 18, color: Colors.red, fontWeight: FontWeight.bold)),
+                ),
+
+                const SizedBox(height: 20),
+
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(
+                      width: 0.7,
+                    ))
+                  ),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    leading: Icon(Icons.exit_to_app, color: Colors.black87,),
+                    title: Text ('Logout', style: new TextStyle(fontSize: 16)),
+                  ),
+                ),
+
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(
+                      width: 0.7,
+                      color: Colors.red.withAlpha(204)
+                    ))
+                  ),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    leading: Icon(Icons.report_problem, color: Colors.red),
+                    title: Text ('Delete account', style: new TextStyle(fontSize: 16, color: Colors.red)),
+                    subtitle: const Text('Deleting your account is permanent. All your data will be wiped out immediately and you won\'t be able to get it back.'),
+                  ),
+                ),
+
+                new SizedBox(height: MediaQuery.of(context).size.height * 0.1),
               ],
             ),
           ),
+        ),
+      ],
+    );
+  }
 
-          // 12/02/2020 -- added to fill remaining screen and to avoid bug with sidebar
-          Expanded (child: Container (),)
+}
+
+class _ChangeValue extends StatefulWidget {
+
+  final String title;
+  final String placeholder;
+  final String secondPlaceholder;
+
+  _ChangeValue({
+    @required this.title,
+    @required this.placeholder,
+    @required this.secondPlaceholder
+  });
+
+  @override
+  _ChangeValueState createState() => _ChangeValueState();
+
+}
+
+class _ChangeValueState extends State <_ChangeValue> {
+
+  final _textTaskControler = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    _textTaskControler.clear();
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Center(
+            child: Text(
+              widget.title,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: mainDarkBlue),
+            )
+          ),
+
+          const SizedBox(height: 24),
+
+          CustomTextField(labelText: widget.placeholder, controller: _textTaskControler),
+          
+          const SizedBox(height: 24),
+
+          widget.secondPlaceholder != null ? CustomTextField(labelText: widget.secondPlaceholder, controller: _textTaskControler) : Container (),
+
+          SizedBox(height: widget.secondPlaceholder != null ? 24 : 0),
+
+          CustomModalActionButton(
+            onClose: () {
+              Navigator.of(context).pop();
+            },
+            onSave: () {
+              // if (_textTaskControler.text == "") {
+              //   print("data not found");
+              // } else {
+              //   provider
+              //       .insertTodoEntries(new TodoData(
+              //           date: _selectedDate,
+              //           time: DateTime.now(),
+              //           isFinish: false,
+              //           task: _textTaskControler.text,
+              //           description: "",
+              //           todoType: TodoType.TYPE_TASK.index,
+              //           id: null))
+              //       .whenComplete(() => Navigator.of(context).pop());
+              // }
+            },
+          )
         ],
       ),
     );
   }
-
 }
