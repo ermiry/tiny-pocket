@@ -11,20 +11,20 @@ import 'package:pocket/sidebar/navigation_bloc.dart';
 
 import 'package:pocket/style/colors.dart';
 
-class SidebarItem extends StatelessWidget {
+class _SidebarItem extends StatelessWidget {
 
   final IconData icon;
   final String title;
   final Function onTap;
 
-  const SidebarItem({Key key, this.icon, this.title, this.onTap}) : super(key: key);
+  const _SidebarItem({Key key, this.icon, this.title, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
           children: <Widget>[
             Icon(
@@ -37,7 +37,7 @@ class SidebarItem extends StatelessWidget {
             ),
             Text(
               title,
-              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 20, color: Colors.white),
+              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: Colors.white),
             )
           ],
         ),
@@ -45,7 +45,6 @@ class SidebarItem extends StatelessWidget {
     );
   }
 }
-
 
 class SideBar extends StatefulWidget {
 
@@ -92,6 +91,34 @@ class _SideBarState extends State <SideBar> with SingleTickerProviderStateMixin 
     }
   }
 
+  void _showConfirmDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog (
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12.0))
+        ),
+        title: Text ('Are you sure?', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
+        content: Text (message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text ('No', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          FlatButton(
+            child: Text ('Okay', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
+            onPressed: () {
+              Provider.of<Auth>(context, listen: false).logout();
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -110,32 +137,32 @@ class _SideBarState extends State <SideBar> with SingleTickerProviderStateMixin 
             children: <Widget>[
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   color: mainBlue,
                   child: Column(
                     children: <Widget>[
-                      SizedBox(height: 50),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.05),
 
                       // account info
                       ListTile(
                         title: Text(
-                          "${Provider.of<Auth>(context, listen: false).userValues['name']}",
-                          // "Erick Salas",
+                          // "${Provider.of<Auth>(context, listen: false).userValues['name']}",
+                          "Erick Salas",
                           style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800),
                         ),
                         subtitle: Text(
-                          "${Provider.of<Auth>(context, listen: false).userValues['email']}",
-                          // "erick@test.com",
+                          // "${Provider.of<Auth>(context, listen: false).userValues['email']}",
+                          "erick@test.com",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 14,
                           ),
                         ),
                         leading: CircleAvatar(
-                          backgroundColor: mainDarkBlue,
+                          backgroundColor: Color(0xFFEFF4F6),
                           child: Icon(
                             Icons.perm_identity,
-                            color: Colors.white,
+                            color: mainBlue,
                           ),
                           radius: 40,
                         ),
@@ -146,15 +173,15 @@ class _SideBarState extends State <SideBar> with SingleTickerProviderStateMixin 
                       ),
 
                       Divider(
-                        height: 64,
+                        height: 32,
                         thickness: 0.5,
                         color: Colors.white.withOpacity(0.3),
-                        indent: 32,
-                        endIndent: 32,
+                        indent: 24,
+                        endIndent: 24,
                       ),
 
                       // main routes
-                      SidebarItem(
+                      _SidebarItem(
                         icon: Icons.home,
                         title: "Home",
                         onTap: () {
@@ -166,15 +193,15 @@ class _SideBarState extends State <SideBar> with SingleTickerProviderStateMixin 
                       Spacer(),
 
                       Divider(
-                        height: 64,
+                        height: 32,
                         thickness: 0.5,
                         color: Colors.white.withOpacity(0.3),
-                        indent: 32,
-                        endIndent: 32,
+                        indent: 24,
+                        endIndent: 24,
                       ),
 
                       // suport routes
-                      SidebarItem(
+                      _SidebarItem(
                         icon: Icons.info,
                         title: "About",
                         onTap: () {
@@ -183,7 +210,7 @@ class _SideBarState extends State <SideBar> with SingleTickerProviderStateMixin 
                         },
                       ),
 
-                      SidebarItem(
+                      _SidebarItem(
                         icon: Icons.settings,
                         title: "Settings",
                         onTap: () {
@@ -192,10 +219,10 @@ class _SideBarState extends State <SideBar> with SingleTickerProviderStateMixin 
                         },
                       ),
 
-                      SidebarItem(
+                      _SidebarItem(
                         icon: Icons.exit_to_app,
                         title: "Logout",
-                        onTap: () => Provider.of<Auth>(context, listen: false).logout(),
+                        onTap: () => this._showConfirmDialog(context, 'Are you sure you want to logout?')
                       ),
 
                       SizedBox(height: 20),
