@@ -13,6 +13,8 @@ import 'package:pocket/screens/auth.dart';
 import 'package:pocket/screens/loading.dart';
 import 'package:pocket/sidebar/sidebar_layout.dart';
 
+import 'package:pocket/style/colors.dart';
+
 void main() => runApp(new TinyPocket ());
 
 class TinyPocket extends StatelessWidget {
@@ -36,8 +38,7 @@ class TinyPocket extends StatelessWidget {
         builder: (ctx, auth, _) => Platform.isAndroid ? MaterialApp (
           title: 'Tiny Pocket',
           theme: ThemeData (
-            // primarySwatch: mainBlue,
-            // accentColor: mainDarkBlue,
+            primaryColor: mainBlue,
             fontFamily: 'Quicksand',
             appBarTheme: AppBarTheme (
               textTheme: ThemeData.light().textTheme.copyWith(
