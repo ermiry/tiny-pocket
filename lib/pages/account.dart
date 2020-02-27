@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:pocket/sidebar/navigation_bloc.dart';
 
@@ -12,6 +13,11 @@ class AccountPage extends StatelessWidget with NavigationStates {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      // DeviceOrientation.portraitDown,
+    ]);
+
     return Container(
       // padding: const EdgeInsets.symmetric(vertical: 16),
       child: Column(

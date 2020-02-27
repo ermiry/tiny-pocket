@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 
 import 'package:pocket/sidebar/navigation_bloc.dart';
 
@@ -30,6 +31,10 @@ class _HomePageState extends State <HomePage> {
 
 	@override
 	Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      // DeviceOrientation.portraitDown,
+    ]);
 
     final mediaQuery = MediaQuery.of(context);
 

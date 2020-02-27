@@ -2,6 +2,7 @@ import 'dart:core';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pocket/providers/transactions.dart';
@@ -56,6 +57,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      // DeviceOrientation.portraitDown,
+    ]);
+
     return Scaffold(
       backgroundColor: const Color.fromRGBO(245, 248, 253, 1),
       // backgroundColor: const Color.fromRGBO(47, 54, 64, 1),
