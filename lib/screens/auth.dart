@@ -105,6 +105,35 @@ class _AuthScreenState extends State <AuthScreen> {
     }
   }
 
+  Widget _create() {
+    return new Container(
+      height: 50,
+      margin: EdgeInsets.symmetric(horizontal: 50),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50),
+        color: mainBlue
+      ),
+      child: Center(
+        child: RawMaterialButton(
+          onPressed: () => showModalBottomSheetApp(
+            isDismissible: true,
+            context: context, 
+            builder: (bCtx) => new _CreateAccount(),
+            // isScrollControlled: true,
+            // isDismissible: false,
+          ),
+          elevation: 0,
+          textStyle: TextStyle(
+            color: Colors.white,
+            // fontSize: 18,
+            fontWeight: FontWeight.w800
+          ),
+          child: Text("Create Account"),
+        ),
+      ),
+    );
+  }
+
   void _info() {
     showModalBottomSheet(
       context: context, 
@@ -336,7 +365,8 @@ class _AuthScreenState extends State <AuthScreen> {
 
                         SizedBox(height: maxHeight >= 900 ? 30 : 15),
 
-                        FadeAnimation(2.0, -30, 0, new _CreateAccount()),
+                        // create account button
+                        FadeAnimation(2.0, -30, 0, this._create()),
                       ],
                     ),
                   )
@@ -417,398 +447,365 @@ class _CreateAccountState extends State <_CreateAccount> {
     super.dispose();
   }
 
-  _showModalBottomSheet(context) {
-    final height = MediaQuery.of(context).size.height;
-
-    showModalBottomSheetApp(
-      resizeToAvoidBottomPadding: true,
-      // dismissOnTap: true,
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setModalState) {
-            void _showErrorDialog(String message) {
-              showDialog(
-                context: context, 
-                builder: (ctx) => AlertDialog (
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0))
-                  ),
-                  title: Text ('An error ocurred!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
-                  content: Text (message),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
-                      onPressed: () {
-                        Navigator.of(ctx).pop();
-                      },
-                    )
-                  ],
-                )
-              );
-            }
-
-            void _showSuccessDialog(String message) {
-              showDialog(
-                context: context, 
-                builder: (ctx) => AlertDialog (
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0))
-                  ),
-                  title: Text ('Success!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
-                  content: Text (message),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
-                      onPressed: () {
-                        Navigator.of(ctx).pop();
-                      },
-                    )
-                  ],
-                )
-              );
-            }
-            
-            Future <void> _submitRegister() async {
-              bool fail = false;
-              if (this._formKey.currentState.validate()) {
-                this._formKey.currentState.save();
-                
-                try {
-                  setModalState(() => this._createLoading = true);
-                  await Provider.of<Auth>(context, listen: false).signup(
-                    _authData['name'],
-                    _authData['username'],
-                    _authData['email'],
-                    _authData['password'],
-                    _authData['password2']
-                  );
-                  fail = false;
-                } on HttpException catch (error) {
-                  var jsonError = json.decode(error.toString());
-
-                  String actualError;
-                  if (jsonError['email'] != null) actualError = jsonError['email'];
-                  else if (jsonError['username'] != null) actualError = jsonError['username'];
-                  else if (jsonError['password'] != null) actualError = jsonError['password'];
-
-                  // print(actualError);
-
-                  _showErrorDialog(actualError);
-                  fail = true;
-                }
-
-                catch (error) {
-                  _showErrorDialog('Failed to create new account!');
-                  fail = true;
-                }
-
-                finally {
-                  setModalState(() => this._createLoading = false);
-                }
-
-                if (!fail) {
-                  _showSuccessDialog("Created new account! Now login.");
-
-                  // clear input texts
-                  this._nameController.clear();
-                  this._usernameController.clear();
-                  this._emailController.clear();
-                  this._passwordController.clear();
-                  this._confirmController.clear();
-                }
-              }
-            }
-
-            return Container(
-              height: height * 0.6,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
-
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 20),
-                  
-                  Text(
-                    "Create your free account!", 
-                    style: TextStyle(
-                      color: mainBlue, 
-                      fontWeight: FontWeight.bold, fontSize: 20
-                    )
-                  ),
-                  
-                  SizedBox(height: 20),
-
-                  Expanded(
-                    child: SingleChildScrollView (
-                      child: Column (
-                        children: <Widget>[
-                          SizedBox(height: 20),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 40),
-                            child: new Form(
-                              key: this._formKey,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color.fromRGBO(25, 42, 86, 0.5),
-                                      blurRadius: 20,
-                                      offset: Offset(0, 10),
-                                    )
-                                  ]
-                                ),
-                                child: Column(
-                                  children: <Widget>[
-                                    // name input
-                                    Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: new BoxDecoration(
-                                        border: Border(bottom: BorderSide(
-                                          color: Colors.grey[200]
-                                        ))
-                                      ),
-                                      child: new TextFormField(
-                                        autofocus: false,
-                                        enabled: this._createLoading ? false : true,
-                                        controller: this._nameController,
-                                        decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: "Name",
-                                          hintStyle: const TextStyle(color: Colors.grey)
-                                        ),
-                                        keyboardType: TextInputType.text,
-                                        validator: (value) {
-                                          if (value.isEmpty) return 'Name field is required!';
-                                          return null;
-                                        },
-                                        textInputAction: TextInputAction.next,
-                                        onFieldSubmitted: (value) {
-                                          FocusScope.of(context).requestFocus(
-                                            this._usernameFocusNode
-                                          );
-                                        },
-                                        onSaved: (value) {
-                                          this._authData['name'] = value;
-                                        },
-                                      ),
-                                    ),
-
-                                    // username input
-                                    Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: new BoxDecoration(
-                                        border: Border(bottom: BorderSide(
-                                          color: Colors.grey[200]
-                                        ))
-                                      ),
-                                      child: new TextFormField(
-                                        autofocus: false,
-                                        enabled: this._createLoading ? false : true,
-                                        controller: this._usernameController,
-                                        focusNode: this._usernameFocusNode,
-                                        decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: "Username",
-                                          hintStyle: const TextStyle(color: Colors.grey)
-                                        ),
-                                        keyboardType: TextInputType.text,
-                                        validator: (value) {
-                                          if (value.isEmpty) return 'Username field is required!';
-                                          return null;
-                                        },
-                                        textInputAction: TextInputAction.next,
-                                        onFieldSubmitted: (value) {
-                                          FocusScope.of(context).requestFocus(
-                                            this._emailFocusNode
-                                          );
-                                        },
-                                        onSaved: (value) {
-                                          _authData['username'] = value;
-                                        },
-                                      ),
-                                    ),
-
-                                    // email input
-                                    Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: new BoxDecoration(
-                                        border: Border(bottom: BorderSide(
-                                          color: Colors.grey[200]
-                                        ))
-                                      ),
-                                      child: new TextFormField(
-                                        autofocus: false,
-                                        enabled: this._createLoading ? false : true,
-                                        controller: this._emailController,
-                                        focusNode: this._emailFocusNode,
-                                        decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: "Email",
-                                          hintStyle: const TextStyle(color: Colors.grey)
-                                        ),
-                                        keyboardType: TextInputType.emailAddress,
-                                        validator: (value) {
-                                          if (value.isEmpty) return 'Email field is required!';
-                                          else if (!value.contains('@')) return 'Invalid email!';
-                                          return null;
-                                        },
-                                        textInputAction: TextInputAction.next,
-                                        onFieldSubmitted: (value) {
-                                          FocusScope.of(context).requestFocus(
-                                            this._passwordFocusNode
-                                          );
-                                        },
-                                        onSaved: (value) {
-                                          _authData['email'] = value;
-                                        },
-                                      ),
-                                    ),
-
-                                    // password input
-                                    Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        border: Border(bottom: BorderSide(
-                                          color: Colors.grey[200]
-                                        ))
-                                      ),
-                                      child: new TextFormField(
-                                        autofocus: false,
-                                        enabled: this._createLoading ? false : true,
-                                        controller: this._passwordController,
-                                        focusNode: this._passwordFocusNode,
-                                        decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: "Password",
-                                          hintStyle: const TextStyle(color: Colors.grey)
-                                        ),
-                                        obscureText: true,
-                                        keyboardType: TextInputType.text,
-                                        validator: (value) {
-                                          if (value.isEmpty) return 'Password field is required!';
-                                          else if (value.length < 5) return 'Password is too short!';
-                                          else if (value.length > 64) return 'Password is too long!';
-                                          return null;
-                                        },
-                                        textInputAction: TextInputAction.next,
-                                        onFieldSubmitted: (value) {
-                                          FocusScope.of(context).requestFocus(
-                                            this._confirmFocusNode
-                                          );
-                                        },
-                                        onSaved: (value) {
-                                          _authData['password'] = value;
-                                        },
-                                      ),
-                                    ),
-
-                                    // confirm password input
-                                    Container(
-                                      padding: const EdgeInsets.all(10),
-                                      child: new TextFormField(
-                                        autofocus: false,
-                                        enabled: this._createLoading ? false : true,
-                                        controller: this._confirmController,
-                                        focusNode: this._confirmFocusNode,
-                                        decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: "Confirm Password",
-                                          hintStyle: const TextStyle(color: Colors.grey)
-                                        ),
-                                        obscureText: true,
-                                        keyboardType: TextInputType.text,
-                                        validator: (value) {
-                                          if (value.isEmpty) return 'Confirm password field is required!';
-                                          if (value != this._passwordController.text) return 'Passwords do not match!';
-                                          return null;
-                                        },
-                                        textInputAction: TextInputAction.done,
-                                        onSaved: (value) {
-                                          _authData['password2'] = value;
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          SizedBox(height: 30),
-
-                          // signup button
-                          new Container(
-                            height: 50,
-                            margin: EdgeInsets.symmetric(horizontal: 60),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: mainBlue
-                            ),
-                            child: Center(
-                              child: RawMaterialButton(
-                                onPressed: this._createLoading ? null : () => _submitRegister(),
-                                elevation: 0,
-                                textStyle: TextStyle(
-                                  color: Colors.white,
-                                  // fontSize: 18,
-                                  fontWeight: FontWeight.w800
-                                ),
-                                child: this._createLoading ? new CircularProgressIndicator(
-                                  backgroundColor: Colors.white,
-                                  valueColor: new AlwaysStoppedAnimation<Color>(mainDarkBlue),
-                                ) :
-                                Text("Signup!")
-                              ),
-                            ),
-                          ),
-
-                          SizedBox(height: 30),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            );
-          }
-        );
-      },
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context, 
+      builder: (ctx) => AlertDialog (
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12.0))
+        ),
+        title: Text (
+          'Error!', 
+          style: const TextStyle(color: Colors.red, fontSize: 28),
+          textAlign: TextAlign.center,
+        ),
+        content: Text (
+          message,
+          style: const TextStyle(fontSize: 18),
+          textAlign: TextAlign.center,
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text ('Okay', style: const TextStyle(color: mainDarkBlue, fontSize: 18, fontWeight: FontWeight.bold)),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      )
     );
+  }
+
+  void _showSuccessDialog(String message) {
+    showDialog(
+      context: context, 
+      builder: (ctx) => AlertDialog (
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12.0))
+        ),
+        title: Text (
+          'Success!', 
+          style: const TextStyle(color: mainBlue, fontSize: 28),
+          textAlign: TextAlign.center,
+        ),
+        content: Text (
+          message,
+          style: const TextStyle(fontSize: 18),
+          textAlign: TextAlign.center,
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text ('Okay', style: const TextStyle(color: mainDarkBlue, fontSize: 18, fontWeight: FontWeight.bold)),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      )
+    );
+  }
+
+  Future <void> _submitRegister() async {
+    bool fail = false;
+    if (this._formKey.currentState.validate()) {
+      this._formKey.currentState.save();
+      
+      try {
+        setState(() => this._createLoading = true);
+        await Provider.of<Auth>(context, listen: false).signup(
+          _authData['name'],
+          _authData['username'],
+          _authData['email'],
+          _authData['password'],
+          _authData['password2']
+        );
+        fail = false;
+      } on HttpException catch (error) {
+        var jsonError = json.decode(error.toString());
+
+        String actualError;
+        if (jsonError['email'] != null) actualError = jsonError['email'];
+        else if (jsonError['username'] != null) actualError = jsonError['username'];
+        else if (jsonError['password'] != null) actualError = jsonError['password'];
+
+        // print(actualError);
+
+        _showErrorDialog(actualError);
+        fail = true;
+      }
+
+      catch (error) {
+        _showErrorDialog('Failed to create new account!');
+        fail = true;
+      }
+
+      finally {
+        setState(() => this._createLoading = false);
+      }
+
+      if (!fail) {
+        _showSuccessDialog("Created new account! Now login.");
+
+        // clear input texts
+        this._nameController.clear();
+        this._usernameController.clear();
+        this._emailController.clear();
+        this._passwordController.clear();
+        this._confirmController.clear();
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      height: 50,
-      margin: EdgeInsets.symmetric(horizontal: 50),
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.6,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(50),
-        // color: mainBlue
-        color: mainDarkBlue
-      ),
-      child: Center(
-        child: RawMaterialButton(
-          onPressed: () {
-            _showModalBottomSheet(context);
-          },
-          elevation: 0,
-          textStyle: TextStyle(
-            color: Colors.white,
-            // fontSize: 18,
-            fontWeight: FontWeight.w800
-          ),
-          child: Text("Create Account"),
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
         ),
       ),
+
+      child: ListView(
+        children: <Widget>[
+          const SizedBox(height: 20),
+          
+          Text(
+            "Create your free account!", 
+            style: TextStyle(
+              color: mainBlue, 
+              fontWeight: FontWeight.bold, fontSize: 20
+            )
+          ),
+          
+          const SizedBox(height: 20),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: new Form(
+              key: this._formKey,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color.fromRGBO(25, 42, 86, 0.5),
+                      blurRadius: 20,
+                      offset: Offset(0, 10),
+                    )
+                  ]
+                ),
+                child: Column(
+                  children: <Widget>[
+                    // name input
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: new BoxDecoration(
+                        border: Border(bottom: BorderSide(
+                          color: Colors.grey[200]
+                        ))
+                      ),
+                      child: new TextFormField(
+                        autofocus: false,
+                        enabled: this._createLoading ? false : true,
+                        controller: this._nameController,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Name",
+                          hintStyle: const TextStyle(color: Colors.grey)
+                        ),
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value.isEmpty) return 'Name field is required!';
+                          return null;
+                        },
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (value) {
+                          FocusScope.of(context).requestFocus(
+                            this._usernameFocusNode
+                          );
+                        },
+                        onSaved: (value) {
+                          this._authData['name'] = value;
+                        },
+                      ),
+                    ),
+
+                    // username input
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: new BoxDecoration(
+                        border: Border(bottom: BorderSide(
+                          color: Colors.grey[200]
+                        ))
+                      ),
+                      child: new TextFormField(
+                        autofocus: false,
+                        enabled: this._createLoading ? false : true,
+                        controller: this._usernameController,
+                        focusNode: this._usernameFocusNode,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Username",
+                          hintStyle: const TextStyle(color: Colors.grey)
+                        ),
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value.isEmpty) return 'Username field is required!';
+                          return null;
+                        },
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (value) {
+                          FocusScope.of(context).requestFocus(
+                            this._emailFocusNode
+                          );
+                        },
+                        onSaved: (value) {
+                          _authData['username'] = value;
+                        },
+                      ),
+                    ),
+
+                    // email input
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: new BoxDecoration(
+                        border: Border(bottom: BorderSide(
+                          color: Colors.grey[200]
+                        ))
+                      ),
+                      child: new TextFormField(
+                        autofocus: false,
+                        enabled: this._createLoading ? false : true,
+                        controller: this._emailController,
+                        focusNode: this._emailFocusNode,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Email",
+                          hintStyle: const TextStyle(color: Colors.grey)
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value.isEmpty) return 'Email field is required!';
+                          else if (!value.contains('@')) return 'Invalid email!';
+                          return null;
+                        },
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (value) {
+                          FocusScope.of(context).requestFocus(
+                            this._passwordFocusNode
+                          );
+                        },
+                        onSaved: (value) {
+                          _authData['email'] = value;
+                        },
+                      ),
+                    ),
+
+                    // password input
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(
+                          color: Colors.grey[200]
+                        ))
+                      ),
+                      child: new TextFormField(
+                        autofocus: false,
+                        enabled: this._createLoading ? false : true,
+                        controller: this._passwordController,
+                        focusNode: this._passwordFocusNode,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Password",
+                          hintStyle: const TextStyle(color: Colors.grey)
+                        ),
+                        obscureText: true,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value.isEmpty) return 'Password field is required!';
+                          else if (value.length < 5) return 'Password is too short!';
+                          else if (value.length > 64) return 'Password is too long!';
+                          return null;
+                        },
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (value) {
+                          FocusScope.of(context).requestFocus(
+                            this._confirmFocusNode
+                          );
+                        },
+                        onSaved: (value) {
+                          _authData['password'] = value;
+                        },
+                      ),
+                    ),
+
+                    // confirm password input
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      child: new TextFormField(
+                        autofocus: false,
+                        enabled: this._createLoading ? false : true,
+                        controller: this._confirmController,
+                        focusNode: this._confirmFocusNode,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Confirm Password",
+                          hintStyle: const TextStyle(color: Colors.grey)
+                        ),
+                        obscureText: true,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value.isEmpty) return 'Confirm password field is required!';
+                          if (value != this._passwordController.text) return 'Passwords do not match!';
+                          return null;
+                        },
+                        textInputAction: TextInputAction.done,
+                        onSaved: (value) {
+                          _authData['password2'] = value;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 30),
+
+          // signup button
+          new Container(
+            height: 50,
+            margin: EdgeInsets.symmetric(horizontal: 60),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              color: mainBlue
+            ),
+            child: Center(
+              child: RawMaterialButton(
+                onPressed: this._createLoading ? null : () => _submitRegister(),
+                elevation: 0,
+                textStyle: TextStyle(
+                  color: Colors.white,
+                  // fontSize: 18,
+                  fontWeight: FontWeight.w800
+                ),
+                child: this._createLoading ? new CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                  valueColor: new AlwaysStoppedAnimation<Color>(mainDarkBlue),
+                ) :
+                Text("Signup!")
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 30),
+        ],
+      )
     );
   }
 
