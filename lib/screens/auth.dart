@@ -105,13 +105,35 @@ class _AuthScreenState extends State <AuthScreen> {
     }
   }
 
+  Widget _forgot() {
+    return Center(
+      child: RawMaterialButton(
+        onPressed: () => showModalBottomSheetApp(
+          isDismissible: true,
+          context: context, 
+          builder: (bCtx) => new _ForgotPassword(),
+          // isScrollControlled: true,
+          // isDismissible: false,
+        ),
+        elevation: 0,
+        textStyle: TextStyle(
+          color: Color.fromRGBO(25, 42, 86, 0.6),
+          fontSize: 16
+        ),
+        child: Text(
+          "Forgot Password?"
+        )
+      ),
+    );
+  }
+
   Widget _create() {
     return new Container(
       height: 50,
       margin: EdgeInsets.symmetric(horizontal: 50),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
-        color: mainBlue
+        color: mainDarkBlue
       ),
       child: Center(
         child: RawMaterialButton(
@@ -201,7 +223,7 @@ class _AuthScreenState extends State <AuthScreen> {
               Container(
                 height: MediaQuery.of(context).size.height * 0.35,
                 child: Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.symmetric(horizontal: 24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -327,7 +349,7 @@ class _AuthScreenState extends State <AuthScreen> {
 
                         SizedBox(height: maxHeight >= 900 ? 30 : 15),
 
-                        FadeAnimation(1.5, -30, 0, new _ForgotPassword()),
+                        FadeAnimation(1.5, -30, 0, this._forgot()),
 
                         SizedBox(height: maxHeight >= 900 ? 30 : 15),
 
@@ -572,12 +594,15 @@ class _CreateAccountState extends State <_CreateAccount> {
         children: <Widget>[
           const SizedBox(height: 20),
           
-          Text(
-            "Create your free account!", 
-            style: TextStyle(
-              color: mainBlue, 
-              fontWeight: FontWeight.bold, fontSize: 20
-            )
+          Center(
+            child: Text(
+              "Create your free account!", 
+              style: TextStyle(
+                color: mainBlue, 
+                fontWeight: FontWeight.bold, fontSize: 20
+              ),
+              textAlign: TextAlign.center,
+            ),
           ),
           
           const SizedBox(height: 20),
@@ -602,7 +627,7 @@ class _CreateAccountState extends State <_CreateAccount> {
                   children: <Widget>[
                     // name input
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       decoration: new BoxDecoration(
                         border: Border(bottom: BorderSide(
                           color: Colors.grey[200]
@@ -636,7 +661,7 @@ class _CreateAccountState extends State <_CreateAccount> {
 
                     // username input
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       decoration: new BoxDecoration(
                         border: Border(bottom: BorderSide(
                           color: Colors.grey[200]
@@ -671,7 +696,7 @@ class _CreateAccountState extends State <_CreateAccount> {
 
                     // email input
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       decoration: new BoxDecoration(
                         border: Border(bottom: BorderSide(
                           color: Colors.grey[200]
@@ -707,7 +732,7 @@ class _CreateAccountState extends State <_CreateAccount> {
 
                     // password input
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       decoration: BoxDecoration(
                         border: Border(bottom: BorderSide(
                           color: Colors.grey[200]
@@ -745,7 +770,7 @@ class _CreateAccountState extends State <_CreateAccount> {
 
                     // confirm password input
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: new TextFormField(
                         autofocus: false,
                         enabled: this._createLoading ? false : true,
@@ -830,212 +855,201 @@ class _ForgotPasswordState extends State <_ForgotPassword> {
 
   bool _recoverLoading = false;
 
-  _showModalBottomSheet(context) {
-    var maxHeight = MediaQuery.of(context).size.height;
-
-    showModalBottomSheetApp(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setModalState) {
-            void _showErrorDialog(String message) {
-              showDialog(
-                context: context, 
-                builder: (ctx) => AlertDialog (
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0))
-                  ),
-                  title: Text ('An error ocurred!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
-                  content: Text (message),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
-                      onPressed: () {
-                        Navigator.of(ctx).pop();
-                      },
-                    )
-                  ],
-                )
-              );
-            }
-
-            void _showSuccessDialog(String message) {
-              showDialog(
-                context: context, 
-                builder: (ctx) => AlertDialog (
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0))
-                  ),
-                  title: Text ('Success!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
-                  content: Text (message),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
-                      onPressed: () {
-                        Navigator.of(ctx).pop();
-                      },
-                    )
-                  ],
-                )
-              );
-            }
-
-            Future <void> _submitRecover() async {
-              bool fail = false;
-              
-              if (this._formKey.currentState.validate()) {
-                this._formKey.currentState.save();
-                
-                try {
-                  setModalState(() => this._recoverLoading = true);
-                  await Provider.of<Auth>(context, listen: false).recover(this._authData['email']);
-                }
-
-                catch (error) {
-                  _showErrorDialog('Failed to manage account recovery!');
-                  fail = true;
-                }
-
-                finally {
-                  setModalState(() => this._recoverLoading = false);
-                }
-
-                if (!fail) {
-                  this._emailController.clear();
-                  _showSuccessDialog('Check your mailbox for recovery instructions');
-                }
-              }
-            }
-
-            return Container(
-              height: maxHeight * 0.4,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
-              child: new Container (
-                child: Column (
-                  children: <Widget>[
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Text(
-                        "Enter the email address associated with your account", 
-                        style: TextStyle(
-                          color: mainBlue, 
-                          fontWeight: FontWeight.bold, fontSize: 20
-                        )
-                      ),
-                    ),
-
-                    SizedBox(height: 40),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color.fromRGBO(25, 42, 86, 0.5),
-                              blurRadius: 20,
-                              offset: Offset(0, 10),
-                            )
-                          ]
-                        ),
-                        child: Column(
-                          children: <Widget>[
-                            new Form(
-                              key: this._formKey,
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                child: new TextFormField(
-                                  enabled: this._recoverLoading ? false : true,
-                                  autofocus: false,
-                                  controller: this._emailController,
-                                  decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "Email",
-                                    hintStyle: const TextStyle(color: Colors.grey)
-                                  ),
-                                  keyboardType: TextInputType.emailAddress,
-                                  validator: (value) {
-                                    if (value.isEmpty) return 'Email field is required!';
-                                    else if (!value.contains('@')) return 'Invalid email!';
-                                    return null;
-                                  },
-                                  textInputAction: TextInputAction.done,
-                                  onFieldSubmitted: (value) {
-                                    // nothing here
-                                  },
-                                  onSaved: (value) {
-                                    this._authData['email'] = value;
-                                  },
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(height: maxHeight >= 900 ? 60 : 30),
-
-                    // recover button
-                    new Container(
-                      height: 50,
-                      margin: EdgeInsets.symmetric(horizontal: 60),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: mainBlue
-                      ),
-                      child: Center(
-                        child: RawMaterialButton(
-                          onPressed: this._recoverLoading ? null : () => _submitRecover(),
-                          elevation: 0,
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                            // fontSize: 18,
-                            fontWeight: FontWeight.w800
-                          ),
-                          child: this._recoverLoading ? new CircularProgressIndicator(
-                            backgroundColor: Colors.white,
-                            valueColor: new AlwaysStoppedAnimation<Color>(mainDarkBlue),
-                          ) :
-                          Text("Recover Account!")
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            );
-          }
-        );
-      },
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context, 
+      builder: (ctx) => AlertDialog (
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12.0))
+        ),
+        title: Text (
+          'Error!', 
+          style: const TextStyle(color: Colors.red, fontSize: 28),
+          textAlign: TextAlign.center,
+        ),
+        content: Text (
+          message,
+          style: const TextStyle(fontSize: 18),
+          textAlign: TextAlign.center,
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text ('Okay', style: const TextStyle(color: mainDarkBlue, fontSize: 18, fontWeight: FontWeight.bold)),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      )
     );
+  }
+
+  void _showSuccessDialog(String message) {
+    showDialog(
+      context: context, 
+      builder: (ctx) => AlertDialog (
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12.0))
+        ),
+        title: Text (
+          'Success!', 
+          style: const TextStyle(color: mainBlue, fontSize: 28),
+          textAlign: TextAlign.center,
+        ),
+        content: Text (
+          message,
+          style: const TextStyle(fontSize: 18),
+          textAlign: TextAlign.center,
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text ('Okay', style: const TextStyle(color: mainDarkBlue, fontSize: 18, fontWeight: FontWeight.bold)),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      )
+    );
+  }
+
+  Future <void> _submitRecover() async {
+    bool fail = false;
+    
+    if (this._formKey.currentState.validate()) {
+      this._formKey.currentState.save();
+      
+      try {
+        setState(() => this._recoverLoading = true);
+        await Provider.of<Auth>(context, listen: false).recover(this._authData['email']);
+      }
+
+      catch (error) {
+        _showErrorDialog('Failed to manage account recovery!');
+        fail = true;
+      }
+
+      finally {
+        setState(() => this._recoverLoading = false);
+      }
+
+      if (!fail) {
+        this._emailController.clear();
+        _showSuccessDialog('Check your mailbox for recovery instructions');
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: RawMaterialButton(
-        onPressed: () {
-          _showModalBottomSheet(context);
-        },
-        elevation: 0,
-        textStyle: TextStyle(
-          color: Color.fromRGBO(25, 42, 86, 0.6),
-          fontSize: 16
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.4,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
         ),
-        child: Text(
-          "Forgot Password?"
-        )
       ),
+      child: new ListView(
+        children: <Widget>[
+          const SizedBox(height: 20),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Center(
+              child: Text(
+                "Enter the email address associated with your account", 
+                style: TextStyle(
+                  color: mainBlue, 
+                  fontWeight: FontWeight.bold, fontSize: 20,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 40),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color.fromRGBO(25, 42, 86, 0.5),
+                    blurRadius: 20,
+                    offset: Offset(0, 10),
+                  )
+                ]
+              ),
+              child: Column(
+                children: <Widget>[
+                  new Form(
+                    key: this._formKey,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: new TextFormField(
+                        enabled: this._recoverLoading ? false : true,
+                        autofocus: false,
+                        controller: this._emailController,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Email",
+                          hintStyle: const TextStyle(color: Colors.grey)
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value.isEmpty) return 'Email field is required!';
+                          else if (!value.contains('@')) return 'Invalid email!';
+                          return null;
+                        },
+                        textInputAction: TextInputAction.done,
+                        onFieldSubmitted: (value) {
+                          // nothing here
+                        },
+                        onSaved: (value) {
+                          this._authData['email'] = value;
+                        },
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+
+          SizedBox(height: MediaQuery.of(context).size.height >= 900 ? 60 : 30),
+
+          // recover button
+          new Container(
+            height: 50,
+            margin: EdgeInsets.symmetric(horizontal: 60),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              color: mainBlue
+            ),
+            child: Center(
+              child: RawMaterialButton(
+                onPressed: this._recoverLoading ? null : () => _submitRecover(),
+                elevation: 0,
+                textStyle: TextStyle(
+                  color: Colors.white,
+                  // fontSize: 18,
+                  fontWeight: FontWeight.w800
+                ),
+                child: this._recoverLoading ? new CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                  valueColor: new AlwaysStoppedAnimation<Color>(mainDarkBlue),
+                ) :
+                Text("Recover Account!")
+              ),
+            ),
+          )
+        ],
+      )
     );
   }
 
