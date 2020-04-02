@@ -105,6 +105,53 @@ class _AuthScreenState extends State <AuthScreen> {
     }
   }
 
+  void _info() {
+    showModalBottomSheet(
+      context: context, 
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: const Radius.circular(20.0),
+          topRight: const Radius.circular(20.0)
+        ),
+      ),
+      builder: (bCtx) => new Container (
+        height: MediaQuery.of(context).size.height * 0.2,
+        padding: EdgeInsets.all(16),
+        child: new Center(
+          child: new Column(
+            children: <Widget>[
+              Text(
+                'Tiny Pocket Mobile App',
+                style: new TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: mainBlue),
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 10),
+
+              Text(
+                'Version 1.0 -- 02/April/2020',
+                style: new TextStyle(fontSize: 18),
+                textAlign: TextAlign.center,
+              ),
+
+              Spacer(),
+
+              Text(
+                'Created by Ermiry',
+                style: new TextStyle(fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 5)
+            ],
+          )
+        )
+      ),
+      isScrollControlled: true,
+      isDismissible: false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -296,6 +343,23 @@ class _AuthScreenState extends State <AuthScreen> {
                 ],
               )
             ],
+          ),
+
+          Positioned(
+            bottom: MediaQuery.of(context).size.width * 0.02,
+            left: MediaQuery.of(context).size.width * 0.85,
+            child: Container(
+              // decoration: ShapeDecoration(
+              //   shape: CircleBorder (),
+              //   color: Colors.white
+              // ),
+              child: IconButton(
+                color: mainBlue,
+                icon: Icon(Icons.info),
+                onPressed: () => this._info(),
+                iconSize: 36
+              )
+            ),
           )
         ],
       )
