@@ -12,7 +12,7 @@ import 'package:pocket/providers/settings.dart';
 
 import 'package:pocket/pages/home/charts/bars.dart';
 import 'package:pocket/pages/home/charts/expenses.dart';
-import 'package:pocket/pages/home/charts/history.dart';
+// import 'package:pocket/pages/home/charts/history.dart';
 
 import 'package:pocket/widgets/transactions/list.dart';
 import 'package:pocket/widgets/transactions/add.dart';

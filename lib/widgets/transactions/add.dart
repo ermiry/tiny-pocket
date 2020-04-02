@@ -61,10 +61,18 @@ class _AddTransactionState extends State <AddTransaction> {
       context: context, 
       builder: (ctx) => AlertDialog (
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.0))
+          borderRadius: BorderRadius.all(Radius.circular(12.0))
         ),
-        title: Text ('An error ocurred!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
-        content: Text (message),
+        title: Text (
+          'Error!', 
+          style: const TextStyle(color: Colors.red, fontSize: 28),
+          textAlign: TextAlign.center,
+        ),
+        content: Text (
+          message,
+          style: const TextStyle(fontSize: 18),
+          textAlign: TextAlign.center,
+        ),
         actions: <Widget>[
           FlatButton(
             child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
