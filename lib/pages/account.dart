@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 
 import 'package:pocket/sidebar/navigation_bloc.dart';
 
-// import 'package:provider/provider.dart';
-// import 'package:pocket/providers/auth.dart';
+import 'package:provider/provider.dart';
+import 'package:pocket/providers/auth.dart';
 
 import 'package:pocket/widgets/custom/textfield.dart';
 import 'package:pocket/widgets/custom/modal_action_button.dart';
@@ -22,6 +22,43 @@ class AccountPage extends StatefulWidget with NavigationStates {
 }
 
 class AccountPageState extends State <AccountPage> {
+
+  // used only for logout button
+  void _showConfirmDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog (
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12.0))
+        ),
+        title: Text (
+          'Are you sure?', 
+          style: const TextStyle(color: mainDarkBlue, fontSize: 28),
+          textAlign: TextAlign.center,
+        ),
+        content: Text (
+          message,
+          style: const TextStyle(fontSize: 18),
+          textAlign: TextAlign.center,
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text ('No', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          FlatButton(
+            child: Text ('Okay', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
+            onPressed: () {
+              Provider.of<Auth>(context, listen: false).logout();
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      )
+    );
+  }
 
   void _showChangeDialog(String title, String placeholder, String secondPlaceholder) {
     showDialog(
@@ -187,6 +224,7 @@ class AccountPageState extends State <AccountPage> {
                     contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                     leading: Icon(Icons.exit_to_app, color: Colors.black87,),
                     title: Text ('Logout', style: new TextStyle(fontSize: 16)),
+                    onTap: () => this._showConfirmDialog('Are you sure you want to logout?')
                   ),
                 ),
 
