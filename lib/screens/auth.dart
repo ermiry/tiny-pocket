@@ -199,7 +199,7 @@ class _AuthScreenState extends State <AuthScreen> {
         )
       ),
       isScrollControlled: true,
-      isDismissible: false,
+      isDismissible: true,
     );
   }
 
@@ -372,8 +372,8 @@ class _AuthScreenState extends State <AuthScreen> {
                               ),
                               // ,
                               child: this._signinLoading ? new CircularProgressIndicator(
-                                backgroundColor: Colors.white,
-                                valueColor: new AlwaysStoppedAnimation<Color>(mainBlue),
+                                // backgroundColor: Colors.white,
+                                valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
                               ) :
                               Text("Login!")
                               ,

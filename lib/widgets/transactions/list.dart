@@ -31,6 +31,8 @@ class TransactionList extends StatelessWidget {
           :
 
           ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
             itemCount: sortedTrans.length,
             itemBuilder: (ctx, idx) {
               return new Dismissible(

@@ -42,63 +42,67 @@ class _HomePageState extends State <HomePage> {
       builder: (ctx, settings, _) {
         return Container (
           color: Colors.white,
-          child: ListView (
-            children: <Widget>[
-              settings.showBarsChart ? 
-                new Container (
-                  height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.2,
-                  child: BarsChart (Provider.of<Transactions>(context, listen: true).recentTransactions)) :
-                new Container(),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
 
-              Provider.of<Transactions>(context, listen: true).usedTransTypes.length > 0 ? 
-                settings.showExpensesChart ? 
-                new ExpensesChart () : new Container() : 
-                new Container(),
+                settings.showBarsChart ? 
+                  new Container (
+                    height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.2,
+                    child: BarsChart (Provider.of<Transactions>(context, listen: true).recentTransactions)) :
+                  new Container(),
 
-              // settings.showHistoryChart ? new HistoryChart () : new Container(),
+                Provider.of<Transactions>(context, listen: true).usedTransTypes.length > 0 ? 
+                  settings.showExpensesChart ? 
+                  new ExpensesChart () : new Container() : 
+                  new Container(),
 
-              Container(
-                height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.12,
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Text(
-                      "Total: ",
-                      style: hoursPlayedLabelTextStyle,
-                    ),
-                    Text(
-                      "\$${Provider.of<Transactions>(context, listen: true).getTotal.toStringAsFixed (2)}",
-                      style: hoursPlayedTextStyle,
-                    ),
-                    Text(
-                      "from",
-                      style: hoursPlayedLabelTextStyle,
-                    ),
-                    Text(
-                      "${Provider.of<Transactions>(context, listen: true).transactions.length}",
-                      style: hoursPlayedTextStyle,
-                    ),
-                    Text(
-                      "transactions",
-                      style: hoursPlayedLabelTextStyle,
-                    ),
-                  ],
+                // settings.showHistoryChart ? new HistoryChart () : new Container(),
+
+                // stats
+                Container(
+                  // height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.12,
+                  padding: EdgeInsets.only(left: 16, right: 16, top: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Text(
+                        "Total: ",
+                        style: hoursPlayedLabelTextStyle,
+                      ),
+                      Text(
+                        "\$${Provider.of<Transactions>(context, listen: true).getTotal.toStringAsFixed (2)}",
+                        style: hoursPlayedTextStyle,
+                      ),
+                      Text(
+                        "from",
+                        style: hoursPlayedLabelTextStyle,
+                      ),
+                      Text(
+                        "${Provider.of<Transactions>(context, listen: true).transactions.length}",
+                        style: hoursPlayedTextStyle,
+                      ),
+                      Text(
+                        "transactions",
+                        style: hoursPlayedLabelTextStyle,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
 
-              Container (
-                height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.88,
-                child: new TransactionList (),
-              )
-            ]
-          )
+                new TransactionList (),
+
+                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+              ],
+            ),
+          ),
         );
       }
     );
 
 		return (Platform.isAndroid ? Scaffold (
-      backgroundColor: mainBlue,
+      backgroundColor: Colors.white,
 			body: body,
 
 			floatingActionButtonLocation: Provider.of<Settings>(context, listen: false).centerAddButton ? 
