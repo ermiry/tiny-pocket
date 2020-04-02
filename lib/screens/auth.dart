@@ -12,6 +12,8 @@ import 'package:pocket/animations/fade.dart';
 import 'package:pocket/widgets/bottom.dart';
 import 'package:pocket/style/colors.dart';
 
+import 'package:pocket/version.dart';
+
 class AuthScreen extends StatefulWidget {
 
   static const routeName = '/auth';
@@ -180,7 +182,7 @@ class _AuthScreenState extends State <AuthScreen> {
               const SizedBox(height: 10),
 
               Text(
-                'Version 1.0 -- 02/April/2020',
+                'Version $version_number -- $version_date',
                 style: new TextStyle(fontSize: 18),
                 textAlign: TextAlign.center,
               ),

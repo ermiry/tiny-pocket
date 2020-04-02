@@ -5,6 +5,8 @@ import 'package:pocket/sidebar/navigation_bloc.dart';
 
 import 'package:pocket/style/colors.dart';
 
+import 'package:pocket/version.dart';
+
 class AboutPage extends StatelessWidget with NavigationStates {
 
   @override
@@ -19,15 +21,15 @@ class AboutPage extends StatelessWidget with NavigationStates {
       child: Column(
         children: <Widget>[
           new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.1),
 
-              const Center(
+              Center(
                 child: Text(
                   "About",
                   style: const TextStyle(
-                    fontSize: 32,
+                    fontSize: 24,
                     color: mainBlue,
                     fontWeight: FontWeight.w800
                   ),
@@ -36,106 +38,107 @@ class AboutPage extends StatelessWidget with NavigationStates {
 
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
 
-              Container(
-                child: Center(
-                  child: Column(
-                    children: <Widget>[
-                      const Text(
-                        'To learn more about Tiny Pocket,'
-                      ),
-                      const Text('check out the official website:'),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'pocket.ermiry.com',
-                        style: TextStyle(color: mainDarkBlue),
-                      ),
+              const Text(
+                'Tiny Pocket Mobile App',
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: mainDarkBlue),
+                textAlign: TextAlign.center,
+              ),
 
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+              const SizedBox(height: 10),
 
-                      const Text(
-                        'Contact',
-                        style: TextStyle(color: mainDarkBlue, fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'For any questions about our service,'
-                      ),
-                      const Text(
-                        'request information, or any other inquiry,'
-                      ),
-                      const Text(
-                        'please visit:'
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'ermiry.com/contact',
-                        style: TextStyle(color: mainDarkBlue),
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'or'
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'You can reach us directly here:'
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'contact@ermiry.com',
-                        style: TextStyle(color: mainDarkBlue),
-                      ),
+              Text(
+                'Version $version_number -- $version_date',
+                textAlign: TextAlign.center,
+              ),
 
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
 
-                      const Text(
-                        'Legal',
-                        style: TextStyle(color: mainDarkBlue, fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'Privacy Policy'
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'ermiry.com/privacy-policy',
-                        style: TextStyle(color: mainDarkBlue),
-                      ),
-                    ],
-                  )
-                ),
-              )
+              const Text(
+                'To learn more about Tiny Pocket,'
+              ),
+              const Text('check out the official website:'),
+              const SizedBox(height: 10),
+              const Text(
+                'pocket.ermiry.com',
+                style: TextStyle(color: mainDarkBlue),
+              ),
+
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+
+              const Text(
+                'Contact',
+                style: TextStyle(color: mainDarkBlue, fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'For any questions about our service,'
+              ),
+              const Text(
+                'request information, or any other inquiry,'
+              ),
+              const Text(
+                'please visit:'
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'ermiry.com/contact',
+                style: TextStyle(color: mainDarkBlue),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'or'
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'You can reach us directly here:'
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'contact@ermiry.com',
+                style: TextStyle(color: mainDarkBlue),
+              ),
+
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+
+              const Text(
+                'Legal',
+                style: TextStyle(color: mainDarkBlue, fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'Privacy Policy'
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'ermiry.com/privacy-policy',
+                style: TextStyle(color: mainDarkBlue),
+              ),
+
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+
+              const Text(
+                'Credits',
+                style: TextStyle(color: mainDarkBlue, fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'Icon made by Freepik from www.flaticon.com'
+              ),
             ],
           ),
 
-          // 12/02/2020 -- added to fill remaining screen and to avoid bug with sidebar
-          new Expanded (child: Container (),),
+          new Spacer (),
 
-          Container(
-            child: Center(
-              child: Column(
-                children: <Widget>[
-                  const Text(
-                    'Credits',
-                    style: TextStyle(color: mainDarkBlue, fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const Text(
+                'Copyright \u00a9 2020 Ermiry',
+                style: TextStyle(color: mainBlue),
+              ),
 
-                  const SizedBox(height: 10),
-
-                  const Text(
-                    'Icon made by Freepik from www.flaticon.com'
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  const Text(
-                    'Copyright \u00a9 2020 Ermiry',
-                    style: TextStyle(color: mainBlue),
-                  ),
-
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                ],
-              )
-            ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+            ],
           )
         ],
       ),
