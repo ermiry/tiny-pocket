@@ -47,10 +47,18 @@ class _AuthScreenState extends State <AuthScreen> {
       context: context, 
       builder: (ctx) => AlertDialog (
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.0))
+          borderRadius: BorderRadius.all(Radius.circular(12.0))
         ),
-        title: Text ('An error ocurred!', style: const TextStyle(color: mainDarkBlue, fontSize: 28)),
-        content: Text (message),
+        title: Text (
+          'Error!', 
+          style: const TextStyle(color: Colors.red, fontSize: 28),
+          textAlign: TextAlign.center,
+        ),
+        content: Text (
+          message,
+          style: const TextStyle(fontSize: 18),
+          textAlign: TextAlign.center,
+        ),
         actions: <Widget>[
           FlatButton(
             child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
@@ -109,11 +117,9 @@ class _AuthScreenState extends State <AuthScreen> {
 
     return new Scaffold(
       backgroundColor: mainBlue,
-      body: new Container(
-        child: new SingleChildScrollView(
-          child: new Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+      body: new Stack(
+        children: <Widget>[
+          new ListView(
             children: <Widget>[
               /*** title ***/
               Container(
@@ -147,154 +153,152 @@ class _AuthScreenState extends State <AuthScreen> {
                 ),
               ),
 
-              new Flexible(
-                // flex:,
-                fit: FlexFit.loose,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height * 0.65),
-                  child: new Container(
-                    // height: MediaQuery.of(context).size.height * 0.65,
+              new Stack(
+                children: <Widget>[
+                  // background
+                  new Container(
+                    height: MediaQuery.of(context).size.height * 0.65,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(60), topRight: Radius.circular(60))
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.all(30),
-                      // child: SingleChildScrollView (
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(height: maxHeight >= 900 ? 60 : 20),
-
-                            FadeAnimation(1.4, -30, 0, Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [BoxShadow(
-                                  color: const Color.fromRGBO(25, 42, 86, 0.5),
-                                  blurRadius: 20,
-                                  offset: Offset(0, 10)
-                                )]
-                              ),
-                              child: new Form(
-                                key: this._formKey,
-                                child: new Column(
-                                  children: <Widget>[
-                                    // email input
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        border: Border(bottom: BorderSide(
-                                          color: Colors.grey[200]
-                                        ))
-                                      ),
-
-                                      child: new TextFormField(
-                                        enabled: this._signinLoading ? false : true,
-                                        autofocus: false,
-                                        decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: "Email",
-                                          hintStyle: const TextStyle(color: Colors.grey)
-                                        ),
-                                        keyboardType: TextInputType.emailAddress,
-                                        validator: (value) {
-                                          if (value.isEmpty) return 'Email field is required!';
-                                          return null;
-                                        },
-                                        textInputAction: TextInputAction.next,
-                                        onFieldSubmitted: (value) {
-                                          FocusScope.of(context).requestFocus(
-                                            this._passwordFocusNode
-                                          );
-                                        },
-                                        onSaved: (value) {
-                                          this._authData['email'] = value;
-                                        },
-                                      ),
-                                    ),
-
-                                    // password input
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      child: new TextFormField(
-                                        enabled: this._signinLoading ? false : true,
-                                        autofocus: false,
-                                        focusNode: this._passwordFocusNode,
-                                        decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: "Password",
-                                          hintStyle: const TextStyle(color: Colors.grey)
-                                        ),
-                                        obscureText: true,
-                                        validator: (value) {
-                                          if (value.isEmpty) return 'Password field is required!';
-                                          else if (value.length < 5) return 'Password is too short!';
-                                          else if (value.length > 64) return 'Password is too long!';
-                                          return null;
-                                        },
-                                        textInputAction: TextInputAction.done,
-                                        onSaved: (value) {
-                                          this._authData['password'] = value;
-                                        },
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            )),
-
-                            SizedBox(height: maxHeight >= 900 ? 30 : 15),
-
-                            FadeAnimation(1.5, -30, 0, new _ForgotPassword()),
-
-                            SizedBox(height: maxHeight >= 900 ? 30 : 15),
-
-                            FadeAnimation(1.6, -30, 0, new Container(
-                              height: 50,
-                              margin: EdgeInsets.symmetric(horizontal: 50),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                // color: mainDarkBlue
-                                color: mainBlue
-                              ),
-                              child: Center(
-                                child: RawMaterialButton(
-                                  // enableFeedback: false,
-                                  // splashColor: Color.fromARGB(0, 0, 0, 0),
-                                  onPressed: this._signinLoading ? null : () => this._submitLogin(),
-                                  elevation: 0,
-                                  textStyle: TextStyle(
-                                    color: Colors.white,
-                                    // fontSize: 18,
-                                    fontWeight: FontWeight.w800
-                                  ),
-                                  child: this._signinLoading ? new CircularProgressIndicator(
-                                    backgroundColor: Colors.white,
-                                    valueColor: new AlwaysStoppedAnimation<Color>(mainDarkBlue),
-                                  ) :
-                                  Text("Login!")
-                                ),
-                              ),
-                            )),
-
-                            SizedBox(height: maxHeight >= 900 ? 30 : 15),
-
-                            FadeAnimation(1.8, -30, 0, Text("or", style: TextStyle(color: Colors.grey),)),
-
-                            SizedBox(height: maxHeight >= 900 ? 30 : 15),
-
-                            FadeAnimation(2.0, -30, 0, new _CreateAccount()),
-                          ],
-                        ),
-                      // ),
-                    ),
                   ),
-                ),
-              ),
+
+                  new Container(
+                    padding: EdgeInsets.symmetric(horizontal: 32),
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(height: maxHeight >= 900 ? 60 : 20),
+
+                        // login input
+                        FadeAnimation(1.4, -30, 0, Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [BoxShadow(
+                              color: const Color.fromRGBO(25, 42, 86, 0.5),
+                              blurRadius: 20,
+                              offset: Offset(0, 10)
+                            )]
+                          ),
+                          child: new Form(
+                            key: this._formKey,
+                            child: new Column(
+                              children: <Widget>[
+                                // email input
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                  decoration: BoxDecoration(
+                                    border: Border(bottom: BorderSide(
+                                      color: Colors.grey[200]
+                                    ))
+                                  ),
+
+                                  child: new TextFormField(
+                                    enabled: this._signinLoading ? false : true,
+                                    autofocus: false,
+                                    decoration: const InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: "Email",
+                                      hintStyle: const TextStyle(color: Colors.grey)
+                                    ),
+                                    keyboardType: TextInputType.emailAddress,
+                                    validator: (value) {
+                                      if (value.isEmpty) return 'Email field is required!';
+                                      return null;
+                                    },
+                                    textInputAction: TextInputAction.next,
+                                    onFieldSubmitted: (value) {
+                                      FocusScope.of(context).requestFocus(
+                                        this._passwordFocusNode
+                                      );
+                                    },
+                                    onSaved: (value) {
+                                      this._authData['email'] = value;
+                                    },
+                                  ),
+                                ),
+
+                                // password input
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                  child: new TextFormField(
+                                    enabled: this._signinLoading ? false : true,
+                                    autofocus: false,
+                                    focusNode: this._passwordFocusNode,
+                                    decoration: const InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: "Password",
+                                      hintStyle: const TextStyle(color: Colors.grey)
+                                    ),
+                                    obscureText: true,
+                                    validator: (value) {
+                                      if (value.isEmpty) return 'Password field is required!';
+                                      else if (value.length < 5) return 'Password is too short!';
+                                      else if (value.length > 64) return 'Password is too long!';
+                                      return null;
+                                    },
+                                    textInputAction: TextInputAction.done,
+                                    onSaved: (value) {
+                                      this._authData['password'] = value;
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        )),
+
+                        SizedBox(height: maxHeight >= 900 ? 30 : 15),
+
+                        FadeAnimation(1.5, -30, 0, new _ForgotPassword()),
+
+                        SizedBox(height: maxHeight >= 900 ? 30 : 15),
+
+                        // login button
+                        FadeAnimation(1.6, -30, 0, new Container(
+                          height: 50,
+                          margin: EdgeInsets.symmetric(horizontal: 50),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: mainBlue
+                          ),
+                          child: Center(
+                            child: RawMaterialButton(
+                              onPressed: this._signinLoading ? null : () => this._submitLogin(),
+                              elevation: 0,
+                              textStyle: TextStyle(
+                                color: Colors.white,
+                                // fontSize: 18,
+                                fontWeight: FontWeight.w800
+                              ),
+                              // ,
+                              child: this._signinLoading ? new CircularProgressIndicator(
+                                backgroundColor: Colors.white,
+                                valueColor: new AlwaysStoppedAnimation<Color>(mainBlue),
+                              ) :
+                              Text("Login!")
+                              ,
+                            ),
+                          ),
+                        )),
+
+                        SizedBox(height: maxHeight >= 900 ? 30 : 15),
+
+                        FadeAnimation(1.8, -30, 0, Text("or", style: TextStyle(color: Colors.grey),)),
+
+                        SizedBox(height: maxHeight >= 900 ? 30 : 15),
+
+                        FadeAnimation(2.0, -30, 0, new _CreateAccount()),
+                      ],
+                    ),
+                  )
+                ],
+              )
             ],
-          ),
-        )
-      ),
+          )
+        ],
+      )
     );
   }
 
