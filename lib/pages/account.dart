@@ -144,8 +144,8 @@ class AccountPageState extends State <AccountPage> {
 
             SizedBox(height: MediaQuery.of(context).size.height * 0.05),
 
-            SingleChildScrollView(
-              child: Container(
+            Consumer <Auth> (
+              builder: (ctx, auth, _) => new Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,7 +183,10 @@ class AccountPageState extends State <AccountPage> {
                       child: ListTile(
                         dense: true,
                         title: Text ('Name', style: new TextStyle(fontSize: 16)),
-                        subtitle: Text('Erick Salas', style: new TextStyle(fontSize: 14),),
+                        subtitle: Text(
+                          "${auth.userValues['name']}", 
+                          style: new TextStyle(fontSize: 14)
+                        ),
                         onTap: () => this._showChangeDialog("Change name", "Enter your name", null),
                       ),
                     ),
@@ -199,7 +202,10 @@ class AccountPageState extends State <AccountPage> {
                       child: ListTile(
                         dense: true,
                         title: Text ('Username', style: new TextStyle(fontSize: 16)),
-                        subtitle: Text('erick', style: new TextStyle(fontSize: 14),),
+                        subtitle: Text(
+                          "${auth.userValues['username']}", 
+                          style: new TextStyle(fontSize: 14),
+                        ),
                       ),
                     ),
 
@@ -214,8 +220,11 @@ class AccountPageState extends State <AccountPage> {
                       child: ListTile(
                         dense: true,
                         title: Text ('Email', style: new TextStyle(fontSize: 16)),
-                        subtitle: Text('erick@test.com', style: new TextStyle(fontSize: 14),),
-                        onTap: () => this._showChangeDialog("Change email", "Enter your email", null),
+                        subtitle: Text(
+                          "${auth.userValues['email']}",
+                          style: new TextStyle(fontSize: 14)
+                        ),
+                        // onTap: () => this._showChangeDialog("Change email", "Enter your email", null),
                       ),
                     ),
 
@@ -246,7 +255,10 @@ class AccountPageState extends State <AccountPage> {
                       child: ListTile(
                         dense: true,
                         title: Text ('Member Since', style: new TextStyle(fontSize: 16)),
-                        subtitle: Text(DateFormat ().format(DateTime.now()), style: new TextStyle(fontSize: 14),),
+                        subtitle: Text(
+                          DateFormat('dd/MM/yyyy - HH:mm').format(DateTime.parse(auth.userValues['memberSince']).toLocal()),
+                          style: new TextStyle(fontSize: 14)
+                        ),
                       ),
                     ),
 
@@ -293,7 +305,7 @@ class AccountPageState extends State <AccountPage> {
                   ],
                 ),
               ),
-            ),
+            )
           ],
         ),
 

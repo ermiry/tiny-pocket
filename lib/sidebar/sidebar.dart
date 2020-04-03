@@ -154,13 +154,11 @@ class _SideBarState extends State <SideBar> with SingleTickerProviderStateMixin 
                       // account info
                       ListTile(
                         title: Text(
-                          // "${Provider.of<Auth>(context, listen: false).userValues['name']}",
-                          "Erick Salas",
+                          "${Provider.of<Auth>(context, listen: false).userValues['name']}",
                           style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800),
                         ),
                         subtitle: Text(
-                          // "${Provider.of<Auth>(context, listen: false).userValues['email']}",
-                          "erick@test.com",
+                          "${Provider.of<Auth>(context, listen: false).userValues['email']}",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 14,
