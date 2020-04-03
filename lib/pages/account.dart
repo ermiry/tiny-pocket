@@ -23,6 +23,8 @@ class AccountPage extends StatefulWidget with NavigationStates {
 
 class AccountPageState extends State <AccountPage> {
 
+  bool _loading = false;
+
   void _showErrorDialog(String message) {
     showDialog(
       context: context, 
@@ -80,7 +82,9 @@ class AccountPageState extends State <AccountPage> {
           FlatButton(
             child: Text ('Okay', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
             onPressed: () async {
-              bool fail = false;
+              setState(() => this._loading = true);
+
+              Navigator.of(context).pop();
 
               try {
                 if (logout) await Provider.of<Auth>(context, listen: false).logout();
@@ -88,12 +92,10 @@ class AccountPageState extends State <AccountPage> {
               }
 
               catch (err) {
-                fail = true;
-                Navigator.of(context).pop();
                 if (!logout) this._showErrorDialog('Failed to delete account!');
               }
 
-              finally { if (!fail) Navigator.of(context).pop(); }
+              finally { setState(() => this._loading = false); }
             },
           )
         ],
@@ -123,172 +125,189 @@ class AccountPageState extends State <AccountPage> {
       // DeviceOrientation.portraitDown,
     ]);
 
-    return ListView(
+    return Stack(
       children: <Widget>[
-        SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+        ListView(
+          children: <Widget>[
+            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
 
-        Center(
-          child: Text(
-            "Your Account",
-            style: const TextStyle(
-              fontSize: 24,
-              color: mainBlue,
-              fontWeight: FontWeight.w800
+            Center(
+              child: Text(
+                "Your Account",
+                style: const TextStyle(
+                  fontSize: 24,
+                  color: mainBlue,
+                  fontWeight: FontWeight.w800
+                ),
+              ),
             ),
-          ),
+
+            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+
+            SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Text ('General', style: new TextStyle(fontSize: 18, color: mainBlue, fontWeight: FontWeight.bold)),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    Container(
+                      // padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(
+                          width: 0.7,
+                          color: mainDarkBlue.withAlpha(204)
+                        ))
+                      ),
+                      child: ListTile(
+                        dense: true,
+                        title: Text ('Avatar', style: new TextStyle(fontSize: 16)),
+                        subtitle: Text('Change your avatar', style: new TextStyle(fontSize: 14),),
+                      ),
+                    ),
+
+                    Container(
+                      // padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(
+                          width: 0.7,
+                          color: mainDarkBlue.withAlpha(204)
+                        ))
+                      ),
+                      child: ListTile(
+                        dense: true,
+                        title: Text ('Name', style: new TextStyle(fontSize: 16)),
+                        subtitle: Text('Erick Salas', style: new TextStyle(fontSize: 14),),
+                        onTap: () => this._showChangeDialog("Change name", "Enter your name", null),
+                      ),
+                    ),
+
+                    Container(
+                      // padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(
+                          width: 0.7,
+                          color: mainDarkBlue.withAlpha(204)
+                        ))
+                      ),
+                      child: ListTile(
+                        dense: true,
+                        title: Text ('Username', style: new TextStyle(fontSize: 16)),
+                        subtitle: Text('erick', style: new TextStyle(fontSize: 14),),
+                      ),
+                    ),
+
+                    Container(
+                      // padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(
+                          width: 0.7,
+                          color: mainDarkBlue.withAlpha(204)
+                        ))
+                      ),
+                      child: ListTile(
+                        dense: true,
+                        title: Text ('Email', style: new TextStyle(fontSize: 16)),
+                        subtitle: Text('erick@test.com', style: new TextStyle(fontSize: 14),),
+                        onTap: () => this._showChangeDialog("Change email", "Enter your email", null),
+                      ),
+                    ),
+
+                    Container(
+                      // padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(
+                          width: 0.7,
+                          color: mainDarkBlue.withAlpha(204)
+                        ))
+                      ),
+                      child: ListTile(
+                        dense: true,
+                        title: Text ('Password', style: new TextStyle(fontSize: 16)),
+                        subtitle: Text('Change your password', style: new TextStyle(fontSize: 14),),
+                        onTap: () => this._showChangeDialog("Change password", "Enter new password", "Confirm password"),
+                      ),
+                    ),
+
+                    Container(
+                      // padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(
+                          width: 0.7,
+                          color: mainDarkBlue.withAlpha(204)
+                        ))
+                      ),
+                      child: ListTile(
+                        dense: true,
+                        title: Text ('Member Since', style: new TextStyle(fontSize: 16)),
+                        subtitle: Text(DateFormat ().format(DateTime.now()), style: new TextStyle(fontSize: 14),),
+                      ),
+                    ),
+
+                    new SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Text ('Danger Zone', style: new TextStyle(fontSize: 18, color: Colors.red, fontWeight: FontWeight.bold)),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(
+                          width: 0.7,
+                        ))
+                      ),
+                      child: ListTile(
+                        contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                        leading: Icon(Icons.exit_to_app, color: Colors.black87,),
+                        title: Text ('Logout', style: new TextStyle(fontSize: 16)),
+                        onTap: () => this._showConfirmDialog('Are you sure you want to logout?', true)
+                      ),
+                    ),
+
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(
+                          width: 0.7,
+                          color: Colors.red.withAlpha(204)
+                        ))
+                      ),
+                      child: ListTile(
+                        contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                        leading: Icon(Icons.report_problem, color: Colors.red),
+                        title: Text ('Delete account', style: new TextStyle(fontSize: 16, color: Colors.red)),
+                        subtitle: const Text('Deleting your account is permanent. All your data will be wiped out immediately and you won\'t be able to get it back.'),
+                        onTap: () => this._showConfirmDialog('Are you sure you want to delete your account?', false)
+                      ),
+                    ),
+
+                    new SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
 
-        SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-
-        SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Text ('General', style: new TextStyle(fontSize: 18, color: mainBlue, fontWeight: FontWeight.bold)),
-                ),
-
-                const SizedBox(height: 10),
-
-                Container(
-                  // padding: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(
-                      width: 0.7,
-                      color: mainDarkBlue.withAlpha(204)
-                    ))
-                  ),
-                  child: ListTile(
-                    dense: true,
-                    title: Text ('Avatar', style: new TextStyle(fontSize: 16)),
-                    subtitle: Text('Change your avatar', style: new TextStyle(fontSize: 14),),
-                  ),
-                ),
-
-                Container(
-                  // padding: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(
-                      width: 0.7,
-                      color: mainDarkBlue.withAlpha(204)
-                    ))
-                  ),
-                  child: ListTile(
-                    dense: true,
-                    title: Text ('Name', style: new TextStyle(fontSize: 16)),
-                    subtitle: Text('Erick Salas', style: new TextStyle(fontSize: 14),),
-                    onTap: () => this._showChangeDialog("Change name", "Enter your name", null),
-                  ),
-                ),
-
-                Container(
-                  // padding: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(
-                      width: 0.7,
-                      color: mainDarkBlue.withAlpha(204)
-                    ))
-                  ),
-                  child: ListTile(
-                    dense: true,
-                    title: Text ('Username', style: new TextStyle(fontSize: 16)),
-                    subtitle: Text('erick', style: new TextStyle(fontSize: 14),),
-                  ),
-                ),
-
-                Container(
-                  // padding: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(
-                      width: 0.7,
-                      color: mainDarkBlue.withAlpha(204)
-                    ))
-                  ),
-                  child: ListTile(
-                    dense: true,
-                    title: Text ('Email', style: new TextStyle(fontSize: 16)),
-                    subtitle: Text('erick@test.com', style: new TextStyle(fontSize: 14),),
-                    onTap: () => this._showChangeDialog("Change email", "Enter your email", null),
-                  ),
-                ),
-
-                Container(
-                  // padding: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(
-                      width: 0.7,
-                      color: mainDarkBlue.withAlpha(204)
-                    ))
-                  ),
-                  child: ListTile(
-                    dense: true,
-                    title: Text ('Password', style: new TextStyle(fontSize: 16)),
-                    subtitle: Text('Change your password', style: new TextStyle(fontSize: 14),),
-                    onTap: () => this._showChangeDialog("Change password", "Enter new password", "Confirm password"),
-                  ),
-                ),
-
-                Container(
-                  // padding: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(
-                      width: 0.7,
-                      color: mainDarkBlue.withAlpha(204)
-                    ))
-                  ),
-                  child: ListTile(
-                    dense: true,
-                    title: Text ('Member Since', style: new TextStyle(fontSize: 16)),
-                    subtitle: Text(DateFormat ().format(DateTime.now()), style: new TextStyle(fontSize: 14),),
-                  ),
-                ),
-
-                new SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Text ('Danger Zone', style: new TextStyle(fontSize: 18, color: Colors.red, fontWeight: FontWeight.bold)),
-                ),
-
-                const SizedBox(height: 20),
-
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(
-                      width: 0.7,
-                    ))
-                  ),
-                  child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    leading: Icon(Icons.exit_to_app, color: Colors.black87,),
-                    title: Text ('Logout', style: new TextStyle(fontSize: 16)),
-                    onTap: () => this._showConfirmDialog('Are you sure you want to logout?')
-                  ),
-                ),
-
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(
-                      width: 0.7,
-                      color: Colors.red.withAlpha(204)
-                    ))
-                  ),
-                  child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    leading: Icon(Icons.report_problem, color: Colors.red),
-                    title: Text ('Delete account', style: new TextStyle(fontSize: 16, color: Colors.red)),
-                    subtitle: const Text('Deleting your account is permanent. All your data will be wiped out immediately and you won\'t be able to get it back.'),
-                  ),
-                ),
-
-                new SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-              ],
+        this._loading ? Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          color: Colors.black.withAlpha(128),
+          child: Center(
+            child:  new CircularProgressIndicator(
+              backgroundColor: Colors.white,
+              valueColor: new AlwaysStoppedAnimation<Color>(mainBlue),
             ),
           ),
-        ),
+        ) : Container()
       ],
     );
   }
