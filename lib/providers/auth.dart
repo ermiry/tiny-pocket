@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 
-import 'package:http/http.dart' as htpp;
+import 'package:http/http.dart' as http;
 
 import 'package:crypto/crypto.dart';
 import 'package:jwt_decode/jwt_decode.dart';
@@ -46,7 +46,7 @@ class Auth with ChangeNotifier {
     // print(passwordDigest);
 
     try {
-       final res = await htpp.post(url, 
+       final res = await http.post(url, 
         body: {
           'name': name.replaceAll(new RegExp(r'\t'), ''), 
           'username': username.replaceAll(new RegExp(r'\t'), ''), 
@@ -80,7 +80,7 @@ class Auth with ChangeNotifier {
     var passwordDigest = sha256.convert(passwordBytes);
 
     try {
-      final res = await htpp.post(url, 
+      final res = await http.post(url, 
         body: {
           'email': email.replaceAll(new RegExp(r'\t'), ''), 
           'password': passwordDigest.toString(),
@@ -138,7 +138,7 @@ class Auth with ChangeNotifier {
      String url = serverURL + '/api/users/forgot';
 
      try {
-      final res = await htpp.post(url, 
+      final res = await http.post(url, 
         body: {
           'email': email.replaceAll(new RegExp(r'\t'), ''), 
         }
@@ -163,6 +163,34 @@ class Auth with ChangeNotifier {
     prefs.clear();    // to delete all saved data
 
     notifyListeners();
+
+  }
+
+  Future <void> delete() async {
+
+    String url = serverURL + '/api/users/';
+
+    try {
+      final res = await http.delete(url, 
+        headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': token
+        }
+      );
+
+      if (res.statusCode == 400) throw HttpException (res.body.toString());
+
+      var actualRes = json.decode(res.body);
+      print(actualRes);
+
+      // after account has been deleted, logout
+      await this.logout();
+    }
+
+    catch (error) {
+      throw HttpException (error.toString());
+    }
 
   }
 

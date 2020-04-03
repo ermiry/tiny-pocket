@@ -23,8 +23,37 @@ class AccountPage extends StatefulWidget with NavigationStates {
 
 class AccountPageState extends State <AccountPage> {
 
-  // used only for logout button
-  void _showConfirmDialog(String message) {
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context, 
+      builder: (ctx) => AlertDialog (
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12.0))
+        ),
+        title: Text (
+          'Error!', 
+          style: const TextStyle(color: Colors.red, fontSize: 28),
+          textAlign: TextAlign.center,
+        ),
+        content: Text (
+          message,
+          style: const TextStyle(fontSize: 18),
+          textAlign: TextAlign.center,
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      )
+    );
+  }
+
+  // used only for both logout and delete account button
+  void _showConfirmDialog(String message, bool logout) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog (
@@ -50,9 +79,21 @@ class AccountPageState extends State <AccountPage> {
           ),
           FlatButton(
             child: Text ('Okay', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
-            onPressed: () {
-              Provider.of<Auth>(context, listen: false).logout();
-              Navigator.of(context).pop();
+            onPressed: () async {
+              bool fail = false;
+
+              try {
+                if (logout) await Provider.of<Auth>(context, listen: false).logout();
+                else await Provider.of<Auth>(context, listen: false).delete();
+              }
+
+              catch (err) {
+                fail = true;
+                Navigator.of(context).pop();
+                if (!logout) this._showErrorDialog('Failed to delete account!');
+              }
+
+              finally { if (!fail) Navigator.of(context).pop(); }
             },
           )
         ],
