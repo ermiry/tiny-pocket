@@ -565,6 +565,7 @@ class _CreateAccountState extends State <_CreateAccount> {
 
       finally {
         setState(() => this._createLoading = false);
+        Navigator.of(context).pop();
       }
 
       if (!fail) {
