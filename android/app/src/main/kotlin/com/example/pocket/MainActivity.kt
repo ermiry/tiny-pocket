@@ -1,4 +1,4 @@
-package com.example.pocket
+package com.ermiry.pocket
 
 import android.os.Bundle
 

@@ -55,7 +55,7 @@ class AccountPageState extends State <AccountPage> {
   }
 
   // used only for both logout and delete account button
-  void _showConfirmDialog(String message, bool logout) {
+  void _showConfirmDialog(String message, bool logout, Future <void> callback ()) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog (
@@ -87,8 +87,7 @@ class AccountPageState extends State <AccountPage> {
               Navigator.of(context).pop();
 
               try {
-                if (logout) await Provider.of<Auth>(context, listen: false).logout();
-                else await Provider.of<Auth>(context, listen: false).delete();
+                await callback();
               }
 
               catch (err) {
@@ -109,10 +108,10 @@ class AccountPageState extends State <AccountPage> {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          child: _ChangeValue(title: title, placeholder: placeholder, secondPlaceholder: secondPlaceholder,),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(12))
-          )
+          ),
+          child: _ChangeValue(title: title, placeholder: placeholder, secondPlaceholder: secondPlaceholder,),
         );
       }
     );
@@ -281,7 +280,11 @@ class AccountPageState extends State <AccountPage> {
                         contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                         leading: Icon(Icons.exit_to_app, color: Colors.black87,),
                         title: Text ('Logout', style: new TextStyle(fontSize: 16)),
-                        onTap: () => this._showConfirmDialog('Are you sure you want to logout?', true)
+                        onTap: () => this._showConfirmDialog(
+                          'Are you sure you want to logout?', 
+                          true,
+                          Provider.of<Auth>(context, listen: false).logout
+                        )
                       ),
                     ),
 
@@ -297,7 +300,11 @@ class AccountPageState extends State <AccountPage> {
                         leading: Icon(Icons.report_problem, color: Colors.red),
                         title: Text ('Delete account', style: new TextStyle(fontSize: 16, color: Colors.red)),
                         subtitle: const Text('Deleting your account is permanent. All your data will be wiped out immediately and you won\'t be able to get it back.'),
-                        onTap: () => this._showConfirmDialog('Are you sure you want to delete your account?', false)
+                        onTap: () => this._showConfirmDialog(
+                          'Are you sure you want to delete your account?',
+                          false, 
+                          Provider.of<Auth>(context, listen: false).delete
+                        )
                       ),
                     ),
 
@@ -345,11 +352,14 @@ class _ChangeValue extends StatefulWidget {
 
 class _ChangeValueState extends State <_ChangeValue> {
 
-  final _textTaskControler = TextEditingController();
+  final _mainTextControler = new TextEditingController();
+  final _subTextControler = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    _textTaskControler.clear();
+    _mainTextControler.clear();
+    _subTextControler.clear();
+
     return Padding(
       padding: const EdgeInsets.all(24.0),
       child: Column(
@@ -364,11 +374,11 @@ class _ChangeValueState extends State <_ChangeValue> {
 
           const SizedBox(height: 24),
 
-          CustomTextField(labelText: widget.placeholder, controller: _textTaskControler),
+          CustomTextField(labelText: widget.placeholder, controller: _mainTextControler),
           
           const SizedBox(height: 24),
 
-          widget.secondPlaceholder != null ? CustomTextField(labelText: widget.secondPlaceholder, controller: _textTaskControler) : Container (),
+          widget.secondPlaceholder != null ? CustomTextField(labelText: widget.secondPlaceholder, controller: _subTextControler) : Container (),
 
           SizedBox(height: widget.secondPlaceholder != null ? 24 : 0),
 
@@ -377,6 +387,8 @@ class _ChangeValueState extends State <_ChangeValue> {
               Navigator.of(context).pop();
             },
             onSave: () {
+              // String main
+
               // if (_textTaskControler.text == "") {
               //   print("data not found");
               // } else {
