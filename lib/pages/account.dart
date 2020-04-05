@@ -107,7 +107,7 @@ class AccountPageState extends State <AccountPage> {
     // 'username': '',
     // 'email': '',
     'password': '',
-    'password2': '',
+    'confirm': '',
   };
 
   String validateName(value) {
@@ -117,6 +117,10 @@ class AccountPageState extends State <AccountPage> {
 
   void saveName(value) {
     this._data['name'] = value;
+  }
+
+  Future <void> changeName() async {
+    await Provider.of<Auth>(context, listen: false).changeName(this._data['name']);
   }
 
   String validatePassword(value) {
@@ -132,19 +136,22 @@ class AccountPageState extends State <AccountPage> {
 
   String validateConfirm(value) {
     if (value.isEmpty) return 'Confirm password field is required!';
-    if (value != this._data['password']) return 'Passwords do not match!';
+    // if (value != this._data['password']) return 'Passwords do not match!';
     return null;
   }
 
   void saveConfirm(value) {
-    this._data['password2'] = value;
+    this._data['confirm'] = value;
   }
 
-  Future <void> changeName() async {
-    await Provider.of<Auth>(context, listen: false).editName(this._data['name']);
+  Future <void> changePassword() async {
+    await Provider.of<Auth>(context, listen: false).changePassword(
+      this._data['password'],
+      this._data['confirm']
+    );
   }
 
-  void _showChangeDialog(String title, String placeholder, String subPlaceholder) {
+  void _showNameChangeDialog() {
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -154,15 +161,43 @@ class AccountPageState extends State <AccountPage> {
             borderRadius: BorderRadius.all(Radius.circular(12))
           ),
           child: new _ChangeValue(
-            title: title, 
+            title: "Change name", 
 
-            placeholder: placeholder,
+            placeholder: "Enter your name",
+            mainObscure: false,
             mainValidate: this.validateName,
             mainSave: this.saveName,
 
-            subPlaceholder: subPlaceholder,
-
             callback: this.changeName,
+          )
+        );
+      }
+    );
+  }
+
+  void _showPasswordChangeDialog() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12))
+          ),
+          child: new _ChangeValue(
+            title: "Change password", 
+
+            placeholder: "Enter new password",
+            mainObscure: true,
+            mainValidate: this.validateName,
+            mainSave: this.savePassword,
+
+            subPlaceholder: "Confirm password",
+            subObscure: true,
+            subValidate: this.validateConfirm,
+            subSave: this.saveConfirm,
+
+            callback: this.changePassword,
           )
         );
       }
@@ -239,7 +274,7 @@ class AccountPageState extends State <AccountPage> {
                             "${auth.userValues['name']}", 
                             style: new TextStyle(fontSize: 14)
                           ),
-                          onTap: () => this._showChangeDialog("Change name", "Enter your name", null),
+                          onTap: () => this._showNameChangeDialog()
                         ),
                       ),
 
@@ -292,7 +327,7 @@ class AccountPageState extends State <AccountPage> {
                           dense: true,
                           title: Text ('Password', style: new TextStyle(fontSize: 16)),
                           subtitle: Text('Change your password', style: new TextStyle(fontSize: 14),),
-                          onTap: () => this._showChangeDialog("Change password", "Enter new password", "Confirm password"),
+                          onTap: () => this._showPasswordChangeDialog(),
                         ),
                       ),
 
@@ -392,10 +427,12 @@ class _ChangeValue extends StatefulWidget {
   final String title;
 
   final String placeholder;
+  final bool mainObscure;
   final FormFieldValidator <String> mainValidate;
   final FormFieldSetter <String> mainSave;
 
   String subPlaceholder;
+  bool subObscure = false;
   FormFieldValidator <String> subValidate;
   FormFieldSetter <String> subSave;
 
@@ -405,10 +442,12 @@ class _ChangeValue extends StatefulWidget {
     @required this.title,
 
     @required this.placeholder,
+    @required this.mainObscure,
     @required this.mainValidate,
     @required this.mainSave,
 
     this.subPlaceholder,
+    this.subObscure,
     this.subValidate,
     this.subSave,
 
@@ -471,6 +510,7 @@ class _ChangeValueState extends State <_ChangeValue> {
               ),
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.done,
+              obscureText: this.widget.mainObscure,
               validator: this.widget.mainValidate,
               onSaved: this.widget.mainSave,
             ),
@@ -480,7 +520,7 @@ class _ChangeValueState extends State <_ChangeValue> {
             widget.subPlaceholder != null ? 
             // CustomTextField(labelText: widget.secondPlaceholder, controller: _subTextControler) 
             TextFormField(
-              controller: this._mainTextControler,
+              controller: this._subTextControler,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(12))
@@ -489,8 +529,9 @@ class _ChangeValueState extends State <_ChangeValue> {
               ),
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.done,
-              validator: this.widget.mainValidate,
-              onSaved: this.widget.mainSave,
+              obscureText: this.widget.subObscure,
+              validator: this.widget.subValidate,
+              onSaved: this.widget.subSave,
             )
             : Container (),
 
