@@ -16,7 +16,8 @@ class Auth with ChangeNotifier {
   String _token;
   DateTime _expiryDate;
 
-  Map <String, dynamic> userValues;
+  Map <String, dynamic> _userValues;
+  Map <String, dynamic> get userValues { return this._userValues; }
 
   bool get isAuth {
     return this.token != null;
@@ -93,7 +94,7 @@ class Auth with ChangeNotifier {
       // print(actualRes);
       this._token = actualRes['token'];
 
-      this.userValues = Jwt.parseJwt(token);
+      this._userValues = Jwt.parseJwt(token);
       // print(this.userValues);
 
       // when we get our token from server, save to memory
@@ -126,7 +127,7 @@ class Auth with ChangeNotifier {
     //   return false;
     // }
 
-    this.userValues = Jwt.parseJwt(token);
+    this._userValues = Jwt.parseJwt(token);
     notifyListeners();
 
     return true;    // success
@@ -163,6 +164,46 @@ class Auth with ChangeNotifier {
     prefs.clear();    // to delete all saved data
 
     notifyListeners();
+
+  }
+
+  Future <void> editName(String name) async {
+
+    String url = serverURL + '/api/users/${this._userValues['id']}/name';
+
+    try {
+      final res = await http.post(url, 
+        headers: {
+          // 'Content-type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': token
+        },
+        body: {
+          // 'name': name.replaceAll(new RegExp(r'\t'), ''), 
+          'name': name
+        }
+      );
+
+      if (res.statusCode == 400 || res.statusCode == 500) 
+        throw HttpException (res.body.toString());
+
+      var actualRes = json.decode(res.body);
+      print(actualRes);
+      this._token = actualRes['token'];
+
+      this._userValues = Jwt.parseJwt(token);
+      print(this._userValues);
+
+      // when we get our token from server, save to memory
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString('user_token', this._token);
+
+      notifyListeners();
+    }
+
+    catch (error) {
+      throw HttpException (error.toString());
+    }
 
   }
 

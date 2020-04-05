@@ -25,6 +25,13 @@ class AccountPageState extends State <AccountPage> {
 
   bool _loading = false;
 
+  String title;
+  String placeholder;
+  String secondPlaceholder;
+
+  final _mainTextControler = new TextEditingController();
+  final _subTextControler = new TextEditingController();
+
   void _showErrorDialog(String message) {
     showDialog(
       context: context, 
@@ -103,6 +110,9 @@ class AccountPageState extends State <AccountPage> {
   }
 
   void _showChangeDialog(String title, String placeholder, String secondPlaceholder) {
+    this._mainTextControler.clear();
+    this._subTextControler.clear();
+
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -111,7 +121,56 @@ class AccountPageState extends State <AccountPage> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(12))
           ),
-          child: _ChangeValue(title: title, placeholder: placeholder, secondPlaceholder: secondPlaceholder,),
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Center(
+                  child: Text(
+                    title,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: mainDarkBlue),
+                  )
+                ),
+
+                const SizedBox(height: 24),
+
+                CustomTextField(labelText: placeholder, controller: _mainTextControler),
+                
+                const SizedBox(height: 24),
+
+                secondPlaceholder != null ? CustomTextField(labelText: secondPlaceholder, controller: _subTextControler) : Container (),
+
+                SizedBox(height: secondPlaceholder != null ? 24 : 0),
+
+                CustomModalActionButton(
+                  onClose: () {
+                    Navigator.of(context).pop();
+                  },
+                  onSave: () async {
+                    setState(() => this._loading = true);
+
+                    Navigator.of(context).pop();
+
+                    try {
+                      // check for empty
+                      if (this._mainTextControler.text != "") {
+                        Provider.of<Auth>(context, listen: false).editName(this._mainTextControler.text);
+                      }
+                    }
+
+                    catch (err) {
+                      this._showErrorDialog('Failed to delete account!');
+                    }
+
+                    finally { setState(() => this._loading = false); }
+
+                    
+                  },
+                )
+              ],
+            ),
+          )
         );
       }
     );
@@ -335,80 +394,29 @@ class AccountPageState extends State <AccountPage> {
 
 }
 
-class _ChangeValue extends StatefulWidget {
+// class _ChangeValue extends StatefulWidget {
 
-  final String title;
-  final String placeholder;
-  final String secondPlaceholder;
+//   final String title;
+//   final String placeholder;
+//   final String secondPlaceholder;
 
-  _ChangeValue({
-    @required this.title,
-    @required this.placeholder,
-    @required this.secondPlaceholder
-  });
+//   _ChangeValue({
+//     @required this.title,
+//     @required this.placeholder,
+//     @required this.secondPlaceholder
+//   });
 
-  @override
-  _ChangeValueState createState() => _ChangeValueState();
+//   @override
+//   _ChangeValueState createState() => _ChangeValueState();
 
-}
+// }
 
-class _ChangeValueState extends State <_ChangeValue> {
+// class _ChangeValueState extends State <_ChangeValue> {
 
-  final _mainTextControler = new TextEditingController();
-  final _subTextControler = new TextEditingController();
+//   @override
+//   Widget build(BuildContext context) {
+    
 
-  @override
-  Widget build(BuildContext context) {
-    _mainTextControler.clear();
-    _subTextControler.clear();
-
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Center(
-            child: Text(
-              widget.title,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: mainDarkBlue),
-            )
-          ),
-
-          const SizedBox(height: 24),
-
-          CustomTextField(labelText: widget.placeholder, controller: _mainTextControler),
-          
-          const SizedBox(height: 24),
-
-          widget.secondPlaceholder != null ? CustomTextField(labelText: widget.secondPlaceholder, controller: _subTextControler) : Container (),
-
-          SizedBox(height: widget.secondPlaceholder != null ? 24 : 0),
-
-          CustomModalActionButton(
-            onClose: () {
-              Navigator.of(context).pop();
-            },
-            onSave: () {
-              // String main
-
-              // if (_textTaskControler.text == "") {
-              //   print("data not found");
-              // } else {
-              //   provider
-              //       .insertTodoEntries(new TodoData(
-              //           date: _selectedDate,
-              //           time: DateTime.now(),
-              //           isFinish: false,
-              //           task: _textTaskControler.text,
-              //           description: "",
-              //           todoType: TodoType.TYPE_TASK.index,
-              //           id: null))
-              //       .whenComplete(() => Navigator.of(context).pop());
-              // }
-            },
-          )
-        ],
-      ),
-    );
-  }
-}
+//     return 
+//   }
+// }
