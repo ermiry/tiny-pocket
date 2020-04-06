@@ -23,7 +23,7 @@ class AboutPage extends StatelessWidget with NavigationStates {
           new Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.07),
 
               Center(
                 child: Text(
@@ -137,7 +137,7 @@ class AboutPage extends StatelessWidget with NavigationStates {
                 style: TextStyle(color: mainBlue),
               ),
 
-              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+              SizedBox(height: 20),
             ],
           )
         ],

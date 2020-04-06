@@ -263,7 +263,7 @@ class _AddTransactionState extends State <AddTransaction> {
                         backgroundColor: Colors.white,
                         valueColor: new AlwaysStoppedAnimation<Color>(mainDarkBlue),
                       ) :
-                      Text("Add!")
+                      Text("Add")
                   ),
                 ),
               ),
