@@ -227,8 +227,8 @@ class Auth with ChangeNotifier {
           'Authorization': token
         },
         body: {
-          'password': passwordDigest,
-          'password2': confirmDigest
+          'password': passwordDigest.toString(),
+          'password2': confirmDigest.toString()
         }
       );
 

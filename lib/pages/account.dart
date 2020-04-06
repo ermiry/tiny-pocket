@@ -120,7 +120,25 @@ class AccountPageState extends State <AccountPage> {
   }
 
   Future <void> changeName() async {
-    await Provider.of<Auth>(context, listen: false).changeName(this._data['name']);
+    try {
+      await Provider.of<Auth>(context, listen: false).changeName(
+        this._data['name']
+      ).then((_) {
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.green,
+            content: Text(
+              'Name has been changed!',
+              textAlign: TextAlign.center,
+            )
+          )
+        );
+      });
+    }
+
+    catch (err) {
+      print(err);
+    }
   }
 
   String validatePassword(value) {
@@ -145,10 +163,27 @@ class AccountPageState extends State <AccountPage> {
   }
 
   Future <void> changePassword() async {
-    await Provider.of<Auth>(context, listen: false).changePassword(
-      this._data['password'],
-      this._data['confirm']
-    );
+    try {
+      await Provider.of<Auth>(context, listen: false).changePassword(
+        this._data['password'],
+        this._data['confirm']
+      ).then((_) {
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.green,
+            content: Text(
+              'Password has been changed!',
+              textAlign: TextAlign.center,
+            )
+          )
+        );
+      });
+    }
+
+    catch (err) {
+      print(err);
+    }
+    
   }
 
   void _showNameChangeDialog() {
