@@ -167,7 +167,7 @@ class Auth with ChangeNotifier {
 
   }
 
-  Future <void> editName(String name) async {
+  Future <void> changeName(String name) async {
 
     String url = serverURL + '/api/users/${this._userValues['id']}/name';
 
@@ -197,6 +197,47 @@ class Auth with ChangeNotifier {
       // when we get our token from server, save to memory
       final prefs = await SharedPreferences.getInstance();
       prefs.setString('user_token', this._token);
+
+      notifyListeners();
+    }
+
+    catch (error) {
+      throw HttpException (error.toString());
+    }
+
+  }
+
+  Future <void> changePassword(String password, String confirm) async {
+    
+    String url = serverURL + '/api/users/${this._userValues['id']}/password';
+
+    try {
+      password.replaceAll(new RegExp(r'\t'), '');
+      var passwordBytes = utf8.encode(password);
+      var passwordDigest = sha256.convert(passwordBytes);
+
+      confirm.replaceAll(new RegExp(r'\t'), '');
+      var confirmBytes = utf8.encode(confirm);
+      var confirmDigest = sha256.convert(confirmBytes);
+
+      final res = await http.post(url, 
+        headers: {
+          // 'Content-type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': token
+        },
+        body: {
+          'password': passwordDigest,
+          'password2': confirmDigest
+        }
+      );
+
+      if (res.statusCode == 400 || res.statusCode == 500) 
+        throw HttpException (res.body.toString());
+
+      var actualRes = json.decode(res.body);
+      print(actualRes);
+      
 
       notifyListeners();
     }
