@@ -94,25 +94,37 @@ class SettingsPage extends StatelessWidget with NavigationStates {
           style: const TextStyle(color: mainDarkBlue, fontSize: 28),
           textAlign: TextAlign.center,
         ),
-        content: Text (
-          message,
-          style: const TextStyle(fontSize: 18),
-          textAlign: TextAlign.center,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text (
+              message,
+              style: const TextStyle(fontSize: 18),
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 16),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                FlatButton(
+                  child: Text ('No', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                FlatButton(
+                  child: Text ('Okay', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
+                  onPressed: () {
+                    this._clearLocalData(context);
+                    // Navigator.of(context).pop();
+                  },
+                )
+              ],
+            )
+          ],
         ),
-        actions: <Widget>[
-          FlatButton(
-            child: Text ('No', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          FlatButton(
-            child: Text ('Okay', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
-            onPressed: () {
-              this._clearLocalData(context);
-            },
-          )
-        ],
       )
     );
   }

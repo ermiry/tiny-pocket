@@ -66,37 +66,48 @@ class AccountPageState extends State <AccountPage> {
           style: const TextStyle(color: mainDarkBlue, fontSize: 28),
           textAlign: TextAlign.center,
         ),
-        content: Text (
-          message,
-          style: const TextStyle(fontSize: 18),
-          textAlign: TextAlign.center,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text (
+              message,
+              style: const TextStyle(fontSize: 18),
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 16),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                FlatButton(
+                  child: Text ('No', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                FlatButton(
+                  child: Text ('Okay', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
+                  onPressed: () async {
+                    setState(() => this._loading = true);
+
+                    Navigator.of(context).pop();
+
+                    try {
+                      await callback();
+                    }
+
+                    catch (err) {
+                      if (!logout) this._showErrorDialog('Failed to delete account!');
+                    }
+
+                    finally { setState(() => this._loading = false); }
+                  },
+                )
+              ],
+            )
+          ],
         ),
-        actions: <Widget>[
-          FlatButton(
-            child: Text ('No', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          FlatButton(
-            child: Text ('Okay', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
-            onPressed: () async {
-              setState(() => this._loading = true);
-
-              Navigator.of(context).pop();
-
-              try {
-                await callback();
-              }
-
-              catch (err) {
-                if (!logout) this._showErrorDialog('Failed to delete account!');
-              }
-
-              finally { setState(() => this._loading = false); }
-            },
-          )
-        ],
       )
     );
   }
