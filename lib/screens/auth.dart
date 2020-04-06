@@ -221,6 +221,7 @@ class _AuthScreenState extends State <AuthScreen> {
         children: <Widget>[
           SingleChildScrollView(
             child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 /*** title ***/
                 Container(
@@ -269,7 +270,7 @@ class _AuthScreenState extends State <AuthScreen> {
                       padding: EdgeInsets.symmetric(horizontal: 32),
                       child: Column(
                         children: <Widget>[
-                          SizedBox(height: maxHeight >= 900 ? 60 : 20),
+                          SizedBox(height: maxHeight >= 900 ? 60 : 40),
 
                           // login input
                           FadeAnimation(1.4, -30, 0, Container(
@@ -458,17 +459,16 @@ class _CreateAccountState extends State <_CreateAccount> {
 
   @override
   void dispose()  {
-    // 13/02/2020 -- caused error when closing modal bottom sheet
-    // _usernameFocusNode.dispose();
-    // _emailFocusNode.dispose();
-    // _passwordFocusNode.dispose();
-    // _confirmFocusNode.dispose();
+    _usernameFocusNode.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    _confirmFocusNode.dispose();
 
-    // this._nameController.dispose();
-    // this._usernameController.dispose();
-    // this._emailController.dispose();
-    // this._passwordController.dispose();
-    // this._confirmController.dispose();
+    this._nameController.dispose();
+    this._usernameController.dispose();
+    this._emailController.dispose();
+    this._passwordController.dispose();
+    this._confirmController.dispose();
 
     super.dispose();
   }
@@ -567,18 +567,11 @@ class _CreateAccountState extends State <_CreateAccount> {
 
       finally {
         setState(() => this._createLoading = false);
-        Navigator.of(context).pop();
       }
 
       if (!fail) {
+        Navigator.of(context).pop();
         _showSuccessDialog("Created new account! Now login.");
-
-        // clear input texts
-        this._nameController.clear();
-        this._usernameController.clear();
-        this._emailController.clear();
-        this._passwordController.clear();
-        this._confirmController.clear();
       }
     }
   }
