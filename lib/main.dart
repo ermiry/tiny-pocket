@@ -10,6 +10,7 @@ import 'package:pocket/providers/transactions.dart';
 import 'package:pocket/providers/settings.dart';
 
 import 'package:pocket/screens/splash.dart';
+import 'package:pocket/screens/welcome.dart';
 import 'package:pocket/screens/auth.dart';
 import 'package:pocket/screens/loading.dart';
 import 'package:pocket/sidebar/sidebar_layout.dart';
@@ -38,8 +39,8 @@ class TinyPocket extends StatelessWidget {
           value: new Settings(),
         )
       ],
-      child: Consumer <Auth> (
-        builder: (ctx, auth, _) => Platform.isAndroid ? MaterialApp (
+      child: Consumer <Global> (
+        builder: (ctx, global, _) => Platform.isAndroid ? MaterialApp (
           title: 'Tiny Pocket',
           theme: ThemeData (
             primaryColor: mainBlue,
@@ -61,13 +62,17 @@ class TinyPocket extends StatelessWidget {
             )
           ),
           initialRoute: '/splash',
-          home: auth.isAuth ? new SideBarLayout () :
-            FutureBuilder(
-              future: auth.tryAutoLogin(),
-              builder: (ctx, authResultSnapshot) =>
-                authResultSnapshot.connectionState == ConnectionState.waiting ?
-                  new LoadingScreen () : new AuthScreen (),
-            ),
+          home: Consumer <Auth> (
+            builder: (ctx, auth, _) => global.firstTime ? new WelcomeScreen() 
+              :
+              auth.isAuth ? new SideBarLayout () :
+                FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (ctx, authResultSnapshot) =>
+                    authResultSnapshot.connectionState == ConnectionState.waiting ?
+                      new LoadingScreen () : new AuthScreen (),
+                ),
+          ),
           routes: {
             '/splash': (ctx) => new SplashScreen (),
           },
