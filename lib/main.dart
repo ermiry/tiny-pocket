@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:provider/provider.dart';
+import 'package:pocket/providers/global.dart';
 import 'package:pocket/providers/auth.dart';
 import 'package:pocket/providers/transactions.dart';
 import 'package:pocket/providers/settings.dart';
@@ -24,6 +25,9 @@ class TinyPocket extends StatelessWidget {
 
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(
+          value: new Global(),
+        ),
         ChangeNotifierProvider.value(
           value: new Auth(),
         ),
