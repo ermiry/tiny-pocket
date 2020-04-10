@@ -97,12 +97,15 @@ class _WelcomeScreenState extends State <WelcomeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.18),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.1),
 
                         Container(
-                          child: Image(
-                            image: AssetImage(
-                              'assets/img/transactions.png',
+                          height: MediaQuery.of(context).size.height * 0.36,
+                          child: Center(
+                            child: Image(
+                              image: AssetImage(
+                                'assets/img/transactions.png',
+                              ),
                             ),
                           ),
                         ),
@@ -111,7 +114,7 @@ class _WelcomeScreenState extends State <WelcomeScreen> {
 
                         Center(
                           child: Text(
-                            'Quickly create new transactions and customize their values',
+                            'Welcome to Tiny Pocket!',
                             style: titleStyle,
                             textAlign: TextAlign.center
                           ),
@@ -135,12 +138,15 @@ class _WelcomeScreenState extends State <WelcomeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.18),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.1),
 
                         Container(
-                          child: Image(
-                            image: AssetImage(
-                              'assets/img/growth.png',
+                          height: MediaQuery.of(context).size.height * 0.36,
+                          child: Center(
+                            child: Image(
+                              image: AssetImage(
+                                'assets/img/growth.png',
+                              ),
                             ),
                           ),
                         ),
@@ -173,12 +179,15 @@ class _WelcomeScreenState extends State <WelcomeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.18),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.1),
 
                         Container(
-                          child: Image(
-                            image: AssetImage(
-                              'assets/img/analysis.png',
+                          height: MediaQuery.of(context).size.height * 0.36,
+                          child: Center(
+                            child: Image(
+                              image: AssetImage(
+                                'assets/img/analysis.png',
+                              ),
                             ),
                           ),
                         ),
