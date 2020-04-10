@@ -71,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
           new Center(
             child: new Container(
               padding: const EdgeInsets.all(32),
-              child: new Image.asset('assets/img/ermiry-512.png')
+              child: new Image.asset('assets/ermiry.png')
             )
           )
         ],
