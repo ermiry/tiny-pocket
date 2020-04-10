@@ -102,7 +102,7 @@ class _WelcomeScreenState extends State <WelcomeScreen> {
                         Container(
                           child: Image(
                             image: AssetImage(
-                              'assets/img/productivity.png',
+                              'assets/img/transactions.png',
                             ),
                           ),
                         ),
@@ -111,7 +111,7 @@ class _WelcomeScreenState extends State <WelcomeScreen> {
 
                         Center(
                           child: Text(
-                            'Live your life smarter\nwith us!',
+                            'Quickly create new transactions and customize their values',
                             style: titleStyle,
                             textAlign: TextAlign.center
                           ),
@@ -140,7 +140,7 @@ class _WelcomeScreenState extends State <WelcomeScreen> {
                         Container(
                           child: Image(
                             image: AssetImage(
-                              'assets/img/app.png',
+                              'assets/img/growth.png',
                             ),
                           ),
                         ),
@@ -149,7 +149,7 @@ class _WelcomeScreenState extends State <WelcomeScreen> {
 
                         Center(
                           child: Text(
-                            'Quickly create new transactions and customize their values',
+                            'Live your life smarter\nwith us!',
                             style: titleStyle,
                             textAlign: TextAlign.center
                           ),
@@ -159,7 +159,7 @@ class _WelcomeScreenState extends State <WelcomeScreen> {
 
                         Center(
                           child: Text(
-                            'You have a lot of options to organize your transactions the way it fits your needs',
+                            'With a better organization, you can maximize your savings and keep your profits',
                             style: subtitleStyle,
                             textAlign: TextAlign.center,
                           ),
@@ -178,7 +178,7 @@ class _WelcomeScreenState extends State <WelcomeScreen> {
                         Container(
                           child: Image(
                             image: AssetImage(
-                              'assets/img/project.png',
+                              'assets/img/analysis.png',
                             ),
                           ),
                         ),
@@ -197,7 +197,7 @@ class _WelcomeScreenState extends State <WelcomeScreen> {
 
                         Center(
                           child: Text(
-                            'Keep track of all the transactions you have done acrros multiple accounts in one place',
+                            'Keep track of all the transactions you have done across multiple accounts in one place',
                             style: subtitleStyle,
                             textAlign: TextAlign.center,
                           ),
