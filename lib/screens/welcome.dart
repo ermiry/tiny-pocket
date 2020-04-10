@@ -36,7 +36,7 @@ class _WelcomeScreenState extends State <WelcomeScreen> {
   Future <void> getStarted() async {
     try {
       await Provider.of<Global>(context, listen: false).toggleFirstTime();
-      // print('hola!');
+      Navigator.of(context).pushReplacementNamed('/');
     }
 
     catch (error) {

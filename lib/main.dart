@@ -39,65 +39,63 @@ class TinyPocket extends StatelessWidget {
           value: new Settings(),
         )
       ],
-      child: Consumer <Global> (
-        builder: (ctx, global, _) => Platform.isAndroid ? MaterialApp (
-          title: 'Tiny Pocket',
-          theme: ThemeData (
-            primaryColor: mainBlue,
-            fontFamily: 'Quicksand',
-            appBarTheme: AppBarTheme (
-              textTheme: ThemeData.light().textTheme.copyWith(
-                title: TextStyle (fontFamily: 'Open Sans', fontSize: 20, fontWeight: FontWeight.bold)
-                )
-            ),
+      child: Platform.isAndroid ? MaterialApp (
+        title: 'Tiny Pocket',
+        theme: ThemeData (
+          primaryColor: mainBlue,
+          fontFamily: 'Quicksand',
+          appBarTheme: AppBarTheme (
             textTheme: ThemeData.light().textTheme.copyWith(
-              title: TextStyle (
-                fontFamily: 'Quicksand',
-                fontSize: 18,
-                fontWeight: FontWeight.bold
+              title: TextStyle (fontFamily: 'Open Sans', fontSize: 20, fontWeight: FontWeight.bold)
+              )
+          ),
+          textTheme: ThemeData.light().textTheme.copyWith(
+            title: TextStyle (
+              fontFamily: 'Quicksand',
+              fontSize: 18,
+              fontWeight: FontWeight.bold
+            ),
+            button: TextStyle (
+              color: Colors.white
+            )
+          )
+        ),
+        initialRoute: '/splash',
+        home: Consumer <Auth> (
+          builder: (ctx, auth, _) => Provider.of<Global>(ctx, listen: false).firstTime ? new WelcomeScreen() 
+            :
+            auth.isAuth ? new SideBarLayout () :
+              FutureBuilder(
+                future: auth.tryAutoLogin(),
+                builder: (ctx, authResultSnapshot) =>
+                  authResultSnapshot.connectionState == ConnectionState.waiting ?
+                    new LoadingScreen () : new AuthScreen (),
               ),
-              button: TextStyle (
-                color: Colors.white
-              )
+        ),
+        routes: {
+          '/splash': (ctx) => new SplashScreen (),
+        },
+
+        debugShowCheckedModeBanner: true,
+      )
+
+      :
+
+      CupertinoApp (
+        title: 'Tiny Pocket',
+        theme: CupertinoThemeData (
+          // primaryColor: Colors.blue,
+          // primaryContrastingColor: Colors.redAccent,
+          textTheme: CupertinoTextThemeData (
+            textStyle: TextStyle (
+              fontFamily: 'Quicksand',
+              fontSize: 18,
+              fontWeight: FontWeight.bold
             )
-          ),
-          initialRoute: '/splash',
-          home: Consumer <Auth> (
-            builder: (ctx, auth, _) => global.firstTime ? new WelcomeScreen() 
-              :
-              auth.isAuth ? new SideBarLayout () :
-                FutureBuilder(
-                  future: auth.tryAutoLogin(),
-                  builder: (ctx, authResultSnapshot) =>
-                    authResultSnapshot.connectionState == ConnectionState.waiting ?
-                      new LoadingScreen () : new AuthScreen (),
-                ),
-          ),
-          routes: {
-            '/splash': (ctx) => new SplashScreen (),
-          },
-
-          debugShowCheckedModeBanner: true,
-        )
-
-        :
-
-        CupertinoApp (
-          title: 'Tiny Pocket',
-          theme: CupertinoThemeData (
-            // primaryColor: Colors.blue,
-            // primaryContrastingColor: Colors.redAccent,
-            textTheme: CupertinoTextThemeData (
-              textStyle: TextStyle (
-                fontFamily: 'Quicksand',
-                fontSize: 18,
-                fontWeight: FontWeight.bold
-              )
-            )
-          ),
-          // home: HomePage ()
-          home: new AuthScreen ()
-        )
+          )
+        ),
+        // home: HomePage ()
+        home: new AuthScreen ()
       ),
     );
 

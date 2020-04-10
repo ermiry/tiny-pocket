@@ -7,6 +7,15 @@ class Global with ChangeNotifier {
   // the first time the app was opened
   bool firstTime = true;
 
+  Future <void> showWelcome() async { 
+    this.firstTime = true;
+
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('first_time', this.firstTime);
+
+    notifyListeners(); 
+  }
+
   Future <void> toggleFirstTime() async { 
     // this.firstTime = !this.firstTime;
     this.firstTime = false;

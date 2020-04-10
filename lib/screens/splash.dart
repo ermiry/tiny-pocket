@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
+import 'package:pocket/providers/global.dart';
 import 'package:pocket/providers/transactions.dart';
 import 'package:pocket/providers/settings.dart';
 
@@ -40,6 +41,8 @@ class _SplashScreenState extends State<SplashScreen> {
     // >>> reap benefits <<<
 
     // try {
+      await Provider.of<Global>(context, listen: false).loadGlobal();
+
       await Provider.of<Transactions>(context, listen: false).loadTransactions();
       await Provider.of<Settings>(context, listen: false).loadSettings();
     // }

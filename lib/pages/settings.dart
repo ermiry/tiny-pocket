@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
+import 'package:pocket/providers/global.dart';
 import 'package:pocket/providers/settings.dart';
 import 'package:pocket/providers/transactions.dart';
 
@@ -180,7 +181,8 @@ class SettingsPage extends StatelessWidget with NavigationStates {
                       value: settings.showBarsChart,
                       onChanged: (val) { 
                         settings.toggleBarsChart();
-                      },)
+                      }
+                    )
                   ),
                 ),
 
@@ -199,7 +201,8 @@ class SettingsPage extends StatelessWidget with NavigationStates {
                       value: settings.showExpensesChart,
                       onChanged: (val) { 
                         settings.toggleExpensesChart();
-                      },)
+                      }
+                    )
                   ),
                 ),
 
@@ -223,6 +226,8 @@ class SettingsPage extends StatelessWidget with NavigationStates {
                 //   ),
                 // ),
 
+                new SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   decoration: BoxDecoration(
@@ -238,7 +243,36 @@ class SettingsPage extends StatelessWidget with NavigationStates {
                       value: settings.centerAddButton,
                       onChanged: (val) { 
                         settings.toggleCenterAddButton();
-                      },)
+                      }
+                    )
+                  ),
+                ),
+
+                new SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(
+                      color: mainDarkBlue
+                    ))
+                  ),
+                  child: ListTile(
+                    title: const Text ('Toggle welcome screen'),
+                    subtitle: const Text('Display welcome screen the next time you launch the app'),
+                    trailing: Switch.adaptive (
+                      activeColor: mainBlue,
+                      value: Provider.of<Global>(context).firstTime,
+                      onChanged: (val) async { 
+                        try {
+                          await Provider.of<Global>(context, listen: false).showWelcome();
+                        }
+
+                        catch (error) {
+                          print(error);
+                        }
+                      }
+                    )
                   ),
                 ),
 
