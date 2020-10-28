@@ -35,6 +35,13 @@ class _AddTransactionState extends State <AddTransaction> {
 
   bool _loading = false;
 
+  @override
+  void dispose()  {
+    this._amountFocusNode.dispose();
+
+    super.dispose();
+  }
+
   void _chooseDate() {
     showDatePicker(
       context: context,

@@ -111,10 +111,13 @@ class _HomePageState extends State <HomePage> {
         backgroundColor: mainBlue,
 				child: Icon (Icons.add),
 				onPressed: () {
-					showModalBottomSheet (
-						context: context, 
-						builder: (bCtx) => AddTransaction ()
-					);
+          showModalBottomSheet(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            context: context, 
+            builder: (bCtx) => new AddTransaction ()
+          );
 				},
 			),
 		) :
