@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pocket/providers/global.dart';
-import 'package:pocket/providers/transactions.dart';
+// import 'package:pocket/providers/things.dart';
 import 'package:pocket/providers/settings.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -25,9 +25,7 @@ class SplashScreen extends StatefulWidget {
 
 }
 
-class _SplashScreenState extends State<SplashScreen> {
-
-  // bool _hasError = false;
+class _SplashScreenState extends State <SplashScreen> {
 
   @override
   void initState() {
@@ -35,15 +33,29 @@ class _SplashScreenState extends State<SplashScreen> {
     _initializeAsyncDependencies();
   }
 
-  Future<void> _initializeAsyncDependencies() async {
-    // >>> initialize async dependencies <<<
-    // >>> register favorite dependency manager <<<
-    // >>> reap benefits <<<
-
+  Future <void> _initializeAsyncDependencies() async {
     // try {
-      await Provider.of<Global>(context, listen: false).loadGlobal();
+      var global = Provider.of<Global>(context, listen: false);
+      // var things = Provider.of<Things>(context, listen: false); 
 
-      await Provider.of<Transactions>(context, listen: false).loadTransactions();
+      global.loadGlobal().then((_) async {
+        // if (global.firstTime) {
+        //   print('First!');
+        //   await things.addCategory(
+        //     'All',
+        //     'All things'
+        //   );
+        // }
+
+        // else {
+        //   things.loadCategories().then((_) {
+        //     things.loadLabels().then((_) async {
+        //       await things.loadThings();
+        //     });
+        //   });
+        // }
+      });
+      
       await Provider.of<Settings>(context, listen: false).loadSettings();
     // }
 
@@ -81,18 +93,4 @@ class _SplashScreenState extends State<SplashScreen> {
       )
     );
   }
-
-  // Widget _buildBody() {
-  //   if (_hasError) {
-  //     return Center(
-  //       child: RaisedButton(
-  //         child: Text('retry'),
-  //         // onPressed: () => main(),
-  //       ),
-  //     );
-  //   }
-  //   return Center(
-  //     child: CircularProgressIndicator(),
-  //   );
-  // }
 }
