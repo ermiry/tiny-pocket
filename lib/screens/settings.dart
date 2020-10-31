@@ -6,11 +6,16 @@ import 'package:pocket/providers/global.dart';
 import 'package:pocket/providers/settings.dart';
 import 'package:pocket/providers/transactions.dart';
 
-import 'package:pocket/sidebar/navigation_bloc.dart';
-
 import 'package:pocket/style/colors.dart';
 
-class SettingsPage extends StatelessWidget with NavigationStates {
+class SettingsScreen extends StatefulWidget {
+
+	@override
+	_SettingsScreenState createState () => _SettingsScreenState ();
+
+}
+
+class _SettingsScreenState extends State <SettingsScreen> {
 
   void _showErrorDialog(BuildContext context, String message) {
     showDialog(
@@ -130,8 +135,8 @@ class SettingsPage extends StatelessWidget with NavigationStates {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+	@override
+	Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       // DeviceOrientation.portraitDown,
@@ -336,6 +341,7 @@ class SettingsPage extends StatelessWidget with NavigationStates {
         );
       },
     );
-  }
+
+	}
 
 }
