@@ -1,43 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-import 'package:pocket/sidebar/navigation_bloc.dart';
 
 import 'package:pocket/style/colors.dart';
 
 import 'package:pocket/version.dart';
 
-class AboutPage extends StatelessWidget with NavigationStates {
+class AboutScreen extends StatefulWidget {
 
-  @override
-  Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      // DeviceOrientation.portraitDown,
-    ]);
+	@override
+	_AboutScreenState createState () => _AboutScreenState ();
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+}
+
+class _AboutScreenState extends State <AboutScreen> {
+
+	@override
+	Widget build(BuildContext context) {
+    return Center(
       child: Column(
         children: <Widget>[
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+
           new Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: MediaQuery.of(context).size.height * 0.07),
-
-              Center(
-                child: Text(
-                  "About",
-                  style: const TextStyle(
-                    fontSize: 24,
-                    color: mainBlue,
-                    fontWeight: FontWeight.w800
-                  ),
-                ),
-              ),
-
-              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-
               const Text(
                 'Tiny Pocket Mobile App',
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: mainDarkBlue),
@@ -127,7 +112,7 @@ class AboutPage extends StatelessWidget with NavigationStates {
             ],
           ),
 
-          new Spacer (),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
 
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -143,6 +128,7 @@ class AboutPage extends StatelessWidget with NavigationStates {
         ],
       ),
     );
-  }
+
+	}
 
 }
