@@ -3,24 +3,21 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:pocket/sidebar/navigation_bloc.dart';
-
 import 'package:provider/provider.dart';
 import 'package:pocket/providers/auth.dart';
 
 import 'package:pocket/widgets/change_value.dart';
 
 import 'package:pocket/style/colors.dart';
-// import 'package:pocket/style/style.dart';
 
-class AccountPage extends StatefulWidget with NavigationStates {
+class AccountScreen extends StatefulWidget {
 
-  @override
-  AccountPageState createState() => AccountPageState();
+	@override
+	_AccountScreenState createState () => _AccountScreenState ();
 
 }
 
-class AccountPageState extends State <AccountPage> {
+class _AccountScreenState extends State <AccountScreen> {
 
   bool _loading = false;
 
@@ -249,8 +246,8 @@ class AccountPageState extends State <AccountPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+	@override
+	Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       // DeviceOrientation.portraitDown,
@@ -463,6 +460,7 @@ class AccountPageState extends State <AccountPage> {
         ) : Container()
       ],
     );
-  }
+
+	}
 
 }
