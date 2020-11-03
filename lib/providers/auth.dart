@@ -44,7 +44,7 @@ class Auth with ChangeNotifier {
           'username': username.replaceAll(new RegExp(r'\t'), ''), 
           'email': email.replaceAll(new RegExp(r'\t'), ''), 
           'password': passwordDigest.toString(),
-          'password2': confirmDigest.toString()
+          'confirm': confirmDigest.toString()
         }
       );
 
@@ -53,6 +53,13 @@ class Auth with ChangeNotifier {
           var actualRes = json.decode(res.body);
           print(actualRes);
           this._token = actualRes['token'];
+
+          this._userValues = Jwt.parseJwt(token);
+          // print(this.userValues);
+
+          // when we get our token from server, save to memory
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setString('user_token', this._token);
         } break;
 
         default: throw HttpException (res.body.toString()); break;
@@ -83,10 +90,13 @@ class Auth with ChangeNotifier {
         }
       );
 
+      print(res.body);
+
       switch (res.statusCode) {
         case 200: {
           var actualRes = json.decode(res.body);
-          // print(actualRes);
+          print(actualRes);
+
           this._token = actualRes['token'];
 
           this._userValues = Jwt.parseJwt(token);
@@ -97,13 +107,23 @@ class Auth with ChangeNotifier {
           prefs.setString('user_token', this._token);
         } break;
 
-        default: throw HttpException (res.body.toString()); break;
+        case 400:
+        case 404: {
+          print(res.body);
+          var actualRes = json.decode(res.body);
+          print(actualRes);
+          throw HttpException (actualRes['error']);
+          // throw HttpException ("Failed to authenticate!");
+        } break;
+
+        default: throw HttpException ("Failed to authenticate!"); break;
       }
 
       notifyListeners();
     }
 
     catch (error) {
+      print(error.toString());
       throw HttpException (error.toString());
     }
 
