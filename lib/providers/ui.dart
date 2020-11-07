@@ -5,6 +5,7 @@ class UI with ChangeNotifier {
   double xOffset = 0;
   double yOffset = 0;
   double scaleFactor = 1;
+  double yScaleFactor = 1;
 
   bool isDrawerOpen = false;
 
@@ -12,9 +13,10 @@ class UI with ChangeNotifier {
   String get currentScreen { return this._currentScreen; }
 
   void openDrawer() {
-    this.xOffset = 230;
-    this.yOffset = 150;
-    this.scaleFactor = 0.6;
+    this.xOffset = 240;
+    this.yOffset = 160;
+    this.scaleFactor = 0.72;
+    this.yScaleFactor = 0.64;
     this.isDrawerOpen = true;
 
     notifyListeners();
@@ -24,6 +26,7 @@ class UI with ChangeNotifier {
     this.xOffset = 0;
     this.yOffset = 0;
     this.scaleFactor = 1;
+    this.yScaleFactor = 1;
     this.isDrawerOpen = false;
 
     notifyListeners();
