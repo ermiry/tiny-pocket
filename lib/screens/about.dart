@@ -1,24 +1,67 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+import 'package:pocket/providers/ui.dart';
+
 import 'package:pocket/style/colors.dart';
 
 import 'package:pocket/version.dart';
 
-class AboutScreen extends StatefulWidget {
-
-	@override
-	_AboutScreenState createState () => _AboutScreenState ();
-
-}
-
-class _AboutScreenState extends State <AboutScreen> {
+class AboutScreen extends StatelessWidget {
 
 	@override
 	Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: <Widget>[
-          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: ListView(
+        children: [
+          SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
+          Consumer <UI> (
+            builder: (ctx, ui, _) => Row (
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(width: 16.0),
+
+                ui.isDrawerOpen ? IconButton(
+                  icon: Icon(Icons.arrow_back_ios),
+                  onPressed: () {
+                    // setState(() {
+                    //   xOffset = 0;
+                    //   yOffset = 0;
+                    //   scaleFactor = 1;
+                    //   isDrawerOpen = false;
+                    // });
+                  },
+                )
+
+                :
+
+                IconButton(
+                  icon: Icon(Icons.menu),
+                  onPressed: () {
+                    if (!ui.isDrawerOpen) {
+                      ui.openDrawer();
+                    }
+                  }
+                ),
+
+                const SizedBox(width: 20.0),
+
+                Text(
+                  'About',
+                  style: TextStyle(
+                    fontSize: 28.0,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF2F3446)
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
           new Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -109,24 +152,19 @@ class _AboutScreenState extends State <AboutScreen> {
               const Text(
                 'Icon made by Freepik from www.flaticon.com'
               ),
-            ],
-          ),
 
-          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
 
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
               const Text(
                 'Copyright \u00a9 2020 Ermiry',
                 style: TextStyle(color: mainBlue),
               ),
-
-              SizedBox(height: 20),
             ],
-          )
+          ),
+
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05)
         ],
-      ),
+      )
     );
 
 	}
