@@ -6,6 +6,8 @@ import 'package:pocket/providers/ui.dart';
 
 import 'package:pocket/screens/home.dart';
 import 'package:pocket/screens/about.dart';
+import 'package:pocket/screens/account.dart';
+import 'package:pocket/screens/settings.dart';
 
 class ActiveScreen extends StatefulWidget {
 
@@ -21,6 +23,8 @@ class _ActiveScreenState extends State <ActiveScreen> {
     switch (screen) {
       case "Home": retval = HomeScreen(); break; 
       case "About": retval = AboutScreen(); break;
+      case "Account": retval = AccountScreen(); break;
+      case "Settings": retval = SettingsScreen(); break;
     }
 
     return retval;
@@ -46,38 +50,38 @@ class _ActiveScreenState extends State <ActiveScreen> {
           ),
 
           child: Container (
-            margin: EdgeInsets.symmetric(horizontal: 32),
-            child: Column(
+            // margin: EdgeInsets.symmetric(horizontal: 32),
+            child: ListView(
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                // SizedBox(height: MediaQuery.of(context).size.height * 0.05),
 
-                Row (
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ui.isDrawerOpen ? IconButton(
-                      icon: Icon(Icons.arrow_back_ios),
-                      onPressed: () {
-                        // setState(() {
-                        //   xOffset = 0;
-                        //   yOffset = 0;
-                        //   scaleFactor = 1;
-                        //   isDrawerOpen = false;
-                        // });
-                      },
-                    )
+                // Row (
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     ui.isDrawerOpen ? IconButton(
+                //       icon: Icon(Icons.arrow_back_ios),
+                //       onPressed: () {
+                //         // setState(() {
+                //         //   xOffset = 0;
+                //         //   yOffset = 0;
+                //         //   scaleFactor = 1;
+                //         //   isDrawerOpen = false;
+                //         // });
+                //       },
+                //     )
 
-                    :
+                //     :
 
-                    IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () {
-                        if (!ui.isDrawerOpen) {
-                          ui.openDrawer();
-                        }
-                      }
-                    ),
-                  ],
-                ),
+                //     IconButton(
+                //       icon: Icon(Icons.menu),
+                //       onPressed: () {
+                //         if (!ui.isDrawerOpen) {
+                //           ui.openDrawer();
+                //         }
+                //       }
+                //     ),
+                //   ],
+                // ),
 
                 this.body(ui.currentScreen)
               ],
