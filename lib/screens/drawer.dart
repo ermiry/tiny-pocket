@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pocket/providers/ui.dart';
+import 'package:pocket/providers/auth.dart';
 
 import 'package:pocket/style/colors.dart';
 
@@ -50,8 +51,8 @@ class _DrawerScreenState extends State <DrawerScreen> {
                   child: Text ('Okay', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
                   onPressed: () {
                     print('Logout!');
-                    // Provider.of<Auth>(context, listen: false).logout();
-                    // Navigator.of(context).pop();
+                    Provider.of<Auth>(context, listen: false).logout();
+                    Navigator.of(context).pop();
                   },
                 )
               ],
@@ -73,13 +74,11 @@ class _DrawerScreenState extends State <DrawerScreen> {
           // account info
           ListTile(
             title: Text(
-              // "${Provider.of<Auth>(context, listen: false).userValues['name']}",
-              "Erick Salas",
+              "${Provider.of<Auth>(context, listen: false).userValues['name']}",
               style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800),
             ),
             subtitle: Text(
-              // "${Provider.of<Auth>(context, listen: false).userValues['email']}",
-              "erick.salas@ermiry.com",
+              "${Provider.of<Auth>(context, listen: false).userValues['email']}",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 14,
@@ -93,9 +92,7 @@ class _DrawerScreenState extends State <DrawerScreen> {
               ),
               radius: 40,
             ),
-            onTap: () {
-              print('Account');
-            },
+            onTap: () => Provider.of<UI>(context, listen: false).changeScreen("Account"),
           ),
 
           SizedBox(height: MediaQuery.of(context).size.height * 0.1),
@@ -134,22 +131,36 @@ class _DrawerScreenState extends State <DrawerScreen> {
 
           Spacer(),
 
-          Row(
+          Column(
             children: [
-              const Icon (Icons.settings, color: Colors.white),
-              const SizedBox (width: 12),
-              const Text ('Settings', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-              const SizedBox (width: 12),
-              Container (width: 2, height: 20, color: Colors.white),
-              const SizedBox(width: 12),
-              const Icon (Icons.logout, color: Colors.white),
-              const SizedBox(width: 12),
+              GestureDetector(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: Row(
+                    children: [
+                      Icon (Icons.settings, color: Colors.white, size: 32),
+                      const SizedBox (width: 20),
+                      Text ("Settings", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20))
+                    ],
+                  ),
+                ),
+                onTap: () => Provider.of<UI>(context, listen: false).changeScreen("Settings"),
+              ),
 
               GestureDetector(
-                child: const Text ('Log out', style: TextStyle (color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: Row(
+                    children: [
+                      Icon (Icons.logout, color: Colors.white, size: 32),
+                      const SizedBox (width: 20),
+                      Text ("Logout", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20))
+                    ],
+                  ),
+                ),
                 onTap: () => this._showConfirmDialog(context, 'Are you sure you want to logout?'),
               )
-            ]
+            ],
           ),
 
           const SizedBox(height: 32),
