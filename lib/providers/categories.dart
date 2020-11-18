@@ -28,4 +28,41 @@ class Categories with ChangeNotifier {
     notifyListeners();
   }
 
+  void update(
+    Category category, 
+    String title, String description, Color color
+  ) {
+    try {
+      if (category != null) {
+        category.title = title;
+        category.description = description;
+        category.color = color;
+
+        // save to local storage
+        var repo = new FuturePreferencesRepository <Category> (new CategoryDesSer());
+        repo.updateWhere((c) => c.id == category.id, category);
+
+        notifyListeners();
+      }
+    }
+
+    catch (error) {
+      print(error);
+      print('Failed to update category!');
+    }
+  }
+
+  Future <void> load() async {
+    try {
+      var repo = new FuturePreferencesRepository <Category> (new CategoryDesSer ());
+      this._categories = await repo.findAll();
+    }
+
+    catch (error) {
+      print('Failed to load categories from local storage!');
+    }
+
+    notifyListeners();
+  }
+
 }
