@@ -6,20 +6,22 @@ import 'package:pref_dessert/pref_dessert.dart';
 
 class Transaction {
 
-	String id;
-	String title;
-	double amount;
-	DateTime date;
+	final String id;
 
-  int type;
+	final String title;
+	final double amount;
+	final DateTime date;
+
+  final String category;
 
 	Transaction ({
-		@required this.id, 
+		@required this.id,
+
 		@required this.title, 
 		@required this.amount, 
 		@required this.date,
 
-    @required this.type
+    @required this.category
 	});
 
   Transaction.fromJson(Map <String, dynamic> json)
@@ -27,16 +29,14 @@ class Transaction {
       title = json['title'],
       amount = json['amount'],
       date = DateTime.parse(json['date']),
+      category = json['category'];
 
-      type = json['type'];
-
-  Map<String, dynamic> toJson() => {
+  Map <String, dynamic> toJson() => {
     'id': this.id,
     'title': this.title,
     'amount': this.amount,
     'date': this.date.toIso8601String(),
-
-    'type': this.type
+    'category': this.category
   };
 
 }
@@ -54,8 +54,7 @@ class TransactionDesSer extends DesSer <Transaction> {
       title: map['title'] as String, 
       amount: map['amount'] as double,
       date: DateTime.parse(map['date'] as String),
-
-      type: map['type'] as int
+      category: map['category'] as String
     );
   }
 
