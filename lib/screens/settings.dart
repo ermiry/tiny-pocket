@@ -77,7 +77,7 @@ class _SettingsScreenState extends State <SettingsScreen> {
 
   Future <void> _clearLocalData(BuildContext context) async {
     try {
-      await Provider.of<Transactions>(context, listen: false).clearTransactions();
+      await Provider.of<Transactions>(context, listen: false).clear();
       Navigator.of(context).pop();
       this._showSuccessDialog(context, 'Local data has been deleted!');
     }

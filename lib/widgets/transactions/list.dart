@@ -3,7 +3,9 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:pocket/providers/categories.dart';
 import 'package:pocket/providers/transactions.dart';
+
 import 'package:pocket/models/transaction.dart';
 
 import 'package:pocket/style/style.dart';
@@ -39,7 +41,7 @@ class TransactionList extends StatelessWidget {
                 key: ValueKey (sortedTrans[idx].id),
                 direction: DismissDirection.endToStart,
                 onDismissed: (direction) {
-                  trans.removeTransaction(sortedTrans[idx].id);
+                  trans.remove(sortedTrans[idx].id);
                   sortedTrans.removeWhere((t) => t.id == sortedTrans[idx].id);
                 },
                 confirmDismiss: (dir) {
@@ -94,7 +96,7 @@ class TransactionList extends StatelessWidget {
                   padding: EdgeInsets.only(right: 20),
                 ),
                 child: Card (
-                  color: trans.getTransType(sortedTrans[idx].type).color,
+                  color: Provider.of<Categories>(context, listen: false).getById(sortedTrans[idx].id).color,
                   elevation: 5,
                   margin: EdgeInsets.symmetric(
                     vertical: 4,
