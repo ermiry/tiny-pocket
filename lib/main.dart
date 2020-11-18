@@ -6,6 +6,7 @@ import 'package:pocket/providers/global.dart';
 import 'package:pocket/providers/ui.dart';
 import 'package:pocket/providers/auth.dart';
 import 'package:pocket/providers/transactions.dart';
+import 'package:pocket/providers/categories.dart';
 import 'package:pocket/providers/settings.dart';
 
 import 'package:pocket/screens/splash.dart';
@@ -46,6 +47,7 @@ class TinyPocket extends StatelessWidget {
         ChangeNotifierProvider.value(value: new UI()),
         ChangeNotifierProvider.value(value: new Auth()),
         ChangeNotifierProvider.value(value: new Transactions()),
+        ChangeNotifierProvider.value(value: new Categories()),
         ChangeNotifierProvider.value(value: new Settings())
       ],
       child: Consumer <Global> (
