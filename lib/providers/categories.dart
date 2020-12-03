@@ -1,14 +1,55 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
+import 'package:http/http.dart' as http;
+
 import 'package:pocket/models/category.dart';
+import 'package:pocket/models/http_exception.dart';
 
 import 'package:pref_dessert/pref_dessert.dart';
+
+import 'package:pocket/values.dart';
 
 class Categories with ChangeNotifier {
 
   List <Category> _categories = [];
 
   List <Category> get categories { return [..._categories]; }
+
+  Category getById(String id) {
+    return this._categories.firstWhere((c) => c.id == id);
+  }
+
+  Future <void> fetch(String token) async {
+    try {
+      final res = await http.get(
+        serverURL + '/api/pocket/categories',
+        headers: { 'authorization' : '$token' }
+      );
+
+      switch (res.statusCode) {
+        case 200: {
+          print(res.body);
+          var categoriesJson = jsonDecode(res.body)['categories'] as List;
+          this._categories = categoriesJson.map((c) => Category.fromJson(c)).toList();
+        } break;
+
+        case 400:
+        default: {
+          throw HttpException (res.body.toString());
+        } break;
+      }
+
+      notifyListeners();
+    }
+
+    // catches responses with error status codes
+    catch (error) {
+      print(error);
+      throw HttpException (error.toString());
+    }
+  }
 
   Future <void> add(String title, String description, Color color) async {
     Category cat = new Category(
