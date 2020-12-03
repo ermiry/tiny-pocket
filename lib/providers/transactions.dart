@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
+import 'package:http/http.dart' as http;
+
 import 'package:pocket/models/transaction.dart';
+import 'package:pocket/models/http_exception.dart';
 
 import 'package:pref_dessert/pref_dessert.dart';
+
+import 'package:pocket/values.dart';
 
 class Transactions with ChangeNotifier {
 
@@ -51,6 +58,36 @@ class Transactions with ChangeNotifier {
 
     notifyListeners();
 
+  }
+
+  Future <void> fetch(String token) async {
+    try {
+      final res = await http.get(
+        serverURL + '/api/pocket/transactions',
+        headers: { 'authorization' : '$token' }
+      );
+
+      switch (res.statusCode) {
+        case 200: {
+          print(res.body);
+          var transJson = jsonDecode(res.body)['transactions'] as List;
+          this._transactions = transJson.map((t) => Transaction.fromJson(t)).toList();
+        } break;
+
+        case 400:
+        default: {
+          throw HttpException (res.body.toString());
+        } break;
+      }
+
+      notifyListeners();
+    }
+
+    // catches responses with error status codes
+    catch (error) {
+      print(error);
+      throw HttpException (error.toString());
+    }
   }
 
   Future <void> add(
