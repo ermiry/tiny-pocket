@@ -90,8 +90,6 @@ class Auth with ChangeNotifier {
         }
       );
 
-      print(res.body);
-
       switch (res.statusCode) {
         case 200: {
           var actualRes = json.decode(res.body);
