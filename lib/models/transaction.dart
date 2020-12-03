@@ -24,12 +24,12 @@ class Transaction {
     @required this.category
 	});
 
-  Transaction.fromJson(Map <String, dynamic> json)
-    : id = json['name'],
-      title = json['title'],
-      amount = json['amount'],
-      date = DateTime.parse(json['date']),
-      category = json['category'];
+  Transaction.fromJson(Map <String, dynamic> map)
+    : id = map['_id']['\$oid'],
+      title = map['title'],
+      amount = map['amount'],
+      date = DateTime.parse(map['date']['\$date'] as String),
+      category = map['category']['\$oid'];
 
   Map <String, dynamic> toJson() => {
     'id': this.id,
