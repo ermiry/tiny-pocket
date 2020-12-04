@@ -27,17 +27,18 @@ class Category {
   });
 
   static Color _colorFromJson(String colorString) {
-    String valueString = colorString.split('(0x')[1].split(')')[0]; // kind of hacky..
-    return new Color(int.parse(valueString, radix: 16));
+    // String valueString = colorString.split('(0x')[1].split(')')[0]; // kind of hacky..
+    // return new Color(int.parse(valueString, radix: 16));
+    return Colors.blue;
   }
 
-  factory Category.fromJson(Map <String, dynamic> json) {
+  factory Category.fromJson(Map <String, dynamic> map) {
     return new Category (
-      id: json['id'],
-      title: json['title'],
-      description: json['description'],
-      color : _colorFromJson(json['color']),
-      date: DateTime.parse(json['date'] as String)
+      id: map['_id']['\$oid'],
+      title: map['title'],
+      description: map['description'],
+      color : _colorFromJson(map['color']),
+      date: DateTime.parse(map['date']['\$date'] as String)
     );
   }
 
