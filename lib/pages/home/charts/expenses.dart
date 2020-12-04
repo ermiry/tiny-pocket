@@ -63,20 +63,20 @@ class _ExpensesChartState extends State <ExpensesChart> {
 
   int touchedIndex;
 
-  List <PieChartSectionData> showingSections() {
-    return List.generate(Provider.of<Transactions>(context, listen: true).usedTransTypes.length, (i) {
-      TransactionType transType = Provider.of<Transactions>(context, listen: true).usedTransTypes.elementAt(i);
-      double value = Provider.of<Transactions>(context, listen: true).getTransTypePercentage(transType.type);
+  // List <PieChartSectionData> showingSections() {
+  //   return List.generate(Provider.of<Transactions>(context, listen: true).usedTransTypes.length, (i) {
+  //     TransactionType transType = Provider.of<Transactions>(context, listen: true).usedTransTypes.elementAt(i);
+  //     double value = Provider.of<Transactions>(context, listen: true).getTransTypePercentage(transType.type);
 
-      return PieChartSectionData(
-        color: transType.color,
-        value: value,
-        title: value >= 100 ? '100%' : '${value.toStringAsFixed (2)}%',
-        radius: 50,
-        titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
-      );
-    });
-  }
+  //     return PieChartSectionData(
+  //       color: transType.color,
+  //       value: value,
+  //       title: value >= 100 ? '100%' : '${value.toStringAsFixed (2)}%',
+  //       radius: 50,
+  //       titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
+  //     );
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context){
@@ -93,21 +93,21 @@ class _ExpensesChartState extends State <ExpensesChart> {
               // mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 // const SizedBox(height: 10),
-                Expanded(
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: PieChart(
-                      PieChartData(
-                        borderData: FlBorderData(
-                          show: false,
-                        ),
-                        sectionsSpace: 0,
-                        centerSpaceRadius: 40,
-                        sections: showingSections()
-                      )
-                    ),
-                  ),
-                ),
+                // Expanded(
+                //   child: AspectRatio(
+                //     aspectRatio: 1,
+                //     child: PieChart(
+                //       PieChartData(
+                //         borderData: FlBorderData(
+                //           show: false,
+                //         ),
+                //         sectionsSpace: 0,
+                //         centerSpaceRadius: 40,
+                //         sections: showingSections()
+                //       )
+                //     ),
+                //   ),
+                // ),
 
                 Column(
                   mainAxisSize: MainAxisSize.max,
