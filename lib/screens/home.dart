@@ -8,6 +8,10 @@ import 'package:pocket/providers/categories.dart';
 import 'package:pocket/providers/transactions.dart';
 import 'package:pocket/providers/settings.dart';
 
+import 'package:pocket/screens/trans.dart';
+
+import 'package:pocket/models/transaction.dart';
+
 import 'package:pocket/widgets/transactions/list.dart';
 // import 'package:pocket/widgets/transactions/add.dart';
 
@@ -61,7 +65,14 @@ class _HomeScreenState extends State <HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 FlatButton(
-                  child: Text ('Okay', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
+                  child: Text (
+                    'Okay',
+                    style: const TextStyle(
+                      color: mainRed,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold
+                    )
+                  ),
                   onPressed: () {
                     Navigator.of(ctx).pop();
                   },
@@ -116,8 +127,7 @@ class _HomeScreenState extends State <HomeScreen> {
 
             // stats
             Container(
-              // height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.12,
-              padding: EdgeInsets.only(left: 16, right: 16, top: 16),
+              padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -232,13 +242,17 @@ class _HomeScreenState extends State <HomeScreen> {
               color: Colors.white,
               icon: Icon(Icons.add),
               onPressed: () {
-                // showModalBottomSheet(
-                //   shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(20.0),
-                //   ),
-                //   context: context, 
-                //   builder: (bCtx) => new AddTransaction ()
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) {
+                      return ChangeNotifierProvider.value(
+                        value: new Transaction(id: null, title: null, amount: 0, date: null, category: null),
+                        child: new TransScreen (null)
+                      );
+                    }
+                  ),
+                );
               },
               iconSize: 42
             )
