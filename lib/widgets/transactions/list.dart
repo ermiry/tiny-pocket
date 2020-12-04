@@ -96,7 +96,7 @@ class TransactionList extends StatelessWidget {
                   padding: EdgeInsets.only(right: 20),
                 ),
                 child: Card (
-                  color: Provider.of<Categories>(context, listen: false).getById(sortedTrans[idx].id).color,
+                  color: Provider.of<Categories>(context, listen: false).getById(sortedTrans[idx].category).color,
                   elevation: 5,
                   margin: EdgeInsets.symmetric(
                     vertical: 4,
