@@ -1,10 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:pref_dessert/pref_dessert.dart';
 
-class Transaction {
+class Transaction with ChangeNotifier {
 
 	final String id;
 
