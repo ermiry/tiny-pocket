@@ -29,7 +29,28 @@ class Category {
   static Color _colorFromJson(String colorString) {
     // String valueString = colorString.split('(0x')[1].split(')')[0]; // kind of hacky..
     // return new Color(int.parse(valueString, radix: 16));
-    return Colors.blue;
+    
+    return Color(hexToInt(colorString));
+  }
+
+  static int hexToInt(String hex){
+    int val = 0;
+    int len = hex.length;
+    for (int i = 0; i < len; i++) {
+      int hexDigit = hex.codeUnitAt(i);
+      if (hexDigit >= 48 && hexDigit <= 57) {
+        val += (hexDigit - 48) * (1 << (4 * (len - 1 - i)));
+      } else if (hexDigit >= 65 && hexDigit <= 70) {
+        // A..F
+        val += (hexDigit - 55) * (1 << (4 * (len - 1 - i)));
+      } else if (hexDigit >= 97 && hexDigit <= 102) {
+        // a..f
+        val += (hexDigit - 87) * (1 << (4 * (len - 1 - i)));
+      } else {
+        throw new FormatException("Invalid hexadecimal value");
+      }
+    }
+    return val;
   }
 
   factory Category.fromJson(Map <String, dynamic> map) {
