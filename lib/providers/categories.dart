@@ -11,6 +11,8 @@ import 'package:pref_dessert/pref_dessert.dart';
 
 import 'package:pocket/values.dart';
 
+import '../models/category.dart';
+
 class Categories with ChangeNotifier {
 
   List <Category> _categories = [];
@@ -105,5 +107,6 @@ class Categories with ChangeNotifier {
 
     notifyListeners();
   }
+
 
 }
