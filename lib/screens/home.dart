@@ -18,6 +18,12 @@ import 'package:pocket/widgets/transactions/list.dart';
 import 'package:pocket/style/colors.dart';
 import 'package:pocket/style/style.dart';
 
+import '../pages/home/charts/bars.dart';
+import '../pages/home/charts/expenses.dart';
+import '../pages/home/charts/expenses.dart';
+import '../pages/home/charts/history.dart';
+import '../providers/categories.dart';
+
 class HomeScreen extends StatefulWidget {
 
 	@override
@@ -112,18 +118,17 @@ class _HomeScreenState extends State <HomeScreen> {
       builder: (ctx, settings, _) {
         return Column (
           children: [
-            // settings.showBarsChart ? 
-            //   new Container (
-            //     height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.2,
-            //     child: BarsChart (Provider.of<Transactions>(context, listen: true).recentTransactions)) :
-            //   new Container(),
+            settings.showBarsChart ? 
+              new Container (
+                height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.2,
+                child: BarsChart (Provider.of<Transactions>(context, listen: true).recentTransactions)) :
+              new Container(),
 
-            // Provider.of<Transactions>(context, listen: true).usedTransTypes.length > 0 ? 
-            //   settings.showExpensesChart ? 
-            //   new ExpensesChart () : new Container() : 
-            //   new Container(),
-
-            // settings.showHistoryChart ? new HistoryChart () : new Container(),
+            Provider.of<Categories>(context, listen: true).categories.length > 0 ? 
+              settings.showExpensesChart ? 
+              new ExpensesChart () : new Container() : 
+              new Container(),
+            settings.showHistoryChart ? new HistoryChart () : new Container(),
 
             // stats
             Container(
