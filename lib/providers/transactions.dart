@@ -11,6 +11,8 @@ import 'package:pref_dessert/pref_dessert.dart';
 
 import 'package:pocket/values.dart';
 
+import '../models/category.dart';
+
 class Transactions with ChangeNotifier {
 
   List <Transaction> _transactions = [];
@@ -69,7 +71,7 @@ class Transactions with ChangeNotifier {
 
       switch (res.statusCode) {
         case 200: {
-          print(res.body);
+          // print(res.body);
           var transJson = jsonDecode(res.body)['transactions'] as List;
           this._transactions = transJson.map((t) => Transaction.fromJson(t)).toList();
         } break;
@@ -88,6 +90,28 @@ class Transactions with ChangeNotifier {
       print(error);
       throw HttpException (error.toString());
     }
+  }
+
+  double getPercentageByCategory(Category category){
+    //SUMA total
+    //TODOS LOS valores
+    double sum = 0.0;
+    double percentage = 0.0;
+    try{
+      this._transactions.where((element) => element.category == category.id).forEach((element) {
+        sum += element.amount;
+      });
+
+      print("Sum $sum");
+      print(this.getTotal);
+      percentage =  (sum / this.getTotal) * 100;
+
+    }catch(error){
+      print(error);
+    }
+    return percentage;
+
+
   }
 
   Future <void> add(
