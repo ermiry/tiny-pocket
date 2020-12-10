@@ -6,6 +6,10 @@ import 'package:pocket/providers/transactions.dart';
 
 import 'package:fl_chart/fl_chart.dart';
 
+import '../../../models/category.dart';
+import '../../../providers/categories.dart';
+
+
 class Indicator extends StatelessWidget {
 
   final Color color;
@@ -63,20 +67,22 @@ class _ExpensesChartState extends State <ExpensesChart> {
 
   int touchedIndex;
 
-  // List <PieChartSectionData> showingSections() {
-  //   return List.generate(Provider.of<Transactions>(context, listen: true).usedTransTypes.length, (i) {
-  //     TransactionType transType = Provider.of<Transactions>(context, listen: true).usedTransTypes.elementAt(i);
-  //     double value = Provider.of<Transactions>(context, listen: true).getTransTypePercentage(transType.type);
-
-  //     return PieChartSectionData(
-  //       color: transType.color,
-  //       value: value,
-  //       title: value >= 100 ? '100%' : '${value.toStringAsFixed (2)}%',
-  //       radius: 50,
-  //       titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
-  //     );
-  //   });
-  // }
+  List <PieChartSectionData> showingSections() {
+    return List.generate(Provider.of<Categories>(context, listen: true).categories.length, (i) {
+      Category transType = Provider.of<Categories>(context, listen: true).categories.elementAt(i);
+      double value = Provider.of<Transactions>(context,listen:true).getPercentageByCategory(
+         Provider.of<Categories>(context, listen: true).categories.elementAt(i)
+      );
+      print(value);
+      return PieChartSectionData(
+        color: transType.color,
+        value: value,
+        title: value >= 100 ? '100%' : '${value.toStringAsFixed (2)}%',
+        radius: 50,
+        titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context){
@@ -88,58 +94,32 @@ class _ExpensesChartState extends State <ExpensesChart> {
           elevation: 4,
           borderRadius: const BorderRadius.all(Radius.circular(12)),
           child: Container (
-            // padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
             child: Row(
               // mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                // const SizedBox(height: 10),
-                // Expanded(
-                //   child: AspectRatio(
-                //     aspectRatio: 1,
-                //     child: PieChart(
-                //       PieChartData(
-                //         borderData: FlBorderData(
-                //           show: false,
-                //         ),
-                //         sectionsSpace: 0,
-                //         centerSpaceRadius: 40,
-                //         sections: showingSections()
-                //       )
-                //     ),
-                //   ),
-                // ),
+                const SizedBox(height: 10),
+                Expanded(
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: PieChart(
+                      PieChartData(
+                        borderData: FlBorderData(
+                          show: false,
+                        ),
+                        sectionsSpace: 0,
+                        centerSpaceRadius: 40,
+                        sections: showingSections()
+                      )
+                    ),
+                  ),
+                ),
 
                 Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const <Widget>[
-                    const Indicator(
-                      color: const Color(0xff0293ee),
-                      text: 'Food',
-                      isSquare: true,
-                    ),
-                    const SizedBox(height: 4),
-                    const Indicator(
-                      color: const Color(0xfff8b250),
-                      text: 'Transportation',
-                      isSquare: true,
-                    ),
-                    const SizedBox(height: 4),
-                    const Indicator(
-                      color: const Color(0xff845bef),
-                      text: 'Work',
-                      isSquare: true,
-                    ),
-                    const SizedBox(height: 4),
-                    const Indicator(
-                      color: const Color(0xff13d38e),
-                      text: 'Fun',
-                      isSquare: true,
-                    ),
-
-                    const SizedBox(height: 18),
-                  ],
+                  children: categories()
                 ),
 
                 const SizedBox(width: 20),
@@ -149,6 +129,22 @@ class _ExpensesChartState extends State <ExpensesChart> {
         )
       ),
     );
+  }
+
+  List<Widget> categories(){
+    List<Widget> widgets = new List();
+
+    Provider.of<Categories>(context,listen:false).categories.forEach((cat) {
+      widgets.add( Indicator(
+        color: cat.color,
+        text: cat.title,
+        isSquare: true,
+      ));
+      widgets.add(SizedBox(height: 4,));
+    });
+    widgets.add(SizedBox(height:18));
+
+    return widgets;
   }
 
 }
