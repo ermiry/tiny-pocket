@@ -223,77 +223,84 @@ class _HomeScreenState extends State <HomeScreen> {
       // DeviceOrientation.portraitDown,
     ]);
 
-    return Stack (
-      children: [
-        this._loading ? Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Center(child: new CircularProgressIndicator(
-            backgroundColor: Colors.white,
-            valueColor: new AlwaysStoppedAnimation <Color> (mainBlue),
-          ))
-        ) : this._content (),
-        Positioned(
-          bottom: MediaQuery.of(context).size.width * 0.12 + 78,
-          left: MediaQuery.of(context).size.width * 0.83,
-          child: Container(
-            decoration: ShapeDecoration(
-              shape: CircleBorder (),
-              color: mainBlue
+    return RefreshIndicator(
+      onRefresh: ()async {
+        await this._fetchData();
+      },
+      color: mainBlue,
+      // displacement: 0.0,
+      child: Stack (
+        children: [
+          this._loading ? Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Center(child: new CircularProgressIndicator(
+              backgroundColor: Colors.white,
+              valueColor: new AlwaysStoppedAnimation <Color> (mainBlue),
+            ))
+          ) : this._content (),
+          Positioned(
+            bottom: MediaQuery.of(context).size.width * 0.12 + 78,
+            left: MediaQuery.of(context).size.width * 0.83,
+            child: Container(
+              decoration: ShapeDecoration(
+                shape: CircleBorder (),
+                color: mainBlue
+              ),
+              child: IconButton(
+                hoverColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                focusColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                color: Colors.white,
+                icon: Icon(Icons.category),
+                iconSize: 42,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => new CategoriesScreen ()),
+                  );
+                },
+              )
             ),
-            child: IconButton(
-              hoverColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              focusColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              color: Colors.white,
-              icon: Icon(Icons.category),
-              iconSize: 42,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => new CategoriesScreen ()),
-                );
-              },
-            )
           ),
-        ),
-        Positioned(
-          bottom: MediaQuery.of(context).size.width * 0.1,
-          left: MediaQuery.of(context).size.width * 0.83,
-          child: Container(
-            decoration: ShapeDecoration(
-              shape: CircleBorder (),
-              color: mainBlue
+          Positioned(
+            bottom: MediaQuery.of(context).size.width * 0.1,
+            left: MediaQuery.of(context).size.width * 0.83,
+            child: Container(
+              decoration: ShapeDecoration(
+                shape: CircleBorder (),
+                color: mainBlue
+              ),
+              child: IconButton(
+                hoverColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                focusColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                color: Colors.white,
+                icon: Icon(Icons.add),
+                onPressed: () {
+                  Provider.of<Keyboard>(context,listen: false).setValue("", discrete: true);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) {
+                        return ChangeNotifierProvider.value(
+                          value: new Transaction(id: null, title: null, amount: 0, date: null, category: null),
+                          child: new TransScreen (null)
+                        );
+                      }
+                    ),
+                  ).then((_){
+                    this._fetchData();
+                  });
+                },
+                iconSize: 42
+              )
             ),
-            child: IconButton(
-              hoverColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              focusColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              color: Colors.white,
-              icon: Icon(Icons.add),
-              onPressed: () {
-                Provider.of<Keyboard>(context,listen: false).setValue("", discrete: true);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) {
-                      return ChangeNotifierProvider.value(
-                        value: new Transaction(id: null, title: null, amount: 0, date: null, category: null),
-                        child: new TransScreen (null)
-                      );
-                    }
-                  ),
-                ).then((_){
-                  this._fetchData();
-                });
-              },
-              iconSize: 42
-            )
           ),
-        ),
-      ],
+        ],
+      ),
     );
 
 	}
