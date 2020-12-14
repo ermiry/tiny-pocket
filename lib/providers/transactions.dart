@@ -104,7 +104,7 @@ class Transactions with ChangeNotifier {
 
       print("Sum $sum");
       print(this.getTotal);
-      percentage =  (sum / this.getTotal) * 100;
+      percentage =  (sum.abs() / this.getTotal) * 100;
 
     }catch(error){
       print(error);
@@ -119,7 +119,7 @@ class Transactions with ChangeNotifier {
     String token,
   ) async {
     final url = serverURL + "/api/pocket/transactions";
-    print("AAA");
+    print(date.toIso8601String());
     try {
       print(url);
       print(category);
@@ -167,17 +167,39 @@ class Transactions with ChangeNotifier {
 
   }
 
-  void remove(String id) {
+  Future<void> remove(String id,String token) async{
 
-    this._transactions.firstWhere((t) => t.id == id);
+    final url = serverURL +"/api/pocket/transactions/$id";
 
-    // remove from local storage
-    var repo = new FuturePreferencesRepository <Transaction> (new TransactionDesSer());
-    repo.removeWhere((t) => t.id == id);
+    try{
+      final res = await http.delete(url, 
+        headers: {
+          "Authorization": token,
+        }
+      );
 
-    this._transactions.removeWhere((t) => t.id == id);
+      switch(res.statusCode){
+        case 200:
+          this._transactions.firstWhere((t) => t.id == id);
 
-    notifyListeners();
+          // remove from local storage
+          var repo = new FuturePreferencesRepository <Transaction> (new TransactionDesSer());
+          repo.removeWhere((t) => t.id == id);
+
+          this._transactions.removeWhere((t) => t.id == id);
+
+          notifyListeners();
+        break;
+        default: 
+          throw Exception(res.body);
+        break;
+
+      }
+    }catch(error){
+      throw Exception(error.toString());
+    }
+
+  
 
   }
 
