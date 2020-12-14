@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:pocket/models/category.dart';
 import 'package:pocket/models/transaction.dart';
+import 'package:pocket/providers/auth.dart';
 import 'package:pocket/providers/categories.dart';
 import 'package:pocket/providers/keyboard.dart';
 import 'package:pocket/providers/transactions.dart';
@@ -96,7 +97,7 @@ class _TransactionItemState extends State<TransactionItem> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "\$" + transaction.amount.abs().toString(),
+                              "\$" + transaction.amount.abs().toStringAsFixed(2),
                               style: const TextStyle(
                                 color: Colors.black87,
                                 fontSize: 22,
@@ -204,6 +205,10 @@ class _ReviewTransactionState extends State<ReviewTransaction> {
                 FlatButton(
                   child: Text ('Okay', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
                   onPressed: () async {
+                    await Provider.of<Transactions>(context,listen:false).remove(
+                      Provider.of<Transaction>(context,listen:false).id,
+                      Provider.of<Auth>(context,listen: false).token
+                    );
                     Navigator.of(ctx).pop(true);
                   },
                 )
@@ -213,7 +218,8 @@ class _ReviewTransactionState extends State<ReviewTransaction> {
         ),
       )
     ).then((value) {
-      if (value) {
+      if (value != null && value) {
+
         Navigator.of(context).pop('delete');
       }
     });
@@ -241,7 +247,7 @@ class _ReviewTransactionState extends State<ReviewTransaction> {
     return new Container(
       decoration: ShapeDecoration(
         shape: CircleBorder (),
-        color: mainBlue
+        color: /*mainBlue*/ accountFirstColor.withOpacity(0.2)
       ),
       child: IconButton(
         color: Colors.white,
@@ -249,30 +255,30 @@ class _ReviewTransactionState extends State<ReviewTransaction> {
           Icons.edit,
         ),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) {
-                try{
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (_) {
+          //       try{
 
-                Provider.of<Keyboard>(context,listen:false).setValue(transaction.amount.toString(), discrete: true);
-                }catch(error){
-                  print("hola");
-                }
+          //       Provider.of<Keyboard>(context,listen:false).setValue(transaction.amount.toString(), discrete: true);
+          //       }catch(error){
+          //         print("hola");
+          //       }
 
-                return ChangeNotifierProvider.value(
-                  value: transaction,
-                  child: new TransScreen (transaction)
-                );
-              }
-            ),
-          ).then((value) {
-            if (value != null) {
-              if (value == 'delete') {
-                Navigator.of(context).pop('delete');
-              }
-            }
-          });
+          //       return ChangeNotifierProvider.value(
+          //         value: transaction,
+          //         child: new TransScreen (transaction)
+          //       );
+          //     }
+          //   ),
+          // ).then((value) {
+          //   if (value != null) {
+          //     if (value == 'delete') {
+          //       Navigator.of(context).pop('delete');
+          //     }
+          //   }
+          // });
         },
       ),
     );
@@ -333,13 +339,27 @@ class _ReviewTransactionState extends State<ReviewTransaction> {
                           SizedBox(height: 12.0),
 
                           // description
-                          Text(
-                            "\$" + transaction.amount.toString(),
-                            style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w500,
-                            ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "\$" + transaction.amount.abs().toStringAsFixed(2),
+                                style: const TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Icon(
+                                transaction.amount >= 0 
+                                  ? Icons.keyboard_arrow_up
+                                  : Icons.keyboard_arrow_down, 
+                                color:transaction.amount >= 0 ? Colors.green : Colors.red
+                              ),
+                            ],
                           ),
                         ],
                       ),
