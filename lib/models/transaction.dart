@@ -13,7 +13,7 @@ class Transaction with ChangeNotifier {
 	final double amount;
 	final DateTime date;
 
-  final String category;
+  String category;
 
 	Transaction ({
 		@required this.id,
