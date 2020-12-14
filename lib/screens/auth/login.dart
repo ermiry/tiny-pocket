@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -82,17 +80,6 @@ class _LoginScreenState extends State <LoginScreen> {
           _authData['password'],
         );
       } on HttpException catch (error) {
-        // print(error.toString());
-        // var jsonError = json.decode(error.toString());
-
-        // String actualError;
-        // if (jsonError['email'] != null) actualError = jsonError['email'];
-        // else if (jsonError['username'] != null) actualError = jsonError['username'];
-        // else if (jsonError['password'] != null) actualError = jsonError['password'];
-        // else actualError = jsonError['error'];
-
-        // print(actualError);
-
         _showErrorDialog(error.toString());
       }
 
