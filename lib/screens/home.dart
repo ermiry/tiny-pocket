@@ -261,7 +261,7 @@ class _HomeScreenState extends State <HomeScreen> {
                     }
                   ),
                 ).then((_){
-                  await this._fetchData();
+                  this._fetchData();
                 });
               },
               iconSize: 42
