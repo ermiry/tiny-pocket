@@ -9,5 +9,7 @@ const Color importantColor = const Color.fromRGBO(241, 196, 15, 1);
 const Color doneColor = const Color.fromRGBO(39, 174, 96, 1);
 
 const Color accountFirstColor = const Color(0XFF5F6368);
+
+const Color accountFirstColorDark = const Color(0xFF44474B);
 // const Color accountFirstColor = const Color.fromRGBO(49, 39, 79, 1);
 const Color accountSecondColor = const Color(0XFFE93B2D);
