@@ -19,6 +19,15 @@ class Categories with ChangeNotifier {
 
   List <Category> get categories { return [..._categories]; }
 
+  int _selectedCategoryIdx = 0;
+
+  int get selectedCategoryIdx => this._selectedCategoryIdx;
+
+  set selectedCategoryIdx (int idx) {
+    this._selectedCategoryIdx = idx;
+    notifyListeners();
+  }
+
   Category getById(String id) {
     return this._categories.firstWhere((c) => c.id == id);
   }
@@ -53,22 +62,49 @@ class Categories with ChangeNotifier {
     }
   }
 
-  Future <void> add(String title, String description, Color color) async {
-    Category cat = new Category(
-      id: DateTime.now().toString(),
-      title: title, 
-      description: description,
-      color: color,
-      date: DateTime.now()
-    );
+  Future <void> add(String title, String description, Color color, String token) async {
+    
+    final url = serverURL + "/api/pocket/categories";
+    print(color.value.toRadixString(16));
+    try{
+      final res = await http.post(url, 
+        body: json.encode({
+          "title": title,
+          "description": description,
+          "color": color.value.toRadixString(16)
+        }),
+        headers: {
+          "Authorization": token
+        }
+        
+      );
 
-    this._categories.add(cat);
+      switch(res.statusCode){
+        case 200:
+          Category cat = new Category(
+            id: DateTime.now().toString(),
+            title: title, 
+            description: description,
+            color: color,
+            date: DateTime.now()
+          );
 
-    // save to local storage
-    var repo = new FuturePreferencesRepository <Category> (new CategoryDesSer());
-    await repo.save(cat);
+          this._categories.add(cat);
 
-    notifyListeners();
+          // save to local storage
+          var repo = new FuturePreferencesRepository <Category> (new CategoryDesSer());
+          await repo.save(cat);
+
+          notifyListeners();
+        break;
+        default:
+          throw Exception(res.body); 
+        break;
+      }
+    }catch(error){
+      throw Exception(error.toString());
+    }
+
   }
 
   void update(
