@@ -115,28 +115,53 @@ class Transactions with ChangeNotifier {
   }
 
   Future <void> add(
-    String title, double amount, DateTime date, String category
+    String title, double amount, DateTime date, String category,
+    String token,
   ) async {
-
+    final url = serverURL + "/api/pocket/transactions";
+    print("AAA");
     try {
-      Transaction trans = Transaction (
-        id: DateTime.now().toString(), 
-        title:  title, 
-        amount: amount, 
-        date: date,
-        category: category
+      print(url);
+      print(category);
+      final res = await http.post(url,
+        body: json.encode({
+          "title": title,
+          "amount": amount,
+          "date":  date.toLocal().toIso8601String(),
+          "category": category
+        }),
+        headers: {
+          "Authorization": token
+        }
       );
 
-      this._transactions.add(
-        trans
-      );
+      switch(res.statusCode){
+        case 200:
+          notifyListeners();
+        break;
+        default: 
+          throw Exception(res.body.toString());
+        break;
+      }
+      // Transaction trans = Transaction (
+      //   id: DateTime.now().toString(), 
+      //   title:  title, 
+      //   amount: amount, 
+      //   date: date,
+      //   category: category
+      // );
 
-      // save to local storage
-      var repo = new FuturePreferencesRepository <Transaction> (new TransactionDesSer());
-      await repo.save(trans);
+      // this._transactions.add(
+      //   trans
+      // );
+
+      // // save to local storage
+      // var repo = new FuturePreferencesRepository <Transaction> (new TransactionDesSer());
+      // await repo.save(trans);
 
       notifyListeners();
     } catch (error) {
+      print(error.toString());
       throw new Exception (error.toString());
     }
 
