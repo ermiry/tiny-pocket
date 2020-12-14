@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pocket/providers/keyboard.dart';
+import 'package:pocket/screens/categories.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pocket/providers/ui.dart';
@@ -232,7 +233,31 @@ class _HomeScreenState extends State <HomeScreen> {
             valueColor: new AlwaysStoppedAnimation <Color> (mainBlue),
           ))
         ) : this._content (),
-
+        Positioned(
+          bottom: MediaQuery.of(context).size.width * 0.12 + 78,
+          left: MediaQuery.of(context).size.width * 0.83,
+          child: Container(
+            decoration: ShapeDecoration(
+              shape: CircleBorder (),
+              color: mainBlue
+            ),
+            child: IconButton(
+              hoverColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              color: Colors.white,
+              icon: Icon(Icons.category),
+              iconSize: 42,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => new CategoriesScreen ()),
+                );
+              },
+            )
+          ),
+        ),
         Positioned(
           bottom: MediaQuery.of(context).size.width * 0.1,
           left: MediaQuery.of(context).size.width * 0.83,
