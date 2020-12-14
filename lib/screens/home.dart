@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pocket/providers/keyboard.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pocket/providers/ui.dart';
@@ -19,7 +20,6 @@ import 'package:pocket/style/colors.dart';
 import 'package:pocket/style/style.dart';
 
 import '../pages/home/charts/bars.dart';
-import '../pages/home/charts/expenses.dart';
 import '../pages/home/charts/expenses.dart';
 import '../pages/home/charts/history.dart';
 import '../providers/categories.dart';
@@ -131,11 +131,13 @@ class _HomeScreenState extends State <HomeScreen> {
             settings.showHistoryChart ? new HistoryChart () : new Container(),
 
             // stats
+            Text("Transactions",textAlign: TextAlign.start, style:TextStyle(fontSize: 28, color: accountFirstColorDark,  fontWeight: FontWeight.bold)),
             Container(
               padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
+                  
                   Text(
                     "Total: ",
                     style: hoursPlayedLabelTextStyle,
@@ -247,6 +249,7 @@ class _HomeScreenState extends State <HomeScreen> {
               color: Colors.white,
               icon: Icon(Icons.add),
               onPressed: () {
+                Provider.of<Keyboard>(context,listen: false).setValue("", discrete: true);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -257,7 +260,9 @@ class _HomeScreenState extends State <HomeScreen> {
                       );
                     }
                   ),
-                );
+                ).then((_){
+                  await this._fetchData();
+                });
               },
               iconSize: 42
             )
