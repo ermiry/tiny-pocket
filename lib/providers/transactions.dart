@@ -102,8 +102,6 @@ class Transactions with ChangeNotifier {
         sum += element.amount;
       });
 
-      print("Sum $sum");
-      print(this.getTotal);
       percentage =  (sum.abs() / this.getTotal) * 100;
 
     }catch(error){
