@@ -24,7 +24,7 @@ class ChartBar extends StatelessWidget {
         Container (
           height: constraints.maxHeight * 0.15,
           child: FittedBox (
-            child: Text ('\$${amount.toStringAsFixed(0)}', style: hoursPlayedLabelTextStyle,),
+            child: Text ('\$${amount.abs().toStringAsFixed(0)}', style: hoursPlayedLabelTextStyle,),
           ),
         ),
         SizedBox (height: constraints.maxHeight * 0.05),
@@ -98,7 +98,7 @@ class BarsChart extends StatelessWidget {
 
   double get totalSpending {
     return groupedTransactionValues.fold(0.0, (sum, item) {
-      return sum + item['amount'];
+      return sum + (item['amount'] as double).abs();
     });
   }
 
@@ -120,7 +120,7 @@ class BarsChart extends StatelessWidget {
                   data['day'], 
                   data['amount'], 
                   totalSpending == 0.0 ? 0.0 :
-                    (data['amount'] as double) / totalSpending)
+                    ((data['amount'] as double).abs()) / totalSpending)
                 ); 
             }).toList()
           ),
