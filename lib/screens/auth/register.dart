@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -58,35 +56,6 @@ class _RegisterScreenState extends State <RegisterScreen> {
   }
 
   bool _loading = false;
-
-  void _showSuccessDialog(String message) {
-    showDialog(
-      context: context, 
-      builder: (ctx) => AlertDialog (
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12.0))
-        ),
-        title: Text (
-          'Success!', 
-          style: const TextStyle(color: mainBlue, fontSize: 28),
-          textAlign: TextAlign.center,
-        ),
-        content: Text (
-          message,
-          style: const TextStyle(fontSize: 18),
-          textAlign: TextAlign.center,
-        ),
-        actions: <Widget>[
-          FlatButton(
-            child: Text ('Okay', style: const TextStyle(color: mainDarkBlue, fontSize: 18, fontWeight: FontWeight.bold)),
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-          )
-        ],
-      )
-    );
-  }
 
   void _showErrorDialog(String message) {
     showDialog(
@@ -147,7 +116,6 @@ class _RegisterScreenState extends State <RegisterScreen> {
 
         if (!fail) {
           Navigator.of(context).pop();
-          _showSuccessDialog("Created new account! Now login.");
         }
       }
     }
