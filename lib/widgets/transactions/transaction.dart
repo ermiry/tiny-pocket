@@ -1,19 +1,20 @@
-
+import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
-import 'package:pocket/models/category.dart';
-import 'package:pocket/models/transaction.dart';
+
+import 'package:provider/provider.dart';
 import 'package:pocket/providers/auth.dart';
 import 'package:pocket/providers/categories.dart';
-import 'package:pocket/providers/keyboard.dart';
 import 'package:pocket/providers/transactions.dart';
-import 'package:pocket/screens/trans.dart';
+
+import 'package:pocket/models/category.dart';
+import 'package:pocket/models/transaction.dart';
+
 import 'package:pocket/style/colors.dart';
-import 'package:provider/provider.dart';
 
 class _CategoryItem extends StatelessWidget {
+
   final Category category;
 
   _CategoryItem ( this.category);
@@ -36,11 +37,14 @@ class _CategoryItem extends StatelessWidget {
       ],
     );
   }
+
 }
 
 class TransactionItem extends StatefulWidget {
+
   @override
   _TransactionItemState createState() => _TransactionItemState();
+  
 }
 
 class _TransactionItemState extends State<TransactionItem> {
@@ -83,16 +87,20 @@ class _TransactionItemState extends State<TransactionItem> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          transaction.title,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                        Container(
+                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.56),
+                          child: Text(
+                            transaction.title,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.start,
                           ),
-                          textAlign: TextAlign.start,
                         ),
 
+                        // amount
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -294,7 +302,6 @@ class _ReviewTransactionState extends State<ReviewTransaction> {
     );
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Consumer <Transaction> (
@@ -316,29 +323,25 @@ class _ReviewTransactionState extends State<ReviewTransaction> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       // title
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            transaction.title,
-                            style: TextStyle(
-                              // color: Colors.black,
-                              color: Color(0xFF2F3446),
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.start,
+                      Container(
+                        child: Text(
+                          transaction.title,
+                          style: TextStyle(
+                            // color: Colors.black,
+                            color: Color(0xFF2F3446),
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
                           ),
-
-                        ],
+                          textAlign: TextAlign.start,
+                          maxLines: 8,
+                        ),
                       ),
 
-                     
+                      // amount
                       Column (
                         children: <Widget>[
                           SizedBox(height: 12.0),
 
-                          // description
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
