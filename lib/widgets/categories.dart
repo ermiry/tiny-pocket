@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:animated_dialog/AnimatedDialog.dart';
+import 'package:provider/provider.dart';
 import 'package:pocket/providers/categories.dart';
 import 'package:pocket/style/colors.dart';
 import 'package:pocket/widgets/add_category.dart';
 
-import 'package:provider/provider.dart';
+import 'package:animated_dialog/AnimatedDialog.dart';
 
 class CategoriesDisplay extends StatefulWidget {
 

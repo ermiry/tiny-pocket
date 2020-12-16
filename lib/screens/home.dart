@@ -132,13 +132,12 @@ class _HomeScreenState extends State <HomeScreen> {
             settings.showHistoryChart ? new HistoryChart () : new Container(),
 
             // stats
-            Text("Transactions",textAlign: TextAlign.start, style:TextStyle(fontSize: 28, color: accountFirstColorDark,  fontWeight: FontWeight.bold)),
+            // Text("Transactions",textAlign: TextAlign.start, style:TextStyle(fontSize: 28, color: accountFirstColorDark,  fontWeight: FontWeight.bold)),
             Container(
               padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  
                   Text(
                     "Total: ",
                     style: hoursPlayedLabelTextStyle,

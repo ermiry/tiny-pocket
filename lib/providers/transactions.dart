@@ -92,9 +92,7 @@ class Transactions with ChangeNotifier {
     }
   }
 
-  double getPercentageByCategory(Category category){
-    //SUMA total
-    //TODOS LOS valores
+  double getPercentageByCategory(Category category) {
     double sum = 0.0;
     double percentage = 0.0;
     try{
