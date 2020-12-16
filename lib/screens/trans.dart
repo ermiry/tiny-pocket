@@ -286,13 +286,28 @@ class _TransScreenState extends State <TransScreen> {
                   if(this.widget.baseTrans == null){
                     print("New");
                     try{
-                      await Provider.of<Transactions>(context, listen: false).add(
-                        this._titleEditingController.text,
-                        double.parse(this._amountEditingController.text.substring(1)),
-                        this._selectedDate,
-                        this._category,
-                        Provider.of<Auth>(context,listen: false).token
-                      );
+                      if(this._category != "" &&
+                        this._amountEditingController.text != "" && 
+                        this._titleEditingController.text != ""
+                      ) {
+                        await Provider.of<Transactions>(context, listen: false).add(
+                          this._titleEditingController.text,
+                          double.parse(this._amountEditingController.text.substring(1)),
+                          this._selectedDate,
+                          this._category,
+                          Provider.of<Auth>(context,listen: false).token
+                        );
+
+                        FocusScope.of(context).requestFocus(FocusNode());
+                        Navigator.pop(context);
+                      }
+                      
+                      else {
+                        _showErrorDialog(
+                          "Please select a category to add a transaction"
+                        );
+
+                      }
                     }catch(error){
                       _showErrorDialog(error.toString());
                     }
@@ -304,8 +319,7 @@ class _TransScreenState extends State <TransScreen> {
                     //   this._category
                     // );
                   }
-                  FocusScope.of(context).requestFocus(FocusNode());
-                  Navigator.pop(context);
+                  
                 },
               ),
             ),
