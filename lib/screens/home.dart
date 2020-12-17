@@ -258,7 +258,9 @@ class _HomeScreenState extends State <HomeScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => new CategoriesScreen ()),
-                  );
+                  ).then((_){
+                    this._fetchData();
+                  });
                 },
               )
             ),
