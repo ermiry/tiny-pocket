@@ -64,7 +64,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
                 Consumer <Categories> (
                   builder: (ctx, categories, _) {
-                    return Padding(
+                    return categories.categories.length > 0 ? Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 32),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +92,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                           ),
                         ],
                       ),
-                    );
+                    ) : Container();
                   }
                 ),
 
@@ -117,15 +117,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 32),
                   child: Consumer<Categories>(
                     builder: (ctx, categories, _) {
-                      return Container(
+                      return categories.categories.length > 0 ? Container(
                         width: 42,
                         height: 42,
                         decoration: BoxDecoration(
                           color: categories.categories[categories.selectedCategoryIdx].color,
                           borderRadius: BorderRadius.circular(12),
                         ),
-                      );
-                    
+                      ) : Container();
                     },
                   ),
                 )
