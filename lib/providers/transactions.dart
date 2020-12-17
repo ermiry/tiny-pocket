@@ -34,7 +34,7 @@ class Transactions with ChangeNotifier {
   double get getTotal {
     double total = 0;
     this._transactions.forEach((trans) {
-      total += trans.amount;
+      total += trans.amount.abs();
     });
 
     return total;
@@ -97,7 +97,7 @@ class Transactions with ChangeNotifier {
     double percentage = 0.0;
     try{
       this._transactions.where((element) => element.category == category.id).forEach((element) {
-        sum += element.amount;
+        sum += element.amount.abs();
       });
 
       percentage =  (sum.abs() / this.getTotal) * 100;
