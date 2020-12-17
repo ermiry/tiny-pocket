@@ -81,19 +81,19 @@ class Categories with ChangeNotifier {
 
       switch(res.statusCode){
         case 200:
-          Category cat = new Category(
-            id: DateTime.now().toString(),
-            title: title, 
-            description: description,
-            color: color,
-            date: DateTime.now()
-          );
+          // Category cat = new Category(
+          //   id: DateTime.now().toString(),
+          //   title: title, 
+          //   description: description,
+          //   color: color,
+          //   date: DateTime.now()
+          // );
 
-          this._categories.add(cat);
+          // this._categories.add(cat);
 
-          // save to local storage
-          var repo = new FuturePreferencesRepository <Category> (new CategoryDesSer());
-          await repo.save(cat);
+          // // save to local storage
+          // var repo = new FuturePreferencesRepository <Category> (new CategoryDesSer());
+          // await repo.save(cat);
 
           notifyListeners();
         break;
