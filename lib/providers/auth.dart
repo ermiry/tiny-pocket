@@ -48,7 +48,7 @@ class Auth with ChangeNotifier {
 
     try {
        final res = await http.post(
-        serverURL + '/api/users/register',
+        'https://ermiry.com/api/users/register',
         headers: { "Content-Type": "application/json" }, 
         body: body
       );
@@ -106,7 +106,7 @@ class Auth with ChangeNotifier {
 
     try {
       final res = await http.post(
-        serverURL + '/api/users/login',
+        'https://ermiry.com/api/users/login',
         headers: { "Content-Type": "application/json" },
         body: body
       );
