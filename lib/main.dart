@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pocket/providers/keyboard.dart';
+import 'package:pocket/providers/places.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pocket/providers/global.dart';
@@ -48,6 +49,7 @@ class TinyPocket extends StatelessWidget {
         ChangeNotifierProvider.value(value: new UI()),
         ChangeNotifierProvider.value(value: new Auth()),
         ChangeNotifierProvider.value(value: new Transactions()),
+        ChangeNotifierProvider.value(value: new Places()),
         ChangeNotifierProvider.value(value: new Categories()),
         ChangeNotifierProvider.value(value: new Settings()),
         ChangeNotifierProvider.value(value: new Keyboard()),
