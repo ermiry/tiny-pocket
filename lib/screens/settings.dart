@@ -35,7 +35,7 @@ class _SettingsScreenState extends State <SettingsScreen> {
           textAlign: TextAlign.center,
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
             onPressed: () {
               Navigator.of(ctx).pop();
@@ -64,7 +64,7 @@ class _SettingsScreenState extends State <SettingsScreen> {
           textAlign: TextAlign.center,
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text ('Okay', style: const TextStyle(color: mainDarkBlue, fontSize: 18, fontWeight: FontWeight.bold)),
             onPressed: () {
               Navigator.of(ctx).pop();
@@ -114,13 +114,13 @@ class _SettingsScreenState extends State <SettingsScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text ('No', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text ('Okay', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
                   onPressed: () {
                     this._clearLocalData(context);

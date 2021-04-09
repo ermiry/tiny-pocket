@@ -75,7 +75,7 @@ class _RegisterScreenState extends State <RegisterScreen> {
           textAlign: TextAlign.center,
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text ('Okay', style: const TextStyle(color: mainDarkBlue, fontSize: 18, fontWeight: FontWeight.bold)),
             onPressed: () {
               Navigator.of(ctx).pop();

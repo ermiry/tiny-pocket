@@ -10,8 +10,7 @@ class CustomDateTimePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      padding: EdgeInsets.zero,
+    return TextButton(
       onPressed: onPressed,
       child: Padding(
         padding: const EdgeInsets.only(left: 12.0),

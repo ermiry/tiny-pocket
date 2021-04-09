@@ -15,7 +15,7 @@ class AdaptiveFlatButton extends StatelessWidget {
   @override
   Widget build (BuildContext context) {
 
-    return Platform.isAndroid ? FlatButton (
+    return Platform.isAndroid ? TextButton (
       child: Text (
         this.text,
         style: const TextStyle(

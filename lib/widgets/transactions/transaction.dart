@@ -204,13 +204,13 @@ class _ReviewTransactionState extends State<ReviewTransaction> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text ('No', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
                   onPressed: () {
                     Navigator.of(ctx).pop(false);
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text ('Okay', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
                   onPressed: () async {
                     await Provider.of<Transactions>(context,listen:false).remove(

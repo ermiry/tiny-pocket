@@ -71,7 +71,7 @@ class _HomeScreenState extends State <HomeScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text (
                     'Okay',
                     style: const TextStyle(

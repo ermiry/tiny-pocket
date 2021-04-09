@@ -118,7 +118,7 @@ class _TransScreenState extends State <TransScreen> {
           textAlign: TextAlign.center,
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
             onPressed: () {
               Navigator.of(ctx).pop();
@@ -156,21 +156,13 @@ class _TransScreenState extends State <TransScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                FlatButton(
-                  hoverColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
+                TextButton(
                   child: Text ('No', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
                   onPressed: () {
                     Navigator.of(ctx).pop(false);
                   },
                 ),
-                FlatButton(
-                  hoverColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
+                TextButton(
                   child: Text ('Okay', style: const TextStyle(color: mainRed, fontSize: 18, fontWeight: FontWeight.bold)),
                   onPressed: () async {
                     Navigator.of(ctx).pop(true);
