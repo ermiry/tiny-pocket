@@ -60,11 +60,11 @@ class TinyPocket extends StatelessWidget {
             fontFamily: 'Quicksand',
             appBarTheme: AppBarTheme (
               textTheme: ThemeData.light().textTheme.copyWith(
-                title: TextStyle (fontFamily: 'Open Sans', fontSize: 20, fontWeight: FontWeight.bold)
+                headline6: TextStyle (fontFamily: 'Open Sans', fontSize: 20, fontWeight: FontWeight.bold)
                 )
             ),
             textTheme: ThemeData.light().textTheme.copyWith(
-              title: TextStyle (
+              headline6: TextStyle (
                 fontFamily: 'Quicksand',
                 fontSize: 18,
                 fontWeight: FontWeight.bold
