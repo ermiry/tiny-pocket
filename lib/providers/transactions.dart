@@ -65,7 +65,7 @@ class Transactions with ChangeNotifier {
   Future <void> fetch(String token) async {
     try {
       final res = await http.get(
-        serverURL + '/api/pocket/transactions',
+        Uri.parse(serverURL + '/api/pocket/transactions',),
         headers: { 'authorization' : '$token' }
       );
 
@@ -119,7 +119,7 @@ class Transactions with ChangeNotifier {
     try {
       print(url);
       print(category);
-      final res = await http.post(url,
+      final res = await http.post(Uri.parse(url,),
         body: json.encode({
           "title": title,
           "amount": amount,
@@ -168,7 +168,7 @@ class Transactions with ChangeNotifier {
     final url = serverURL +"/api/pocket/transactions/$id";
 
     try{
-      final res = await http.delete(url, 
+      final res = await http.delete(Uri.parse(url, ),
         headers: {
           "Authorization": token,
         }
