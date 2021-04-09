@@ -42,7 +42,7 @@ class _CategoriesDisplayState extends State <CategoriesDisplay> {
     ).then((value) {
       if (value != null) {
         if (value == 'add') {
-          Scaffold.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: Colors.green,
               content: Text(

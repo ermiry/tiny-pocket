@@ -129,7 +129,7 @@ class _AccountScreenState extends State <AccountScreen> {
       await Provider.of<Auth>(context, listen: false).changeName(
         this._data['name']
       ).then((_) {
-        Scaffold.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.green,
             content: Text(
@@ -173,7 +173,7 @@ class _AccountScreenState extends State <AccountScreen> {
         this._data['password'],
         this._data['confirm']
       ).then((_) {
-        Scaffold.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.green,
             content: Text(
