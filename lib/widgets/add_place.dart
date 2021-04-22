@@ -31,7 +31,7 @@ class _AddPlaceState extends State <AddPlace> {
   bool _start = true;
   bool _edit = false;
 
-  int _selectedIdx = -1;
+  int _selectedIdx = 0;
   List <Color> _colors = [
     Color.fromRGBO(22, 160, 133, 1),
     Color.fromRGBO(39, 174, 96, 1),
