@@ -148,7 +148,8 @@ class _HomeScreenState extends State <HomeScreen> {
                 child: BarsChart (Provider.of<Transactions>(context, listen: true).recentTransactions)) :
               new Container(),
 
-            Provider.of<Categories>(context, listen: true).categories.length > 0 ? 
+            Provider.of<Categories>(context, listen: true).categories.length > 0  
+            && Provider.of<Transactions>(context,listen:false).transactions.length > 0 ? 
               settings.showExpensesChart ? 
               new ExpensesChart () : new Container() : 
               new Container(),
