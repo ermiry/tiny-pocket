@@ -2,6 +2,8 @@ import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pocket/providers/keyboard.dart';
+import 'package:pocket/screens/trans.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pocket/providers/auth.dart';
@@ -62,7 +64,15 @@ class _TransactionItemState extends State<TransactionItem> {
           child: new ReviewTransaction (),
         );
       }
-    );
+    ).then((value) {
+      if(value != null) {
+        if (value == "delete"){
+
+        }else if(value == "update") {
+          print("update");
+        }
+      }
+    });
   }
 
   @override
@@ -255,7 +265,8 @@ class _ReviewTransactionState extends State<ReviewTransaction> {
     return new Container(
       decoration: ShapeDecoration(
         shape: CircleBorder (),
-        color: /*mainBlue*/ accountFirstColor.withOpacity(0.2)
+        color: mainBlue
+        // accountFirstColor.withOpacity(0.2)
       ),
       child: IconButton(
         color: Colors.white,
@@ -263,30 +274,32 @@ class _ReviewTransactionState extends State<ReviewTransaction> {
           Icons.edit,
         ),
         onPressed: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (_) {
-          //       try{
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) {
+                try{
 
-          //       Provider.of<Keyboard>(context,listen:false).setValue(transaction.amount.toString(), discrete: true);
-          //       }catch(error){
-          //         print("hola");
-          //       }
+                Provider.of<Keyboard>(context,listen:false).setValue(transaction.amount.toString(), discrete: true);
+                }catch(error){
+                  print("hola");
+                }
 
-          //       return ChangeNotifierProvider.value(
-          //         value: transaction,
-          //         child: new TransScreen (transaction)
-          //       );
-          //     }
-          //   ),
-          // ).then((value) {
-          //   if (value != null) {
-          //     if (value == 'delete') {
-          //       Navigator.of(context).pop('delete');
-          //     }
-          //   }
-          // });
+                return ChangeNotifierProvider.value(
+                  value: transaction,
+                  child: new TransScreen (transaction)
+                );
+              }
+            ),
+          ).then((value) {
+            if (value != null) {
+              if (value == 'delete') {
+                Navigator.of(context).pop('delete');
+              }else if(value == "update") {
+                Navigator.of(context).pop("update");
+              }
+            }
+          });
         },
       ),
     );
