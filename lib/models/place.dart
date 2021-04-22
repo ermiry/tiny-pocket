@@ -92,7 +92,7 @@ class Place {
       "id": this.id,
       "name": this.name,
       "description": this.description,
-      "color": this.color.toString(),
+      "color": this.color.value.toRadixString(16),
       "type": this.type == "place" ? "1" : "2",
       "link": this.link??"",
       "logo": this.logo??""

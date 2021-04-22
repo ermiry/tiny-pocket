@@ -67,7 +67,7 @@ class Category {
     'id': this.id,
     'title': this.title,
     'description': this.description,
-    'color': this.color.toString(),
+    'color': this.color.value.toRadixString(16),
     'date': this.date.toIso8601String()
   };
 
