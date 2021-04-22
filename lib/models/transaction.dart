@@ -14,6 +14,7 @@ class Transaction with ChangeNotifier {
 	final DateTime date;
 
   String category;
+  String place;
 
 	Transaction ({
 		@required this.id,
@@ -22,7 +23,8 @@ class Transaction with ChangeNotifier {
 		@required this.amount, 
 		@required this.date,
 
-    @required this.category
+    @required this.category,
+    this.place,
 	});
 
   Transaction.fromJson(Map <String, dynamic> map)
@@ -30,14 +32,18 @@ class Transaction with ChangeNotifier {
       title = map['title'],
       amount = map['amount'],
       date = DateTime.parse(map['date']['\$date'] as String),
-      category = map['category']['\$oid'];
+      category = map['category']['\$oid'],
+      place = (map["place"] != null ? map["place"]["\$oid"] : null)
+    ;
+
 
   Map <String, dynamic> toJson() => {
     'id': this.id,
     'title': this.title,
     'amount': this.amount,
     'date': this.date.toIso8601String(),
-    'category': this.category
+    'category': this.category,
+    "place": this.place
   };
 
 }
@@ -55,7 +61,8 @@ class TransactionDesSer extends DesSer <Transaction> {
       title: map['title'] as String, 
       amount: map['amount'] as double,
       date: DateTime.parse(map['date'] as String),
-      category: map['category'] as String
+      category: map['category'] as String,
+      place: map["place"] as String,
     );
   }
 
