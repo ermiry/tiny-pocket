@@ -39,7 +39,11 @@ class Places with ChangeNotifier {
           this._places = placesJson["places"].map<Place>((place) => Place.fromJson(place)).toList();
 
           for(Place place in this._places) {
-            place.iconLogo = await place.getIcon();
+            try{
+              place.iconLogo = await place.getIcon();
+            }catch(error){
+
+            }
           }
           
           notifyListeners();
