@@ -41,6 +41,7 @@ class _TransScreenState extends State <TransScreen> {
   bool _numpad = false;
   bool _loading = false;
   DateTime _selectedDate = new DateTime.now();
+  TimeOfDay _selectedHour = new TimeOfDay.now();
   String _category = "";
   String _place = "";
 
@@ -312,6 +313,7 @@ class _TransScreenState extends State <TransScreen> {
                             this._titleEditingController.text,
                             double.parse(this._amountEditingController.text.substring(1)),
                             this._selectedDate,
+                            this._selectedHour,
                             this._category,
                             Provider.of<Auth>(context,listen: false).token
                           );
@@ -339,6 +341,7 @@ class _TransScreenState extends State <TransScreen> {
                             this._titleEditingController.text,
                             double.parse(this._amountEditingController.text.substring(1)),
                             this._selectedDate,
+                            this._selectedHour,
                             this._category,
                             Provider.of<Auth>(context,listen: false).token,
                             place: this._place
@@ -407,6 +410,20 @@ class _TransScreenState extends State <TransScreen> {
         ),
       ),
     );
+  }
+
+  void _chooseTime() {
+    unfocusIfNeeded();
+    showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now()
+    ).then((pickedHour) {
+      if(pickedHour != null) {
+        setState(() {
+          this._selectedHour = pickedHour;
+        });
+      }
+    });
   }
 
   void _chooseDate() {
@@ -545,6 +562,26 @@ class _TransScreenState extends State <TransScreen> {
               AdaptiveFlatButton (
                 'Choose Date', 
                 this._loading ? null : _chooseDate
+              )
+            ],
+          ),
+        ),
+        Container (
+          margin: EdgeInsets.only(top: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          child: Row (
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                child: Text (
+                  _selectedHour == null ? 'No hour chosen!'
+                  : '${_selectedHour.format(context)}',
+                  style: _selectedHour == null ? hoursPlayedLabelTextStyle : hoursPlayedTextStyle
+                ),
+              ),
+              AdaptiveFlatButton (
+                'Choose Hour', 
+                this._loading ? null : _chooseTime
               )
             ],
           ),

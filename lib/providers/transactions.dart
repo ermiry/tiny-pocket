@@ -111,7 +111,7 @@ class Transactions with ChangeNotifier {
   }
 
   Future <void> add(
-    String title, double amount, DateTime date, String category, String token, {String place}
+    String title, double amount, DateTime date, TimeOfDay hour, String category, String token, {String place}
     
   ) async {
     final url = serverURL + "/api/pocket/transactions";
@@ -119,6 +119,7 @@ class Transactions with ChangeNotifier {
     try {
       print(url);
       print(category);
+      date = new DateTime(date.year, date.month, date.day, hour.hour, hour.minute);
       final res = await http.post(Uri.parse(url,),
         body: json.encode({
           "title": title,
@@ -200,13 +201,14 @@ class Transactions with ChangeNotifier {
   }
 
 
-  Future<void> update(String id, String title, double amount, DateTime date, String category, String token, {String place}) async {
+  Future<void> update(String id, String title, double amount, DateTime date, TimeOfDay hour, String category, String token, {String place}) async {
     final url = serverURL + "/api/pocket/transactions/$id";
     print(place);
     print(date.toIso8601String());
     try {
       print(url);
       print(category);
+      date = new DateTime(date.year, date.month, date.day, hour.hour, hour.minute);
       final res = await http.put(Uri.parse(url,),
         body: json.encode({
           "title": title,
