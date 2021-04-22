@@ -23,6 +23,7 @@ class _AddPlaceState extends State <AddPlace> {
 
   final _mainTextControler = new TextEditingController();
   final _subTextControler = new TextEditingController();
+  final _linkTextControler = new TextEditingController();
 
   final FocusNode _descriptionFocusNode = new FocusNode ();
   final FocusNode _linkFocusNode = new FocusNode ();
@@ -60,7 +61,7 @@ class _AddPlaceState extends State <AddPlace> {
   void dispose() {
     this._mainTextControler.dispose();
     this._subTextControler.dispose();
-
+    this._linkTextControler.dispose();
     this._descriptionFocusNode.dispose();
 
     super.dispose();
@@ -387,7 +388,7 @@ class _AddPlaceState extends State <AddPlace> {
               this._data["type"] == "link" 
               ? TextFormField(
               focusNode: this._linkFocusNode,
-              controller: this._subTextControler,
+              controller: this._linkTextControler,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(12))
