@@ -81,7 +81,7 @@ class Place {
       name: json["name"],
       description: json["description"],
       color: _colorFromJson(json["color"]),
-      type: json["type"] == "0" ? "none": json["type"] == "1" ? "place" : "site",
+      type: json["type"] == 0 ? "none": json["type"] == 1 ? "place" : "site",
       link: json["site"]["link"],
       logo: json["site"]["logo"],
     );
