@@ -58,7 +58,7 @@ class Places with ChangeNotifier {
     try{
       final res = await http.post(Uri.parse(url), 
         headers: {"Authorization": token},
-        body: place.toJson()
+        body: json.encode(place.toJson())
       );
 
       switch(res.statusCode) {
