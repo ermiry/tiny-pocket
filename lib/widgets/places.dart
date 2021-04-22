@@ -1,5 +1,6 @@
 import 'package:favicon/favicon.dart' as fv;
 import 'package:flutter/material.dart';
+import 'package:pocket/providers/auth.dart';
 import 'package:pocket/providers/places.dart';
 import 'package:pocket/widgets/add_place.dart';
 
@@ -34,7 +35,7 @@ class _PlacesDisplayState extends State <PlacesDisplay> {
         );
 
       }
-    ).then((value) {
+    ).then((value) async{
       if (value != null) {
         if (value == 'add') {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -45,6 +46,10 @@ class _PlacesDisplayState extends State <PlacesDisplay> {
                 textAlign: TextAlign.center,
               )
             )
+          );
+
+          await Provider.of<Places>(context,listen: false).fetch(
+            Provider.of<Auth>(context,listen:false).token
           );
         }
       }

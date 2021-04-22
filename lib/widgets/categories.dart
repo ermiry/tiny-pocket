@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pocket/providers/auth.dart';
 
 import 'package:provider/provider.dart';
 import 'package:pocket/providers/categories.dart';
@@ -39,7 +40,7 @@ class _CategoriesDisplayState extends State <CategoriesDisplay> {
         //   child: new AddCategory(null)
         // );
       }
-    ).then((value) {
+    ).then((value)async {
       if (value != null) {
         if (value == 'add') {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -50,6 +51,10 @@ class _CategoriesDisplayState extends State <CategoriesDisplay> {
                 textAlign: TextAlign.center,
               )
             )
+          );
+
+          await Provider.of<Categories>(context,listen: false).fetch(
+            Provider.of<Auth>(context,listen:false).token
           );
         }
       }
