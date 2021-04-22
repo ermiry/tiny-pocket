@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:favicon/favicon.dart' as favicon;
 
@@ -35,6 +36,7 @@ class Place {
   });
 
   static Color _colorFromJson(String colorString) {
+    if(colorString  == null) return Colors.black;
     // String valueString = colorString.split('(0x')[1].split(')')[0]; // kind of hacky..
     // return new Color(int.parse(valueString, radix: 16));
     
@@ -91,9 +93,9 @@ class Place {
       "name": this.name,
       "description": this.description,
       "color": this.color.toString(),
-      "type": this.type,
-      "link": this.link,
-      "logo": this.logo
+      "type": this.type == "place" ? "1" : "2",
+      "link": this.link??"",
+      "logo": this.logo??""
     };
   }
 
