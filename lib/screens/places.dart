@@ -51,7 +51,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
                         },
                       ),
                       title: Text(
-                        'Places and Sites',
+                        'Places',
                         style: TextStyle(
                           fontSize: 28.0,
                           fontWeight: FontWeight.bold,
