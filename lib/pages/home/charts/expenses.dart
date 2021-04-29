@@ -68,20 +68,26 @@ class _ExpensesChartState extends State <ExpensesChart> {
   int touchedIndex;
 
   List <PieChartSectionData> showingSections() {
-    return List.generate(Provider.of<Categories>(context, listen: true).categories.length, (i) {
-      Category transType = Provider.of<Categories>(context, listen: true).categories.elementAt(i);
+    List<PieChartSectionData> sections = [];
+
+    for (Category category in Provider.of<Categories>(context, listen: true).categories) {
+      Category transType = category;
+
       double value = Provider.of<Transactions>(context,listen:true).getPercentageByCategory(
-         Provider.of<Categories>(context, listen: true).categories.elementAt(i)
+        category
       );
-      print(value);
-      return PieChartSectionData(
-        color: transType.color,
-        value: value,
-        title: value >= 100 ? '100%' : '${value.toStringAsFixed (2)}%',
-        radius: 50,
-        titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
-      );
-    });
+      if(value != 0) {
+        sections.add(PieChartSectionData(
+            color: transType.color,
+            value: value,
+            title: value >= 100 ? '100%' : '${value.toStringAsFixed (2)}%',
+            radius: 50,
+            titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
+        ));
+      }
+    }
+
+    return sections;
   }
 
   @override
@@ -132,7 +138,7 @@ class _ExpensesChartState extends State <ExpensesChart> {
   }
 
   List<Widget> categories(){
-    List<Widget> widgets = new List();
+    List<Widget> widgets = [];
 
     Provider.of<Categories>(context,listen:false).categories.forEach((cat) {
       widgets.add( Indicator(

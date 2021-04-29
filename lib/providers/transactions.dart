@@ -65,7 +65,7 @@ class Transactions with ChangeNotifier {
   Future <void> fetch(String token) async {
     try {
       final res = await http.get(
-        serverURL + '/api/pocket/transactions',
+        Uri.parse(serverURL + '/api/pocket/transactions',),
         headers: { 'authorization' : '$token' }
       );
 
@@ -111,15 +111,16 @@ class Transactions with ChangeNotifier {
   }
 
   Future <void> add(
-    String title, double amount, DateTime date, String category,
-    String token,
+    String title, double amount, DateTime date, TimeOfDay hour, String category, String token, {String place}
+    
   ) async {
     final url = serverURL + "/api/pocket/transactions";
     print(date.toIso8601String());
     try {
       print(url);
       print(category);
-      final res = await http.post(url,
+      date = new DateTime(date.year, date.month, date.day, hour.hour, hour.minute);
+      final res = await http.post(Uri.parse(url,),
         body: json.encode({
           "title": title,
           "amount": amount,
@@ -165,10 +166,10 @@ class Transactions with ChangeNotifier {
 
   Future<void> remove(String id,String token) async{
 
-    final url = serverURL +"/api/pocket/transactions/$id";
+    final url = serverURL +"/api/pocket/transactions/$id/remove";
 
     try{
-      final res = await http.delete(url, 
+      final res = await http.delete(Uri.parse(url, ),
         headers: {
           "Authorization": token,
         }
@@ -197,6 +198,59 @@ class Transactions with ChangeNotifier {
 
   
 
+  }
+
+
+  Future<void> update(String id, String title, double amount, DateTime date, TimeOfDay hour, String category, String token, {String place}) async {
+    final url = serverURL + "/api/pocket/transactions/$id/update";
+    print(place);
+    print(date.toIso8601String());
+    try {
+      print(url);
+      print(category);
+      date = new DateTime(date.year, date.month, date.day, hour.hour, hour.minute);
+      final res = await http.put(Uri.parse(url,),
+        body: json.encode({
+          "title": title,
+          "amount": amount,
+          "date":  date.toLocal().toIso8601String(),
+          "category": category,
+          "place": place
+        }),
+        headers: {
+          "Authorization": token
+        }
+      );
+
+      switch(res.statusCode){
+        case 200:
+          notifyListeners();
+        break;
+        default: 
+          throw Exception(res.body.toString());
+        break;
+      }
+      // Transaction trans = Transaction (
+      //   id: DateTime.now().toString(), 
+      //   title:  title, 
+      //   amount: amount, 
+      //   date: date,
+      //   category: category
+      // );
+
+      // this._transactions.add(
+      //   trans
+      // );
+
+      // // save to local storage
+      // var repo = new FuturePreferencesRepository <Transaction> (new TransactionDesSer());
+      // await repo.save(trans);
+
+      notifyListeners();
+    } catch (error) {
+      print(error.toString());
+      throw new Exception (error.toString());
+    }
   }
 
   Future <void> clear() async {

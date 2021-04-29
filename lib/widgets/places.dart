@@ -1,27 +1,28 @@
+import 'package:favicon/favicon.dart' as fv;
 import 'package:flutter/material.dart';
 import 'package:pocket/providers/auth.dart';
+import 'package:pocket/providers/places.dart';
+import 'package:pocket/widgets/add_place.dart';
 
 import 'package:provider/provider.dart';
-import 'package:pocket/providers/categories.dart';
 import 'package:pocket/style/colors.dart';
-import 'package:pocket/widgets/add_category.dart';
 
 import 'package:animated_dialog/AnimatedDialog.dart';
 
-class CategoriesDisplay extends StatefulWidget {
+class PlacesDisplay extends StatefulWidget {
 
   final bool add;
 
-  CategoriesDisplay (this.add);
+  PlacesDisplay (this.add);
 
   @override
-  _CategoriesDisplayState createState() => _CategoriesDisplayState();
+  _PlacesDisplayState createState() => _PlacesDisplayState();
   
 }
 
-class _CategoriesDisplayState extends State <CategoriesDisplay> {
+class _PlacesDisplayState extends State <PlacesDisplay> {
 
-  void _addCategoryDialog() {
+  void _addPlaceDialog() {
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -29,31 +30,25 @@ class _CategoriesDisplayState extends State <CategoriesDisplay> {
         return new AnimatedDialog(
           changeToDialog: true,
           borderRadius: BorderRadius.all(Radius.circular(12)),
-          child: new AddCategory(null)
+          child: new AddPlace(null)
 
         );
 
-        // return Dialog(
-        //   shape: RoundedRectangleBorder(
-        //     borderRadius: BorderRadius.all(Radius.circular(12))
-        //   ),
-        //   child: new AddCategory(null)
-        // );
       }
-    ).then((value)async {
+    ).then((value) async{
       if (value != null) {
         if (value == 'add') {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: Colors.green,
               content: Text(
-                'Created a new category!',
+                'Created a new place!',
                 textAlign: TextAlign.center,
               )
             )
           );
 
-          await Provider.of<Categories>(context,listen: false).fetch(
+          await Provider.of<Places>(context,listen: false).fetch(
             Provider.of<Auth>(context,listen:false).token
           );
         }
@@ -87,15 +82,15 @@ class _CategoriesDisplayState extends State <CategoriesDisplay> {
           ),
         ) 
       ),
-      onTap: this._addCategoryDialog
+      onTap: this._addPlaceDialog
     );
   }
 
-  Widget _category(int index, double left, String title, int count) {
-    int selectedIdx = Provider.of<Categories>(context,listen:false).selectedCategoryIdx;
+  Widget _place(int index, double left, String name, int count, fv.Icon icon) {
+    int selectedIdx = Provider.of<Places>(context,listen:false).selectedPlaceIdx;
     return GestureDetector(
       onTap: () {
-        Provider.of<Categories>(context, listen: false).selectedCategoryIdx = index;
+        Provider.of<Places>(context, listen: false).selectedPlaceIdx = index;
       },
       child: Container(
         margin: EdgeInsets.only(
@@ -128,30 +123,25 @@ class _CategoriesDisplayState extends State <CategoriesDisplay> {
             Padding(
               padding: EdgeInsets.all(20.0),
               child: Text(
-                title,
+                name,
                 style: TextStyle(
                   color: selectedIdx == index
                     ? Colors.white
                     : Color(0xFFAFB4C6),
-                  fontSize: 24,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            // Padding(
-            //   padding: EdgeInsets.all(20.0),
-            //   child: Text(
-            //     count.toString(),
-            //     style: TextStyle(
-            //       color: selectedIdx == index
-            //         ? Colors.white
-            //         // : Colors.black,
-            //         : Color(0xFF0F1426),
-            //       fontSize: 32.0,
-            //       fontWeight: FontWeight.bold,
-            //     ),
-            //   ),
-            // ),
+            Padding(
+              padding: EdgeInsets.all(20.0),
+              child: icon != null ?  Image(
+                image: NetworkImage(icon.url),
+                fit: BoxFit.cover,
+                width: 48,
+                height: 48,
+              ) : Container()
+            ),
           ],
         ),
       ),
@@ -160,14 +150,14 @@ class _CategoriesDisplayState extends State <CategoriesDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer <Categories> (
-      builder: (ctx, categories, _) {
+    return Consumer <Places> (
+      builder: (ctx, places, _) {
         return Container(
           // padding: EdgeInsets.symmetric(horizontal: 16),
           height: 240.0,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: this.widget.add ? categories.categories.length + 1 : categories.categories.length,
+            itemCount: this.widget.add ? places.places.length + 1 : places.places.length,
             itemBuilder: (BuildContext context, int index) {
               int idx = this.widget.add ? index - 1 : index;
 
@@ -177,11 +167,12 @@ class _CategoriesDisplayState extends State <CategoriesDisplay> {
                 }
               }
 
-              return this._category(
+              return this._place(
                 idx,
                 index == 0 ? 16 : 6,
-                categories.categories[idx].title,
-                0
+                places.places[idx].name,
+                0,
+                places.places[idx].iconLogo
               );
             },
           ),

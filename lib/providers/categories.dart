@@ -35,7 +35,7 @@ class Categories with ChangeNotifier {
   Future <void> fetch(String token) async {
     try {
       final res = await http.get(
-        serverURL + '/api/pocket/categories',
+        Uri.parse(serverURL + '/api/pocket/categories'),
         headers: { 'authorization' : '$token' }
       );
 
@@ -67,7 +67,7 @@ class Categories with ChangeNotifier {
     final url = serverURL + "/api/pocket/categories";
     print(color.value.toRadixString(16));
     try{
-      final res = await http.post(url, 
+      final res = await http.post(Uri.parse(url), 
         body: json.encode({
           "title": title,
           "description": description,

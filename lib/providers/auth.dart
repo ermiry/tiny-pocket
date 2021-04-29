@@ -48,7 +48,7 @@ class Auth with ChangeNotifier {
 
     try {
        final res = await http.post(
-        'https://ermiry.com/api/users/register',
+        Uri.parse(serverURL + '/api/users/register',),
         headers: { "Content-Type": "application/json" }, 
         body: body
       );
@@ -106,7 +106,7 @@ class Auth with ChangeNotifier {
 
     try {
       final res = await http.post(
-        'https://ermiry.com/api/users/login',
+        Uri.parse(serverURL + '/api/users/login',),
         headers: { "Content-Type": "application/json" },
         body: body
       );
@@ -173,7 +173,7 @@ class Auth with ChangeNotifier {
 
      try {
       final res = await http.post(
-        serverURL + '/api/users/forgot', 
+        Uri.parse(serverURL + '/api/users/forgot', ),
         body: {
           'email': email.replaceAll(new RegExp(r'\t'), ''), 
         }
@@ -210,7 +210,7 @@ class Auth with ChangeNotifier {
 
     try {
       final res = await http.post(
-        serverURL + '/api/users/${this._userValues['id']}/name', 
+        Uri.parse(serverURL + '/api/users/${this._userValues['id']}/name', ),
         headers: {
           // 'Content-type': 'application/json',
           'Accept': 'application/json',
@@ -259,8 +259,9 @@ class Auth with ChangeNotifier {
       var confirmBytes = utf8.encode(confirm);
       var confirmDigest = sha256.convert(confirmBytes);
 
-      final res = await http.post(
-        serverURL + '/api/users/${this._userValues['id']}/password', 
+      final res = await http.post( Uri.parse(
+        serverURL + '/api/users/${this._userValues['id']}/password'
+        ), 
         headers: {
           // 'Content-type': 'application/json',
           'Accept': 'application/json',
@@ -294,7 +295,7 @@ class Auth with ChangeNotifier {
 
     try {
       final res = await http.delete(
-        serverURL + '/api/users', 
+        Uri.parse(serverURL + '/api/users', ),
         headers: {
           'Content-type': 'application/json',
           'Accept': 'application/json',

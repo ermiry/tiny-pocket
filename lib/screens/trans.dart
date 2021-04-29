@@ -7,6 +7,7 @@ import 'package:pocket/providers/transactions.dart';
 import 'package:pocket/style/style.dart';
 import 'package:pocket/widgets/adaptive/flatButton.dart';
 import 'package:pocket/widgets/choose_categories.dart';
+import 'package:pocket/widgets/choose_places.dart';
 import 'package:pocket/widgets/custom/numpad.dart';
 
 import 'package:provider/provider.dart';
@@ -40,7 +41,9 @@ class _TransScreenState extends State <TransScreen> {
   bool _numpad = false;
   bool _loading = false;
   DateTime _selectedDate = new DateTime.now();
+  TimeOfDay _selectedHour = new TimeOfDay.now();
   String _category = "";
+  String _place = "";
 
   @override
   void initState() { 
@@ -88,6 +91,28 @@ class _TransScreenState extends State <TransScreen> {
     });
   }
 
+  void _placeSelect() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (ctx) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12))
+          ),
+          child: new ChoosePlaces(this._place)
+        );
+      }
+    ).then((val){
+        print(val);
+      if(val != null){
+        this.setState(() {
+          this._place = val;
+        });
+      }
+    });
+  }
+
 
   @override
   void dispose() {
@@ -118,7 +143,7 @@ class _TransScreenState extends State <TransScreen> {
           textAlign: TextAlign.center,
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
             onPressed: () {
               Navigator.of(ctx).pop();
@@ -156,21 +181,13 @@ class _TransScreenState extends State <TransScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                FlatButton(
-                  hoverColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
+                TextButton(
                   child: Text ('No', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
                   onPressed: () {
                     Navigator.of(ctx).pop(false);
                   },
                 ),
-                FlatButton(
-                  hoverColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
+                TextButton(
                   child: Text ('Okay', style: const TextStyle(color: mainRed, fontSize: 18, fontWeight: FontWeight.bold)),
                   onPressed: () async {
                     Navigator.of(ctx).pop(true);
@@ -228,139 +245,185 @@ class _TransScreenState extends State <TransScreen> {
   }
 
   Widget _actions(Transaction trans) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            // add to favorites / importants
-            // IconButton(
-            //   icon: Icon(trans.star ? Icons.star : Icons.star_border,),
-            //   onPressed: () {
-            //     trans.toggleStar();
-            //   },
-            // ),
+    return Container(
+      color: Colors.white,
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              // add to favorites / importants
+              // IconButton(
+              //   icon: Icon(trans.star ? Icons.star : Icons.star_border,),
+              //   onPressed: () {
+              //     trans.toggleStar();
+              //   },
+              // ),
 
-            // // select label
-            // IconButton(
-            //   icon: Icon(Provider.of<Things>(context, listen: false).selectedLabels.length > 0 ? Icons.label : Icons.label_outline),
-            //   onPressed: this._labelSelect
-            // ),
+              // // select label
+              // IconButton(
+              //   icon: Icon(Provider.of<Things>(context, listen: false).selectedLabels.length > 0 ? Icons.label : Icons.label_outline),
+              //   onPressed: this._labelSelect
+              // ),
 
-            // add
-            Container(
-              decoration: ShapeDecoration(
-                shape: CircleBorder (),
-                color: mainBlue
-              ),
-              child: IconButton(
-                color: Colors.white,
-                icon: Icon(
-                  this.widget.baseTrans != null ? Icons.check : Icons.add,
+              // add
+              Container(
+                decoration: ShapeDecoration(
+                  shape: CircleBorder (),
+                  color: mainBlue
                 ),
-                onPressed: () async {
-                  // FIXME: add transaction
+                child: IconButton(
+                  color: Colors.white,
+                  icon: Icon(
+                    this.widget.baseTrans != null ? Icons.check : Icons.add,
+                  ),
+                  onPressed: () async {
+                    // FIXME: add transaction
 
-                  // var transactions = Provider.of<Transactions>(context, listen: false);
+                    // var transactions = Provider.of<Transactions>(context, listen: false);
 
-                  // if (this.widget.baseTrans != null) {
-                  //   transactions.updateThing(
-                  //     this.widget.baseTrans, 
-                  //     this._titleEditingController.text, 
-                  //     this._textEditingController.text
-                  //   );
-                  // }
+                    // if (this.widget.baseTrans != null) {
+                    //   transactions.updateThing(
+                    //     this.widget.baseTrans, 
+                    //     this._titleEditingController.text, 
+                    //     this._textEditingController.text
+                    //   );
+                    // }
 
-                  // else {
-                  //   await transactions.addThing(
-                  //     transactions.categories[transactions.selectedCategoryIdx],
-                  //     this._titleEditingController.text, 
-                  //     this._textEditingController.text,
-                  //     trans.star
-                  //   );
-                  // }
+                    // else {
+                    //   await transactions.addThing(
+                    //     transactions.categories[transactions.selectedCategoryIdx],
+                    //     this._titleEditingController.text, 
+                    //     this._textEditingController.text,
+                    //     trans.star
+                    //   );
+                    // }
 
-                  // return to home screen
-                  if(this.widget.baseTrans == null){
-                    print("New");
-                    try{
-                      if(this._category != "" &&
-                        this._amountEditingController.text != "" && 
-                        this._titleEditingController.text != ""
-                      ) {
-                        await Provider.of<Transactions>(context, listen: false).add(
-                          this._titleEditingController.text,
-                          double.parse(this._amountEditingController.text.substring(1)),
-                          this._selectedDate,
-                          this._category,
-                          Provider.of<Auth>(context,listen: false).token
-                        );
+                    // return to home screen
+                    if(this.widget.baseTrans == null){
+                      print("New");
+                      try{
+                        if(this._category != "" &&
+                          this._amountEditingController.text != "" && 
+                          this._titleEditingController.text != ""
+                        ) {
+                          await Provider.of<Transactions>(context, listen: false).add(
+                            this._titleEditingController.text,
+                            double.parse(this._amountEditingController.text.substring(1)),
+                            this._selectedDate,
+                            this._selectedHour,
+                            this._category,
+                            Provider.of<Auth>(context,listen: false).token
+                          );
 
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        Navigator.pop(context);
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          Navigator.of(context).pop("add");
+                        }
+                        
+                        else {
+                          _showErrorDialog(
+                            "Please fill all fields and select a category"
+                          );
+
+                        }
+                      }catch(error){
+                        _showErrorDialog(error.toString());
                       }
-                      
-                      else {
-                        _showErrorDialog(
-                          "Please select a category to add a transaction"
-                        );
+                    }else{
+                      try {
+                        if(this._category != "" && this._amountEditingController.text != "" &&
+                          this._titleEditingController.text != ""
+                        ){
+                          await Provider.of<Transactions>(context,listen:false).update(
+                            this.widget.baseTrans.id,
+                            this._titleEditingController.text,
+                            double.parse(this._amountEditingController.text.substring(1)),
+                            this._selectedDate,
+                            this._selectedHour,
+                            this._category,
+                            Provider.of<Auth>(context,listen: false).token,
+                            place: this._place
+                          );
 
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          Navigator.of(context).pop("update");
+                        }else {
+                          _showErrorDialog("Please fill all fields and select a category");
+                        }
+                       
+                      }catch(error) {
+                        _showErrorDialog(error.toString());
                       }
-                    }catch(error){
-                      _showErrorDialog(error.toString());
                     }
-                  }else{
-                    // await Provider.of<Transactions>(context,listen:false).update(
-                    //   this._titleEditingController.text,
-                    //   double.parse(this._amountEditingController.text),
-                    //   this._selectedDate,
-                    //   this._category
-                    // );
+                    
+                  },
+                ),
+              ),
+
+              Row(
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Provider.of<Transaction>(context, listen: false).category != null
+                      || this._category != "" ? Icons.label : Icons.label_outline),
+                    onPressed: this._categorySelect
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Provider.of<Transaction>(context, listen: false).place != null
+                      || this._place != "" ? Icons.location_on : Icons.location_on_outlined),
+                    onPressed: this._placeSelect
+                  ),
+                ], 
+              ),
+
+              // delete
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () async {
+                  if (this._titleEditingController.text.isNotEmpty) {
+                    this._confirmExit('This action will delete the current transaction').then((value) {
+                      if (value) {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                        this._titleEditingController.clear();
+                        // this._textEditingController.clear();
+
+                        // var transactions = Provider.of<Things>(context, listen: false);
+                        // transactions.selectedLabels = [];
+
+                        if (this.widget.baseTrans != null) {
+                          Navigator.pop(context, 'delete');
+                        }
+
+                        else {
+                          Navigator.pop(context);
+                        }
+                      }
+                    });
                   }
-                  
                 },
               ),
-            ),
-            IconButton(
-              icon: Icon(
-                Provider.of<Transaction>(context, listen: false).category != null
-                || this._category != "" ? Icons.label : Icons.label_outline),
-              onPressed: this._categorySelect
-            ),
-            
-
-            // delete
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () async {
-                if (this._titleEditingController.text.isNotEmpty) {
-                  this._confirmExit('This action will delete the current transaction').then((value) {
-                    if (value) {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      this._titleEditingController.clear();
-                      // this._textEditingController.clear();
-
-                      // var transactions = Provider.of<Things>(context, listen: false);
-                      // transactions.selectedLabels = [];
-
-                      if (this.widget.baseTrans != null) {
-                        Navigator.pop(context, 'delete');
-                      }
-
-                      else {
-                        Navigator.pop(context);
-                      }
-                    }
-                  });
-                }
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void _chooseTime() {
+    unfocusIfNeeded();
+    showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now()
+    ).then((pickedHour) {
+      if(pickedHour != null) {
+        setState(() {
+          this._selectedHour = pickedHour;
+        });
+      }
+    });
   }
 
   void _chooseDate() {
@@ -499,6 +562,26 @@ class _TransScreenState extends State <TransScreen> {
               AdaptiveFlatButton (
                 'Choose Date', 
                 this._loading ? null : _chooseDate
+              )
+            ],
+          ),
+        ),
+        Container (
+          margin: EdgeInsets.only(top: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          child: Row (
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                child: Text (
+                  _selectedHour == null ? 'No hour chosen!'
+                  : '${_selectedHour.format(context)}',
+                  style: _selectedHour == null ? hoursPlayedLabelTextStyle : hoursPlayedTextStyle
+                ),
+              ),
+              AdaptiveFlatButton (
+                'Choose Hour', 
+                this._loading ? null : _chooseTime
               )
             ],
           ),

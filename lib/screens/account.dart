@@ -37,7 +37,7 @@ class _AccountScreenState extends State <AccountScreen> {
           textAlign: TextAlign.center,
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
             onPressed: () {
               Navigator.of(ctx).pop();
@@ -75,13 +75,13 @@ class _AccountScreenState extends State <AccountScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text ('No', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text ('Okay', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
                   onPressed: () async {
                     setState(() => this._loading = true);
@@ -129,7 +129,7 @@ class _AccountScreenState extends State <AccountScreen> {
       await Provider.of<Auth>(context, listen: false).changeName(
         this._data['name']
       ).then((_) {
-        Scaffold.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.green,
             content: Text(
@@ -173,7 +173,7 @@ class _AccountScreenState extends State <AccountScreen> {
         this._data['password'],
         this._data['confirm']
       ).then((_) {
-        Scaffold.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.green,
             content: Text(

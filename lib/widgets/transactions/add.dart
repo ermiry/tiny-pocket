@@ -81,7 +81,7 @@
 //           textAlign: TextAlign.center,
 //         ),
 //         actions: <Widget>[
-//           FlatButton(
+//           TextButton(
 //             child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
 //             onPressed: () {
 //               Navigator.of(ctx).pop();
@@ -220,7 +220,7 @@
 //                         style: _selectedDate == null ? hoursPlayedLabelTextStyle : hoursPlayedTextStyle
 //                       ),
 //                     ),
-//                     AdaptiveFlatButton (
+//                     AdaptiveTextButton (
 //                       'Choose Date', 
 //                       this._loading ? null : _chooseDate
 //                     )
@@ -236,7 +236,7 @@
 //                       padding: EdgeInsets.only(left: 10),
 //                       child: Text ('Choose a type:', style: hoursPlayedLabelTextStyle),
 //                     ),
-//                     // AdaptiveFlatButton ('Choose Date', _chooseDate)
+//                     // AdaptiveTextButton ('Choose Date', _chooseDate)
 //                     this._loading ? Text (this._selectedType.title) :
 //                       new DropdownButton(
 //                         value: this._selectedType,

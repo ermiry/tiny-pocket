@@ -1,35 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:pocket/models/category.dart';
+import 'package:pocket/models/place.dart';
 import 'package:pocket/providers/auth.dart';
-import 'package:pocket/providers/categories.dart';
+import 'package:pocket/providers/places.dart';
 import 'package:pocket/style/colors.dart';
 
 import 'package:provider/provider.dart';
 
-class AddCategory extends StatefulWidget {
+class AddPlace extends StatefulWidget {
 
-  final Category baseCategory;
+  final Place basePlace;
 
-  AddCategory (this.baseCategory);
+  AddPlace (this.basePlace);
 
   @override
-  _AddCategoryState createState() => _AddCategoryState();
+  _AddPlaceState createState() => _AddPlaceState();
 
 }
 
-class _AddCategoryState extends State <AddCategory> {
+class _AddPlaceState extends State <AddPlace> {
 
   final GlobalKey <FormState> _formKey = new GlobalKey ();
 
   final _mainTextControler = new TextEditingController();
   final _subTextControler = new TextEditingController();
+  final _linkTextControler = new TextEditingController();
 
   final FocusNode _descriptionFocusNode = new FocusNode ();
+  final FocusNode _linkFocusNode = new FocusNode ();
 
   bool _start = true;
   bool _edit = false;
 
-  int _selectedIdx = -1;
+  int _selectedIdx = 0;
   List <Color> _colors = [
     Color.fromRGBO(22, 160, 133, 1),
     Color.fromRGBO(39, 174, 96, 1),
@@ -50,13 +52,16 @@ class _AddCategoryState extends State <AddCategory> {
   final Map <String, dynamic> _data = {
     'name': '',
     'description': '',
+    'type': 'place',
+    'link': null,
+    'logo': null,
   };
 
   @override
   void dispose() {
     this._mainTextControler.dispose();
     this._subTextControler.dispose();
-
+    this._linkTextControler.dispose();
     this._descriptionFocusNode.dispose();
 
     super.dispose();
@@ -80,14 +85,22 @@ class _AddCategoryState extends State <AddCategory> {
     this._data['description'] = value;
   }
 
-  Future <void> _addCategory() async {
-    try {
-      var categories = Provider.of<Categories>(context, listen: false);
+  void saveLink(value) {
+    this._data['link'] = value;
+  }
 
-      await categories.add(
-        this._data['name'], 
-        this._data['description'],
-        this._colors[this._selectedIdx],
+  Future <void> _addPlace() async {
+    try {
+      var places = Provider.of<Places>(context, listen: false);
+
+      await places.add(new Place.fromApp(
+        name:this._data['name'], 
+        description: this._data['description'],
+        color: this._colors[this._selectedIdx],
+        type: this._data["type"],
+        link: this._data["link"],
+        logo: this._data["logo"]
+      ),
         Provider.of<Auth>(context,listen:false).token,
       ).then((_) {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -103,7 +116,7 @@ class _AddCategoryState extends State <AddCategory> {
   //   try {
   //     var things = Provider.of<Things>(context, listen: false);
   //     things.updateCategory(
-  //       this.widget.baseCategory,
+  //       this.widget.basePlace,
   //       this._data['name'], 
   //       this._data['description'], 
   //     );
@@ -123,14 +136,14 @@ class _AddCategoryState extends State <AddCategory> {
       bool fail = false;
       String retval;
       try {
-        // if (this.widget.baseCategory != null) {
+        // if (this.widget.basePlace != null) {
         //   retval = 'edit';
         //   this._updateCategory();
         // }
 
         // else {
           retval = 'add';
-          await this._addCategory();
+          await this._addPlace();
         // }
       }
 
@@ -198,7 +211,7 @@ class _AddCategoryState extends State <AddCategory> {
   }
 
   Widget _deleteButton() {
-    if (this.widget.baseCategory != null) {
+    if (this.widget.basePlace != null) {
       return Column (
         children: <Widget>[
           const SizedBox(height: 8),
@@ -263,9 +276,9 @@ class _AddCategoryState extends State <AddCategory> {
   @override
   Widget build(BuildContext context) {
     if (this._start) {
-      if (this.widget.baseCategory != null) {
-        this._mainTextControler.text = this.widget.baseCategory.title;
-        this._subTextControler.text = this.widget.baseCategory.description;
+      if (this.widget.basePlace != null) {
+        this._mainTextControler.text = this.widget.basePlace.name;
+        this._subTextControler.text = this.widget.basePlace.description;
       }
 
       else {
@@ -280,116 +293,167 @@ class _AddCategoryState extends State <AddCategory> {
       padding: const EdgeInsets.all(24),
       child: new Form(
         key: this._formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Center(
-              child: Text(
-                this.widget.baseCategory != null ? "Edit category" : "Add category",
-                style: TextStyle(
-                  fontSize: 24, 
-                  fontWeight: FontWeight.bold, 
-                  color: mainDarkBlue
-                ),
-              )
-            ),
-
-            const SizedBox(height: 16),
-
-            // main input
-            TextFormField(
-              controller: this._mainTextControler,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12))
-                ),
-                labelText: "Name"
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Center(
+                child: Text(
+                  this.widget.basePlace != null ? "Edit place" : "Add place",
+                  style: TextStyle(
+                    fontSize: 24, 
+                    fontWeight: FontWeight.bold, 
+                    color: mainDarkBlue
+                  ),
+                )
               ),
-              keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              obscureText: false,
-              validator: this.validateName,
-              onSaved: this.saveName,
-              onFieldSubmitted: (value) {
-                FocusScope.of(context).requestFocus(
-                  this._descriptionFocusNode
-                );
-              },
-              onChanged: (value) {
-                this.setState(() => this._edit = true );
-              },
-            ),
-            
-            const SizedBox(height: 16),
 
-            TextFormField(
-              focusNode: this._descriptionFocusNode,
-              controller: this._subTextControler,
+              const SizedBox(height: 16),
+
+              // main input
+              TextFormField(
+                controller: this._mainTextControler,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12))
+                  ),
+                  labelText: "Name"
+                ),
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                obscureText: false,
+                validator: this.validateName,
+                onSaved: this.saveName,
+                onFieldSubmitted: (value) {
+                  FocusScope.of(context).requestFocus(
+                    this._descriptionFocusNode
+                  );
+                },
+                onChanged: (value) {
+                  this.setState(() => this._edit = true );
+                },
+              ),
+              
+              const SizedBox(height: 16),
+
+              TextFormField(
+                focusNode: this._descriptionFocusNode,
+                controller: this._subTextControler,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12))
+                  ),
+                  labelText: "Description"
+                ),
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                obscureText: false,
+                validator: this.validateDescription,
+                onSaved: this.saveDescription,
+                onChanged: (value) {
+                  this.setState(() => this._edit = true );
+                },
+              ),
+
+              const SizedBox(height: 16),
+
+              DropdownButton(
+                isExpanded: true,
+                value: this._data["type"],
+                onChanged: (value) {
+                  this.setState(() {
+                    this._data["type"] = value;
+                  });
+                },
+                items: [
+                  DropdownMenuItem(
+                    value: "link",
+                    child: Text(
+                      "Online Site",
+                      style: TextStyle(fontSize: 16, color: mainDarkBlue)
+                    ),
+                  ),
+                  DropdownMenuItem(
+                    value: "place",
+                    child: Text(
+                      "Real place",
+                      style: TextStyle(fontSize: 16, color: mainDarkBlue)
+                    ),
+                  )
+                ],
+              ),
+
+              const SizedBox(height: 16),
+
+              this._data["type"] == "link" 
+              ? TextFormField(
+              focusNode: this._linkFocusNode,
+              controller: this._linkTextControler,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(12))
                 ),
-                labelText: "Description"
+                labelText: "Link"
               ),
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.done,
               obscureText: false,
-              validator: this.validateDescription,
-              onSaved: this.saveDescription,
+              onSaved: this.saveLink,
               onChanged: (value) {
                 this.setState(() => this._edit = true );
               },
-            ),
+              ) : Container(), 
 
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-            Center(
-              child: GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 8),
-                itemCount: this._colors.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return this._label(index);
-                }
-              )
-            ),
-
-            const SizedBox(height: 16),
-
-            // this._deleteButton(),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                // close
-                MaterialButton(
-                  child: Text("Close"),
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.circular(12)
-                  ),
-                  padding: const EdgeInsets.all(14.0),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-
-                // save / edit
-                MaterialButton(
-                  child: Text(this.widget.baseCategory != null ? "Edit" : "Add"),
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.circular(12)
-                  ),
-                  color: mainBlue,
-                  textColor: Colors.white,
-                  padding: const EdgeInsets.all(14.0),
-                  onPressed: this._edit ? this._save : null,
+              Center(
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 8),
+                  itemCount: this._colors.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return this._label(index);
+                  }
                 )
-              ],
-            ),
-          ],
+              ),
+
+              const SizedBox(height: 16),
+
+              // this._deleteButton(),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  // close
+                  MaterialButton(
+                    child: Text("Close"),
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.circular(12)
+                    ),
+                    padding: const EdgeInsets.all(14.0),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+
+                  // save / edit
+                  MaterialButton(
+                    child: Text(this.widget.basePlace != null ? "Edit" : "Add"),
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.circular(12)
+                    ),
+                    color: mainBlue,
+                    textColor: Colors.white,
+                    padding: const EdgeInsets.all(14.0),
+                    onPressed: this._edit ? this._save : null,
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
