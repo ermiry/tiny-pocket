@@ -166,7 +166,7 @@ class Transactions with ChangeNotifier {
 
   Future<void> remove(String id,String token) async{
 
-    final url = serverURL +"/api/pocket/transactions/$id";
+    final url = serverURL +"/api/pocket/transactions/$id/remove";
 
     try{
       final res = await http.delete(Uri.parse(url, ),
@@ -202,7 +202,7 @@ class Transactions with ChangeNotifier {
 
 
   Future<void> update(String id, String title, double amount, DateTime date, TimeOfDay hour, String category, String token, {String place}) async {
-    final url = serverURL + "/api/pocket/transactions/$id";
+    final url = serverURL + "/api/pocket/transactions/$id/update";
     print(place);
     print(date.toIso8601String());
     try {
