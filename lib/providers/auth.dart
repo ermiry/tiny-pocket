@@ -167,7 +167,7 @@ class Auth with ChangeNotifier {
 
   }
 
-  Future <void> face_id_register(
+  Future <void> faceIdRegister(
     List<String> filepaths
   ) async {
 
@@ -212,7 +212,7 @@ class Auth with ChangeNotifier {
 
   }
 
-  Future <void> face_id_auth(
+  Future <void> faceIdAuth(
     List <String> filepaths
   ) async {
 
