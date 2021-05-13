@@ -44,7 +44,6 @@ class _VideoRecorderState extends State <VideoRecorder> {
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown
     ]);
 
     // Get the listonNewCameraSelected of available cameras.
@@ -194,18 +193,7 @@ class _VideoRecorderState extends State <VideoRecorder> {
     //   child: CameraPreview(controller),
     // );
 
-    return RotatedBox(
-      quarterTurns: 1,
-      child: Transform.scale(
-        scale: controller.value.aspectRatio,
-        child: Center(
-          child: AspectRatio(
-            aspectRatio: controller.value.aspectRatio,
-            child: CameraPreview(controller),
-          ),
-        ),
-      ),
-    );
+    return CameraPreview(controller);
   }
 
   /// Display a row of toggle to select the camera (or a message if no camera is available).
@@ -220,7 +208,7 @@ class _VideoRecorderState extends State <VideoRecorder> {
     return Expanded(
       child: Align(
         alignment: Alignment.centerLeft,
-        child: FlatButton.icon(
+        child: TextButton.icon(
             onPressed: this._recording ? null : _onSwitchCamera,
             icon: Icon(
               _getCameraLensIcon(lensDirection)
@@ -291,6 +279,7 @@ class _VideoRecorderState extends State <VideoRecorder> {
 
     try {
       await controller.initialize();
+      await controller.lockCaptureOrientation();
     } on CameraException catch (e) {
       _showCameraException(e);
     }
@@ -347,7 +336,7 @@ class _VideoRecorderState extends State <VideoRecorder> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
                   onPressed: () {
                     Navigator.of(ctx).pop();
@@ -368,7 +357,7 @@ class _VideoRecorderState extends State <VideoRecorder> {
         this._waiting = true;
       });
 
-      await Provider.of<Auth>(context, listen: false).face_id_register(
+      await Provider.of<Auth>(context, listen: false).faceIdRegister(
         this.photos
       );
 
@@ -397,7 +386,7 @@ class _VideoRecorderState extends State <VideoRecorder> {
         this._waiting = true;
       });
 
-      await auth.face_id_auth(
+      await auth.faceIdAuth(
         this.photos
       );
 
@@ -479,7 +468,7 @@ class _VideoRecorderState extends State <VideoRecorder> {
     }
 
     // List<String> photos = new List();
-    this.photos = new List ();
+    this.photos = [];
 
     final Directory appDirectory = await getTemporaryDirectory();
     final String photosDirectory = '${appDirectory.path}/Photos';
