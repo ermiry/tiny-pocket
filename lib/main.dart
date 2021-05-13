@@ -82,12 +82,14 @@ class TinyPocket extends StatelessWidget {
             builder: (ctx, auth, _) => global.firstTime ? new WelcomeScreen() 
               :
               auth.isAuth && auth.isFaceAuth ? new MainScreen () :
-                FutureBuilder(
+                !auth.isAuth 
+                ? FutureBuilder(
                   future: auth.tryAutoLogin(),
                   builder: (ctx, authResultSnapshot) =>
                     authResultSnapshot.connectionState == ConnectionState.waiting ?
                       new LoadingScreen () : new LoginScreen (),
-                ),
+                )
+                : VideoRecorder()
           ),
           routes: {
             '/splash': (ctx) => new SplashScreen (),
