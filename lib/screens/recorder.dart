@@ -89,7 +89,26 @@ class _VideoRecorderState extends State <VideoRecorder> {
         key: _scaffoldKey,
         appBar: AppBar(
           backgroundColor: mainBlue,
-          title: Provider.of<Auth>(context, listen: false).isRegister ? const Text('Face ID Register') : const Text('Face ID Auth'),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              !Provider.of<Auth>(context,listen:false).isRegister ? IconButton(
+                icon: Icon(Icons.arrow_back),
+                iconSize: 24,
+                onPressed: ()async{
+                  bool retval = await _showWarnDialog("You will logout, Are you sure?");
+                  if(retval) {
+                    Provider.of<Auth>(context,listen:false).logout();
+                  }
+
+                },
+              ) : null,
+              !Provider.of<Auth>(context,listen:false).isRegister ? SizedBox(width: 16) : null,
+              Provider.of<Auth>(context, listen: false).isRegister ? const Text('Face ID Register') : const Text('Face ID Auth')
+            ],
+          ),
+          
         ),
         body: this._waiting ? 
           Container (
@@ -308,6 +327,55 @@ class _VideoRecorderState extends State <VideoRecorder> {
       //   print(p);
       // }
     });
+  }
+
+  Future<bool> _showWarnDialog(String message) async {
+    bool retval = false;
+    retval = await showDialog(
+      context: context, 
+      builder: (ctx) => AlertDialog (
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12.0))
+        ),
+        title: Text (
+          'Warning', 
+          style: const TextStyle(color: mainRed, fontSize: 28),
+          textAlign: TextAlign.center,
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text (
+              message,
+              style: const TextStyle(fontSize: 18),
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 16),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                TextButton(
+                  child: Text ('Okay', style: const TextStyle(color: mainBlue, fontSize: 18, fontWeight: FontWeight.bold)),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+                TextButton(
+                  child: Text ('Cancel', style: const TextStyle(color: mainRed, fontSize: 18, fontWeight: FontWeight.bold)),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                )
+              ],
+            )
+          ],
+        )
+      )
+    );
+
+    return retval;
   }
 
   void _showErrorDialog(String message) {
