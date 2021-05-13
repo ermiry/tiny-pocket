@@ -301,6 +301,9 @@ class Auth with ChangeNotifier {
 
     this._token = null;
 
+    this._face = false;
+    this._isRegister = false;
+
     final prefs = await SharedPreferences.getInstance();
     // prefs.remove('user_token');
     prefs.clear();    // to delete all saved data
