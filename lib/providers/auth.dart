@@ -8,21 +8,35 @@ import 'package:crypto/crypto.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:pocket/models/http_exception.dart';
 import 'package:pocket/values.dart';
+
+import 'package:pocket/models/http_exception.dart';
 
 class Auth with ChangeNotifier {
 
+  bool first = false;
+
   String _token;
+  String get token { return this._token; }
 
   Map <String, dynamic> _userValues;
   Map <String, dynamic> get userValues { return this._userValues; }
 
   bool get isAuth {
-    return this.token != null;
+    return this._token != null;
   }
 
-  String get token { return this._token; }
+  bool _face = false;
+
+  bool get isFaceAuth {
+    return this._face;
+  }
+
+  bool _isRegister = false;
+
+  bool get isRegister {
+    return this._isRegister;
+  }
 
   Future <void> signup(
     String name, String username, String email, String password, String confirm
@@ -55,6 +69,8 @@ class Auth with ChangeNotifier {
 
       switch (res.statusCode) {
         case 200: {
+          this._isRegister = true;
+
           var actualRes = json.decode(res.body);
           print(actualRes);
           this._token = actualRes['token'];
@@ -149,6 +165,93 @@ class Auth with ChangeNotifier {
       throw HttpException (error.toString());
     }
 
+  }
+
+  Future <void> face_id_register(
+    List<String> filepaths
+  ) async {
+
+    String url = faceURL + '/api/face/register';
+
+    final postUri = Uri.parse(url);
+
+    http.MultipartRequest request = http.MultipartRequest('POST', postUri);
+    request.headers['authorization'] = this._token;
+
+    // add our file to the request
+    int count = 0;
+    for (String filepath in filepaths) {
+      print(filepath);
+      http.MultipartFile multipartFile = await http.MultipartFile.fromPath('file-$count', filepath); 
+      request.files.add(multipartFile);
+      count++;
+    }
+
+    try {
+      http.StreamedResponse response = await request.send();
+      http.Response res = await http.Response.fromStream(response);
+
+      switch(res.statusCode) {
+        case 200:
+          var actualRes = json.decode(res.body);
+          print(actualRes);
+          this._face = true;
+          this._isRegister = false;
+        break;
+        default: 
+          throw HttpException (res.body.toString());
+        break; 
+      }
+      
+      notifyListeners();
+    }
+
+    catch (error) {
+      throw HttpException (error.toString());
+    }
+
+  }
+
+  Future <void> face_id_auth(
+    List <String> filepaths
+  ) async {
+
+    String url = faceURL + '/api/face/login';
+
+    final postUri = Uri.parse(url);
+
+    http.MultipartRequest request = http.MultipartRequest('POST', postUri);
+    request.headers['authorization'] = this._token;
+
+    // add our file to the request
+    for (String filepath in filepaths) {
+      print(filepath);
+      http.MultipartFile multipartFile = await http.MultipartFile.fromPath('file', filepath); 
+      request.files.add(multipartFile);
+    }
+
+    try {
+      http.StreamedResponse response = await request.send();
+      http.Response res = await http.Response.fromStream(response);
+
+      switch(res.statusCode) {
+        case 200:
+          var actualRes = json.decode(res.body);
+          print(actualRes);
+          this._face = true;
+        break;
+        default: 
+          throw HttpException (res.body.toString());
+        break; 
+      }
+      
+      notifyListeners();
+    }
+
+    catch (error) {
+      throw HttpException (error.toString());
+    }
+    
   }
 
   Future <bool> tryAutoLogin() async {

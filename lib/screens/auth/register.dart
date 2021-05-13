@@ -116,6 +116,7 @@ class _RegisterScreenState extends State <RegisterScreen> {
 
         if (!fail) {
           Navigator.of(context).pop();
+          Navigator.of(context).pushNamed('/face');
         }
       }
     }
