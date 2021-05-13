@@ -97,14 +97,14 @@ class _VideoRecorderState extends State <VideoRecorder> {
                 icon: Icon(Icons.arrow_back),
                 iconSize: 24,
                 onPressed: ()async{
-                  bool retval = await _showWarnDialog("You will logout, Are you sure?");
+                  bool retval = await _showWarnDialog("You will logout, are you sure?");
                   if(retval) {
                     Provider.of<Auth>(context,listen:false).logout();
                   }
 
                 },
-              ) : null,
-              !Provider.of<Auth>(context,listen:false).isRegister ? SizedBox(width: 16) : null,
+              ) : Container(),
+              !Provider.of<Auth>(context,listen:false).isRegister ? SizedBox(width: 16) : Container(),
               Provider.of<Auth>(context, listen: false).isRegister ? const Text('Face ID Register') : const Text('Face ID Auth')
             ],
           ),
