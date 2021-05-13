@@ -402,7 +402,7 @@ class _VideoRecorderState extends State <VideoRecorder> {
       bool done = false;
       try {
         done = true;
-        Navigator.of(context).pop();
+        // Navigator.of(context).pop();
 
       } on HttpException catch (error) {
         print(error);
