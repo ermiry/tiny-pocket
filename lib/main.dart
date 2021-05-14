@@ -18,6 +18,7 @@ import 'package:pocket/screens/auth/login.dart';
 import 'package:pocket/screens/auth/register.dart';
 import 'package:pocket/screens/drawer.dart';
 import 'package:pocket/screens/active.dart';
+import 'package:pocket/screens/recorder.dart';
 
 import 'package:pocket/style/colors.dart';
 
@@ -80,18 +81,22 @@ class TinyPocket extends StatelessWidget {
           home: Consumer <Auth> (
             builder: (ctx, auth, _) => global.firstTime ? new WelcomeScreen() 
               :
-              auth.isAuth ? new MainScreen () :
-                FutureBuilder(
+              auth.isAuth && auth.isFaceAuth ? new MainScreen () :
+                !auth.isAuth 
+                ? FutureBuilder(
                   future: auth.tryAutoLogin(),
                   builder: (ctx, authResultSnapshot) =>
                     authResultSnapshot.connectionState == ConnectionState.waiting ?
                       new LoadingScreen () : new LoginScreen (),
-                ),
+                )
+                : VideoRecorder()
           ),
           routes: {
             '/splash': (ctx) => new SplashScreen (),
 
             '/register': (ctx) => new RegisterScreen (),
+
+            '/face': (ctx) => new VideoRecorder (),
           },
 
           debugShowCheckedModeBanner: true,
