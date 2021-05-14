@@ -1,2 +1,2 @@
-const String version_number = '0.4';
-const String version_date = '29/April/2020';
+const String version_number = '0.5';
+const String version_date = '13/May/2021';
